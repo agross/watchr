@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Console</title>
+    <style type="text/css">
+      body {
+        margin: 2em;
+        font-family: Consolas, Courier New, monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="lines"></ul>
+    
+    <script src="Scripts/jquery-1.6.4.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.0.3.min.js"></script>
+    <script src="signalr/hubs"></script>
+
+    <script type="text/javascript">
+      $(function() {
+        $.connection.consoleHub.client.broadcast = function(line) {
+          var encoded = $('<div />').text(line).html();
+          $('#lines').append('<li>' + encoded + '</li>');
+        };
+
+        $.connection.hub.start();
+      });
+    </script>
+  </body>
+</html>

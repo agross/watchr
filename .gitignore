@@ -1,0 +1,12 @@
+*.bak
+*.user
+*.suo
+
+bin
+obj
+tmp
+build
+deploy
+packages
+
+local-properties.yaml
