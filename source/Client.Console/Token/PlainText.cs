@@ -8,11 +8,11 @@ namespace Client.Console.Token
   {
     /// <summary>
     ///  Beginning of string
-    ///  [1]: A numbered capture group. [[^\u001b\u0008]+]
-    ///      Any character that is NOT in this class: [\u001b\u0008], one or more repetitions
+    ///  [1]: A numbered capture group. [[^\u001b\u0008\r\n]+]
+    ///      Any character that is NOT in this class: [\u001b\u0008\r\n], one or more repetitions
     /// </summary>
     static readonly Regex _pattern = new Regex(
-      "\\A([^\\u001b\\u0008]+)",
+      "\\A([^\\u001b\\u0008\\r\\n]+)",
       RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled | RegexOptions.Multiline);
 
     public Regex Pattern
@@ -28,14 +28,6 @@ namespace Client.Console.Token
       get
       {
         return match => new[] { new TokenData("text", match.Value) };
-      }
-    }
-
-    public Func<Match, string> Replacement
-    {
-      get
-      {
-        return match => "";
       }
     }
   }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 using Client.Console.BufferActions;
@@ -13,7 +14,7 @@ namespace Client.Console
   {
     static readonly IEnumerable<IToken> Token = new List<IToken>
                                                 {
-                                                  new RemoveCrOnlyLineEndings(),
+                                                  //new RemoveCrOnlyLineEndings(),
                                                   new NormalizeLineEndings(),
                                                   new RemoveUninterestingEscapes(),
                                                   new AnsiDisplayCodes(),
@@ -248,31 +249,26 @@ namespace Client.Console
       {
         foreach (var token in Token)
         {
-          var t = token;
+          Debug.Assert(RegexOptions.Singleline.HasFlag(token.Pattern.Options) == false,
+                       "Patterns with Singleline flag are not supported as we read the file line-by-line.");
+          
+          Debug.Assert(token.Pattern.ToString().StartsWith("\\A"),
+                       "Patterns must start with \\A for performance reasons.");
 
-          var matched = false;
-          IEnumerable<TokenData> yield = null;
+          var match = token.Pattern.Match(text);
+          if (!match.Success)
+          {
+            continue;
+          }
 
-          Debug.Assert(RegexOptions.Singleline.HasFlag(t.Pattern.Options) == false,
-                       "Patters with Singleline flag are not supported as we read the file line-by-line.");
-
-          text = t.Pattern.Replace(text,
-                                   match =>
-                                   {
-                                     matched = true;
-                                     yield = t.Yield(match);
-                                     return t.Replacement(match);
-                                   });
-
-          foreach (var tokenData in yield ?? new TokenData[0])
+          foreach (var tokenData in token.Yield(match) ?? new TokenData[0])
           {
             yield return tokenData;
           }
 
-          if (matched)
-          {
-            break;
-          }
+          text = text.Remove(0, match.Length);
+
+          break;
         }
 
         if (text.Length == length)

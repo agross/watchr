@@ -7,8 +7,9 @@ namespace Client.Console.Token
   class NormalizeLineEndings : IToken
   {
     /// <summary>
-    ///  [1]: A numbered capture group. [\r(?!\n)|(?<!\r)\n]
-    ///      Select from 2 alternatives
+    ///  Beginning of string
+    ///  [1]: A numbered capture group. [\r(?!\n)|(?<!\r)\n|\r\n]
+    ///      Select from 3 alternatives
     ///          \r(?!\n)
     ///              Carriage return
     ///              Match if suffix is absent. [\n]
@@ -17,9 +18,12 @@ namespace Client.Console.Token
     ///              Match if prefix is absent. [\r]
     ///                  Carriage return
     ///              New line
+    ///          \r\n
+    ///              Carriage return
+    ///              New line
     /// </summary>
     static readonly Regex _pattern = new Regex(
-      "(\\r(?!\\n)|(?<!\\r)\\n)",
+      "\\A(\\r(?!\\n)|(?<!\\r)\\n|\\r\\n)",
       RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     public Regex Pattern
@@ -34,15 +38,14 @@ namespace Client.Console.Token
     {
       get
       {
-        return match => null;
-      }
-    }
-
-    public Func<Match, string> Replacement
-    {
-      get
-      {
-        return match => Environment.NewLine;
+        return match =>
+        {
+          if (match.Value == "\r")
+          {
+            return null;
+          }
+          return new[] { new TokenData("text", Environment.NewLine) };
+        };
       }
     }
   }

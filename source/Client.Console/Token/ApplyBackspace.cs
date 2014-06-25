@@ -30,13 +30,5 @@ namespace Client.Console.Token
         return match => new[] { new TokenData("backspace", match.Groups["BS"].Value) };
       }
     }
-
-    public Func<Match, string> Replacement
-    {
-      get
-      {
-        return match => "";
-      }
-    }
   }
 }

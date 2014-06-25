@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -507,8 +508,13 @@ namespace Client.Console
       {
         var dump = reader.ReadToEnd();
 
+        var sw = new Stopwatch();
+        sw.Start();
+
         var html = new AnsiToHtml(dump).ToHtml();
 
+        sw.Stop();
+        System.Console.WriteLine(sw.Elapsed);
 
         html = "<html><link href='style.css' rel='stylesheet' type='text/css'></link><body><pre>" + html;
         html += "</pre></body></html>";

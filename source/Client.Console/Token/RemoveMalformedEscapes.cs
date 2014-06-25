@@ -32,13 +32,5 @@ namespace Client.Console.Token
         return match => null;
       }
     }
-
-    public Func<Match, string> Replacement
-    {
-      get
-      {
-        return match => "";
-      }
-    }
   }
 }

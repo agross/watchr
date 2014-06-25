@@ -50,13 +50,5 @@ namespace Client.Console.Token
         };
       }
     }
-
-    public Func<Match, string> Replacement
-    {
-      get
-      {
-        return match => "";
-      }
-    }
   }
 }

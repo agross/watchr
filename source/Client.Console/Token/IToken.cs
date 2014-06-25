@@ -8,7 +8,5 @@ namespace Client.Console.Token
   {
     Regex Pattern { get; }
     Func<Match, IEnumerable<TokenData>> Yield { get; }
-    Func<Match, string> Replacement { get; }
-
   }
 }
