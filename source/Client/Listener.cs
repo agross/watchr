@@ -26,6 +26,9 @@ namespace Client
             Observable.FromEventPattern
               <FileSystemEventHandler, FileSystemEventArgs>(x => fsw.Created += x,
                                                             x => fsw.Created -= x),
+            Observable.FromEventPattern
+              <FileSystemEventHandler, FileSystemEventArgs>(x => fsw.Deleted += x,
+                                                            x => fsw.Deleted -= x),
             Observable.FromEventPattern<ErrorEventArgs>(fsw, "Error")
                       .SelectMany(e => Observable.Throw<EventPattern<FileSystemEventArgs>>(e.EventArgs.GetException()))
           };
@@ -33,7 +36,6 @@ namespace Client
         var subscription = sources
           .Merge()
           .Select(x => x.EventArgs.FullPath)
-          .Sample(TimeSpan.FromSeconds(1))
           .Synchronize(subject)
           .Subscribe(subject);
 
@@ -46,11 +48,7 @@ namespace Client
 
     static FileSystemWatcher CreateFileSystemWatcher(string path, string filter)
     {
-      if (filter != null)
-      {
-        return new FileSystemWatcher(path, filter);
-      }
-      return new FileSystemWatcher(path);
+      return new FileSystemWatcher(path, filter);
     }
   }
 }

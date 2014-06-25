@@ -10,10 +10,7 @@ namespace Web
     {
       app.MapSignalR();
 
-      GlobalConfiguration.Configure(x => x.Routes.MapHttpRoute(name: "API Default",
-                                                               routeTemplate: "api/{controller}/{id}",
-                                                               defaults: new { id = RouteParameter.Optional }
-                                           ));
+      GlobalConfiguration.Configure(x => x.MapHttpAttributeRoutes());
     }
   }
 }

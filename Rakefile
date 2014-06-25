@@ -5,4 +5,6 @@ Rake::Funnel::Tasks::BinPath.new
 Rake::Funnel::Integration::SyncOutput.new
 Rake::Funnel::Integration::ProgressReport.new
 
-Rake::Funnel::MSBuild.new
+Rake::Funnel::Tasks::MSBuild.new
+
+task default: :compile

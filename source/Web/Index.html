@@ -7,20 +7,81 @@
         margin: 2em;
         font-family: Consolas, Courier New, monospace;
       }
+
+      pre { margin: 0; }
     </style>
+    <link rel="stylesheet" type="text/css" href="Css/style.css" />
   </head>
   <body>
-    <ul id="lines"></ul>
+    <div id="console"></div>
     
-    <script src="Scripts/jquery-1.6.4.min.js"></script>
-    <script src="Scripts/jquery.signalR-2.0.3.min.js"></script>
+    <script src="Scripts/rx.js"></script>
+    <script src="Scripts/jquery-2.1.1.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.1.0.min.js"></script>
     <script src="signalr/hubs"></script>
 
     <script type="text/javascript">
+      Rx.Observable.prototype.sort = function(keySelector, shouldProcess, cacheKey) {
+        var parent = this;
+
+        return new Rx.Internals.AnonymousObservable(function(observer) {
+          var lastKey;
+          var cache = {};
+
+          return parent.subscribe(function (value) {
+              if (shouldProcess(lastKey, value)) {
+                observer.onNext(value);
+                lastKey = keySelector(value);
+              }
+              else {
+                cache[cacheKey(value)] = value;
+              }
+            },
+            observer.onError.bind(observer),
+            observer.onCompleted.bind(observer));
+        });
+      };
+
+      var s = new Rx.Subject();
+      s/*.sort(function(el) {
+            return el.block.Lines[el.block.Lines.length - 1].Index;
+          },
+          function(lastLine, el) {
+            var firstLine = el.block.Lines[0].Index;
+            if (!lastLine) {
+              return true;
+            }
+            return firstLine === lastLine || firstLine === lastLine + 1;
+          },
+          function(el) {
+            return el.block.Lines[0].Index;
+          })*/
+        .subscribe(function(block) {
+          console.log("got " + block.Lines.length + " lines");
+
+          $.each(block.Lines, function() {
+            var id = 'line-' + this.Index;
+            var b = $('<pre>').attr('id', id).append(this.Html.length == 0 ? " " : this.Html);
+
+            if ($('#' + id).length) {
+              $('#' + id).replaceWith(b);
+            }
+            else {
+              $('#console').append(b);
+            }
+          });
+
+          var bottom = $('#console').offset().top + $('#console').height();
+          $('html, body').animate({ scrollTop: bottom }, 500);
+        });
+
       $(function() {
-        $.connection.consoleHub.client.broadcast = function(line) {
-          var encoded = $('<div />').text(line).html();
-          $('#lines').append('<li>' + encoded + '</li>');
+        $.connection.consoleHub.client.block = function(block) {
+          s.onNext(block);
+        };
+
+        $.connection.consoleHub.client.terminate = function(sessionId) {
+          $('#console').append("Terminated " + sessionId);
         };
 
         $.connection.hub.start();

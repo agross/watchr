@@ -1,14 +1,18 @@
+PATH
+  remote: d:/Users/agross/Coding/rake-funnel
+  specs:
+    rake-funnel (0.0.1.pre)
+      rake
+      smart_colored
+
 GEM
   remote: https://rubygems.org/
   specs:
     rake (10.3.2)
-    rake-funnel (0.0.1.pre)
-      rake
-      smart_colored
     smart_colored (1.1.1)
 
 PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  rake-funnel
+  rake-funnel!

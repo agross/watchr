@@ -1,0 +1,44 @@
+.red {
+  color: red;
+}
+
+.green {
+  color: #00BF00;
+}
+
+.cyan {
+  color: #00BFBF;
+}
+
+.magenta {
+  color: #FF40FF;
+}
+
+.yellow {
+  color: #BFBF00;
+}
+
+b {
+  font-weight: normal;
+}
+b .red {
+  color: #FF4040;
+}
+
+b .green {
+  color: #40FF40;
+}
+
+b .cyan {
+  color: #40FFFF;
+}
+
+b .yellow {
+  color: #FFFF40;
+}
+
+.inverse .red,
+.red .inverse  {
+  color: white;
+  background-color: #BF0000;
+}
