@@ -1,6 +1,4 @@
-﻿using System.Web.Http;
-
-using Owin;
+﻿using Owin;
 
 namespace Web
 {
@@ -9,8 +7,6 @@ namespace Web
     public void Configuration(IAppBuilder app)
     {
       app.MapSignalR();
-
-      GlobalConfiguration.Configure(x => x.MapHttpAttributeRoutes());
     }
   }
 }
