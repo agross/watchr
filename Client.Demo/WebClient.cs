@@ -39,7 +39,7 @@ namespace Client.Demo
       _subscription = new[]
                       {
                         RxMessageBrokerMinimod.Default.Register<BlockParsed>(Send),
-                        RxMessageBrokerMinimod.Default.Register<SessionTerminated>(Close)
+                        RxMessageBrokerMinimod.Default.Register<SessionTerminated>(Terminate)
                       };
     }
 
@@ -49,13 +49,13 @@ namespace Client.Demo
       _connection.Stop();
     }
 
-    async void Close(SessionTerminated message)
+    async void Terminate(SessionTerminated message)
     {
       System.Console.WriteLine("Session {0}: Closing session", message.SessionId);
 
       try
       {
-        await _hub.Invoke<string>("Broadcast", message.SessionId);
+        await _hub.Invoke<string>("Terminate", message.SessionId);
       }
       catch (Exception exception)
       {
