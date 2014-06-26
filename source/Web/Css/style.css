@@ -1,3 +1,8 @@
+b {
+  font-weight: normal;
+  color: #555555;
+}
+
 .red {
   color: red;
 }
@@ -18,10 +23,7 @@
   color: #BFBF00;
 }
 
-b {
-  font-weight: normal;
-}
-b .red {
+b .red, .red b {
   color: #FF4040;
 }
 

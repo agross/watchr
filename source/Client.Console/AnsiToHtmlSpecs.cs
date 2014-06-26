@@ -407,6 +407,15 @@ namespace Client.Console
     }
 
     [Test]
+    public void Should_remove_one_character_only()
+    {
+      var text = "git xx\u0008";
+      var expected = "git x";
+
+      AssertEqual(text, expected);
+    }
+    
+    [Test]
     public void Should_remove_markers_for_executing_commands()
     {
       var text = "before\u001b]0;git status\u0007after";
@@ -463,7 +472,6 @@ namespace Client.Console
     [Test]
     public void Should_remove_control_sequence_with_question_mark_1_character()
     {
-      
       var text = "before\u001b[?1_after";
       var expected = "beforeafter";
 
@@ -473,7 +481,6 @@ namespace Client.Console
     [Test]
     public void Should_remove_control_sequence_with_equals()
     {
-      
       var text = "before\u001b=after";
       var expected = "beforeafter";
 
@@ -483,9 +490,62 @@ namespace Client.Console
     [Test]
     public void Should_remove_control_sequence_with_greater_than()
     {
-      
       var text = "before\u001b>after";
       var expected = "beforeafter";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
+    public void Should_keep_escape_with_following_at()
+    {
+      var text = "before\u001b[00m\u001b[0m@";
+      var expected = "before@";
+
+      AssertEqual(text, expected);
+    }
+    
+    [Test]
+    public void Should_keep_escape_with_following_slash()
+    {
+      var text = "before\u001b[00m\u001b[0m/";
+      var expected = "before/";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
+    public void Should_support_colored_completion()
+    {
+      var text = "\u001b[J\u001b[01;35mfirst\u001b[00m\u001b[0m/\u001b[00m\u001b[0m\u001b[00m\u001b[0m  ";
+      var expected = "<b><span class='magenta'>first</span></b>/  ";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
+    public void Should_support_x()
+    {
+      var text = "\u001b[0m  \u001b[J";
+      var expected = "  ";
+
+      AssertEqual(text, expected);
+    }
+    
+    [Test]
+    public void Should_support_colored_completion_with_two_items()
+    {
+      var text = "\u001b[J\u001b[01;35mfirst\u001b[00m\u001b[0m/\u001b[00m\u001b[0m\u001b[00m\u001b[0m  \u001b[00m\u001b[J\u001b[00;36msecond\u001b[00m\u001b[0m\u001b[0m";
+      var expected = "<b><span class='magenta'>first</span></b>/  <span class='cyan'>second</span>";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
+    public void Should_keep_escape_with_following_space()
+    {
+      var text = "before\u001b[00m\u001b[0m  ";
+      var expected = "before  ";
 
       AssertEqual(text, expected);
     }

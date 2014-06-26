@@ -5,7 +5,6 @@ using System.Reactive.Disposables;
 
 using Client.Console;
 using Client.Console.Messages;
-using Client.Demo.Messages;
 
 using Minimod.RxMessageBroker;
 

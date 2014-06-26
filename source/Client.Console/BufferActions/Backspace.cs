@@ -23,7 +23,7 @@ namespace Client.Console.BufferActions
           return;
         }
 
-        last.Value = last.Value.TrimEnd(last.Value.LastOrDefault());
+        last.Value = last.Value.Remove(last.Value.Length - 1);
 
         if (String.IsNullOrEmpty(last.Value))
         {

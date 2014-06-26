@@ -10,18 +10,14 @@ namespace Client.Console.Token
     ///  \A\u001b
     ///      Beginning of string
     ///      Unicode 001b
-    ///  [1]: A numbered capture group. [\]0;.*?\u0007|\[0m.*?\u001b\[J|\[1m\u001b\[7m%\u001b\[27m\u001b\[1m\u001b\[0m\s+|(\(|\[)\p{Lu}|[=>]|\[\?1\w]
+    ///  [1]: A numbered capture group. [\]0;.*?\u0007|\[J|\[1m\u001b\[7m%\u001b\[27m\u001b\[1m\u001b\[0m\s+|(\(|\[)\p{Lu}|[=>]|\[\?1\w]
     ///      Select from 6 alternatives
     ///          \]0;.*?\u0007
     ///              Literal ]
     ///              0;
     ///              Any character, any number of repetitions, as few as possible
     ///              Unicode 0007
-    ///          \[0m.*?\u001b\[J
-    ///              Literal [
-    ///              0m
-    ///              Any character, any number of repetitions, as few as possible
-    ///              Unicode 001b
+    ///          \[J
     ///              Literal [
     ///              J
     ///          \[1m\u001b\[7m%\u001b\[27m\u001b\[1m\u001b\[0m\s+
@@ -54,7 +50,7 @@ namespace Client.Console.Token
     ///              Alphanumeric
     /// </summary>
     static readonly Regex _pattern = new Regex(
-      "\\A\\u001b(\\]0;.*?\\u0007|\\[0m.*?\\u001b\\[J|\\[1m\\u001b\\[7m%\\u001b\\[27m\\u001b\\[1m\\u001b\\[0m\\s+|(\\(|\\[)\\p{Lu}|[=>]|\\[\\?1\\w)",
+      "\\A\\u001b(\\]0;.*?\\u0007|\\[J|\\[1m\\u001b\\[7m%\\u001b\\[27m\\u001b\\[1m\\u001b\\[0m\\s+|(\\(|\\[)\\p{Lu}|[=>]|\\[\\?1\\w)",
       RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
     public Regex Pattern
