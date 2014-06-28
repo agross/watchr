@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!--This file represents the results of running a test suite-->
-<test-results name="d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\bin\Debug\Client.Console.exe" total="88" errors="1" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2014-06-26" time="18:32:28">
+<test-results name="d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\bin\Debug\Client.Console.exe" total="88" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2014-06-28" time="11:31:44">
   <environment nunit-version="2.6.3.13283" clr-version="2.0.50727.5477" os-version="Microsoft Windows NT 6.1.7601 Service Pack 1" platform="Win32NT" cwd="D:\Users\agross\Coding\.NET\Watchr" machine-name="AXL" user="agross" user-domain="AXL" />
   <culture-info current-culture="de-DE" current-uiculture="en-US" />
-  <test-suite type="Assembly" name="d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\bin\Debug\Client.Console.exe" executed="True" result="Failure" success="False" time="0.529" asserts="0">
+  <test-suite type="Assembly" name="d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\bin\Debug\Client.Console.exe" executed="True" result="Success" success="True" time="16.245" asserts="0">
     <results>
-      <test-suite type="Namespace" name="Client" executed="True" result="Failure" success="False" time="0.511" asserts="0">
+      <test-suite type="Namespace" name="Client" executed="True" result="Success" success="True" time="16.227" asserts="0">
         <results>
-          <test-suite type="Namespace" name="Console" executed="True" result="Failure" success="False" time="0.511" asserts="0">
+          <test-suite type="Namespace" name="Console" executed="True" result="Success" success="True" time="16.227" asserts="0">
             <results>
-              <test-suite type="TestFixture" name="AnsiToHtmlSpecs" executed="True" result="Failure" success="False" time="0.481" asserts="0">
+              <test-suite type="TestFixture" name="AnsiToHtmlSpecs" executed="True" result="Success" success="True" time="16.195" asserts="0">
                 <results>
-                  <test-case name="Client.Console.AnsiToHtmlSpecs.Should_apply_backspace_characters" executed="True" result="Success" success="True" time="0.320" asserts="1" />
+                  <test-case name="Client.Console.AnsiToHtmlSpecs.Should_apply_backspace_characters" executed="True" result="Success" success="True" time="0.325" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_apply_backspace_characters_for_HTML_encoded_characters" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_apply_multiple_adjacent_backspace_characters" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_apply_multiple_backspace_characters" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -32,9 +32,9 @@
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_remove_markers_for_finished_commands" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_remove_one_character_only" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_return_plain_text_when_plain_text_is_given" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                  <test-suite type="ParameterizedTest" name="Should_support_background_colors" executed="True" result="Success" success="True" time="0.014" asserts="0">
+                  <test-suite type="ParameterizedTest" name="Should_support_background_colors" executed="True" result="Success" success="True" time="0.013" asserts="0">
                     <results>
-                      <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_background_colors(&#x1B;[30m)" executed="True" result="Success" success="True" time="0.007" asserts="1" />
+                      <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_background_colors(&#x1B;[30m)" executed="True" result="Success" success="True" time="0.006" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_background_colors(&#x1B;[31m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_background_colors(&#x1B;[32m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_background_colors(&#x1B;[33m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -65,7 +65,7 @@
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[30m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[31m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[32m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                      <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[33m)" executed="True" result="Success" success="True" time="0.003" asserts="1" />
+                      <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[33m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[34m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[35m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_bold_foreground_colors(&#x1B;[36m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -76,16 +76,8 @@
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_colored_completion_with_two_items" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_conceal" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_disabled_underline" executed="True" result="Success" success="True" time="0.002" asserts="1" />
-                  <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_dumps" executed="True" result="Error" success="False" time="0.045" asserts="0">
-                    <failure>
-                      <message><![CDATA[System.NotSupportedException : Unsupported display code 38]]></message>
-                      <stack-trace><![CDATA[at Client.Console.AnsiToHtml.<Each>d__2.MoveNext() in d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\AnsiToHtml.cs:line 151
-at Client.Console.AnsiToHtml.ToHtml() in d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\AnsiToHtml.cs:line 43
-at Client.Console.AnsiToHtmlSpecs.Should_support_dumps() in d:\Users\agross\Coding\.NET\Watchr\source\Client.Console\AnsiToHtmlSpecs.cs:line 574
-]]></stack-trace>
-                    </failure>
-                  </test-case>
-                  <test-suite type="ParameterizedTest" name="Should_support_foreground_colors" executed="True" result="Success" success="True" time="0.006" asserts="0">
+                  <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_dumps" executed="True" result="Success" success="True" time="15.756" asserts="1" />
+                  <test-suite type="ParameterizedTest" name="Should_support_foreground_colors" executed="True" result="Success" success="True" time="0.007" asserts="0">
                     <results>
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_foreground_colors(&#x1B;[30m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                       <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_foreground_colors(&#x1B;[31m)" executed="True" result="Success" success="True" time="0.000" asserts="1" />
@@ -114,17 +106,17 @@ at Client.Console.AnsiToHtmlSpecs.Should_support_dumps() in d:\Users\agross\Codi
                   <test-case name="Client.Console.AnsiToHtmlSpecs.Should_support_x" executed="True" result="Success" success="True" time="0.000" asserts="1" />
                 </results>
               </test-suite>
-              <test-suite type="TestFixture" name="UnbufferedStreamReaderSpecs" executed="True" result="Success" success="True" time="0.021" asserts="0">
+              <test-suite type="TestFixture" name="UnbufferedStreamReaderSpecs" executed="True" result="Success" success="True" time="0.023" asserts="0">
                 <results>
                   <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_empty_stream" executed="True" result="Success" success="True" time="0.003" asserts="2" />
-                  <test-suite type="ParameterizedTest" name="Should_read_multiple_lines_including_terminators" executed="True" result="Success" success="True" time="0.008" asserts="0">
+                  <test-suite type="ParameterizedTest" name="Should_read_multiple_lines_including_terminators" executed="True" result="Success" success="True" time="0.009" asserts="0">
                     <results>
                       <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_multiple_lines_including_terminators(&quot;hello\rworld&quot;,System.String[])" executed="True" result="Success" success="True" time="0.007" asserts="3" />
                       <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_multiple_lines_including_terminators(&quot;hello\nworld&quot;,&quot;hello\n&quot;,&quot;world&quot;)" executed="True" result="Success" success="True" time="0.000" asserts="5" />
                       <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_multiple_lines_including_terminators(&quot;hello\r\nworld&quot;,&quot;hello\r\n&quot;,&quot;world&quot;)" executed="True" result="Success" success="True" time="0.000" asserts="5" />
                     </results>
                   </test-suite>
-                  <test-suite type="ParameterizedTest" name="Should_read_single_line_including_terminators" executed="True" result="Success" success="True" time="0.003" asserts="0">
+                  <test-suite type="ParameterizedTest" name="Should_read_single_line_including_terminators" executed="True" result="Success" success="True" time="0.004" asserts="0">
                     <results>
                       <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_single_line_including_terminators(&quot;hello\r\n&quot;)" executed="True" result="Success" success="True" time="0.001" asserts="3" />
                       <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_single_line_including_terminators(&quot;hello\n&quot;)" executed="True" result="Success" success="True" time="0.000" asserts="3" />
@@ -132,8 +124,8 @@ at Client.Console.AnsiToHtmlSpecs.Should_support_dumps() in d:\Users\agross\Codi
                       <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_read_single_line_including_terminators(&quot;hello\r&quot;)" executed="True" result="Success" success="True" time="0.000" asserts="3" />
                     </results>
                   </test-suite>
-                  <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_return_end_of_empty_base_stream" executed="True" result="Success" success="True" time="0.000" asserts="1" />
-                  <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_return_initial_position" executed="True" result="Success" success="True" time="0.000" asserts="1" />
+                  <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_return_end_of_empty_base_stream" executed="True" result="Success" success="True" time="0.001" asserts="1" />
+                  <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_return_initial_position" executed="True" result="Success" success="True" time="0.001" asserts="1" />
                   <test-case name="Client.Console.UnbufferedStreamReaderSpecs.Should_return_length_of_empty_base_stream" executed="True" result="Success" success="True" time="0.001" asserts="1" />
                 </results>
               </test-suite>

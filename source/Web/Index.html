@@ -1,50 +1,62 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <title>Console</title>
-    <style type="text/css">
-      body {
-        margin: 2em;
-        font-family: Consolas, Courier New, monospace;
+<head>
+  <title>Console</title>
+  <link rel="stylesheet" type="text/css" href="Css/style.css" />
+</head>
+<body>
+  <div id="consoles"></div>
+
+  <script src="Scripts/jquery-2.1.1.min.js"></script>
+  <script src="Scripts/jquery.signalR-2.1.0.min.js"></script>
+  <script src="signalr/hubs"></script>
+
+  <script type="text/javascript">
+
+    $(function() {
+      var findOrCreate = function(sessionId) {
+        var console = $('#' + sessionId);
+
+        if(console.length) {
+          return console;
+        }
+
+        console = $('<section>').attr('id', sessionId)
+          .append($('<header>').text(sessionId))
+          .append($('<div>'));
+
+        $('#consoles').append(console);
+        return console;
       }
 
-      pre { margin: 0; }
-    </style>
-    <link rel="stylesheet" type="text/css" href="Css/style.css" />
-  </head>
-  <body>
-    <div id="console"></div>
-    
-    <script src="Scripts/jquery-2.1.1.min.js"></script>
-    <script src="Scripts/jquery.signalR-2.1.0.min.js"></script>
-    <script src="signalr/hubs"></script>
+      $.connection.consoleHub.client.block = function(block) {
+          var console = findOrCreate(block.SessionId);
+          var lines = console.find('div')
 
-    <script type="text/javascript">
-
-      $(function() {
-        $.connection.consoleHub.client.block = function(block) {
           $.each(block.Lines, function () {
             var id = 'line-' + this.Index;
-            var b = $('<pre>').attr('id', id).append(this.Html.length == 0 ? " " : this.Html);
+            var line = $('<pre>').attr('id', id).append(this.Html.length == 0 ? " " : this.Html);
 
-            if ($('#' + id).length) {
-              $('#' + id).replaceWith(b);
+            var pre = lines.find('#' + id);
+
+            if (pre.length) {
+              pre.replaceWith(line);
             }
             else {
-              $('#console').append(b);
+              lines.append(line);
             }
           });
 
-          var bottom = $('#console').offset().top + $('#console').height();
-          $('html, body').animate({ scrollTop: bottom }, 500);
+          var bottom = lines[0].scrollHeight;
+          lines.animate({ scrollTop: bottom }, 200);
         };
 
         $.connection.consoleHub.client.terminate = function(sessionId) {
-          $('#console').append("Terminated " + sessionId);
+          $('#' + sessionId).attr('class', 'closed');
         };
 
         $.connection.hub.start();
       });
     </script>
   </body>
-</html>
+  </html>
