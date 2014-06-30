@@ -73,6 +73,9 @@
   <ItemGroup>
     <None Include="Scripts\jquery-2.1.1.intellisense.js" />
     <Content Include="Css\style.css" />
+    <Content Include="Scripts\app\console-hub.js" />
+    <Content Include="Scripts\app\console.js" />
+    <Content Include="Scripts\app\run.js" />
     <Content Include="Scripts\jquery-2.1.1.js" />
     <Content Include="Scripts\jquery-2.1.1.min.js" />
     <Content Include="Scripts\jquery-2.1.1.min.map" />

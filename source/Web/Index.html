@@ -1,62 +1,18 @@
 ﻿<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <title>Console</title>
-  <link rel="stylesheet" type="text/css" href="Css/style.css" />
-</head>
-<body>
-  <div id="consoles"></div>
+  <head>
+    <title>Console</title>
+    <link rel="stylesheet" type="text/css" href="Css/style.css" />
+  </head>
+  <body>
+    <div id="consoles"></div>
 
-  <script src="Scripts/jquery-2.1.1.min.js"></script>
-  <script src="Scripts/jquery.signalR-2.1.0.min.js"></script>
-  <script src="signalr/hubs"></script>
+    <script src="Scripts/jquery-2.1.1.min.js"></script>
+    <script src="Scripts/jquery.signalR-2.1.0.min.js"></script>
+    <script src="signalr/hubs"></script>
 
-  <script type="text/javascript">
-
-    $(function() {
-      var findOrCreate = function(sessionId) {
-        var console = $('#' + sessionId);
-
-        if(console.length) {
-          return console;
-        }
-
-        console = $('<section>').attr('id', sessionId)
-          .append($('<header>').text(sessionId))
-          .append($('<div>'));
-
-        $('#consoles').append(console);
-        return console;
-      }
-
-      $.connection.consoleHub.client.block = function(block) {
-          var console = findOrCreate(block.SessionId);
-          var lines = console.find('div')
-
-          $.each(block.Lines, function () {
-            var id = 'line-' + this.Index;
-            var line = $('<pre>').attr('id', id).append(this.Html.length == 0 ? " " : this.Html);
-
-            var pre = lines.find('#' + id);
-
-            if (pre.length) {
-              pre.replaceWith(line);
-            }
-            else {
-              lines.append(line);
-            }
-          });
-
-          var bottom = lines[0].scrollHeight;
-          lines.animate({ scrollTop: bottom }, 200);
-        };
-
-        $.connection.consoleHub.client.terminate = function(sessionId) {
-          $('#' + sessionId).attr('class', 'closed');
-        };
-
-        $.connection.hub.start();
-      });
-    </script>
+    <script src="Scripts/app/console.js"></script>
+    <script src="Scripts/app/console-hub.js"></script>
+    <script src="Scripts/app/run.js"></script>
   </body>
-  </html>
+</html>
