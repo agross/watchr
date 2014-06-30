@@ -1,0 +1,16 @@
+﻿@using System.Web.Optimization
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Console</title>
+    @Styles.Render("~/assets/css")
+  </head>
+  <body>
+    <div id="consoles"></div>
+
+    @Scripts.Render("~/assets/js/lib")
+    <script src="signalr/hubs"></script>
+
+    @Scripts.Render("~/assets/js/app")
+  </body>
+</html>

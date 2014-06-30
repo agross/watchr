@@ -1,4 +1,6 @@
-﻿using Owin;
+﻿using System.Web.Optimization;
+
+using Owin;
 
 namespace Web
 {
@@ -7,6 +9,7 @@ namespace Web
     public void Configuration(IAppBuilder app)
     {
       app.MapSignalR();
+      BundleConfig.RegisterBundles(BundleTable.Bundles);
     }
   }
 }
