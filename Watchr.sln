@@ -14,7 +14,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D069F6
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Demo", "Client.Demo\Client.Demo.csproj", "{26C65932-BD54-4EE9-AE3D-7766AB585E0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Demo", "source\Client.Demo\Client.Demo.csproj", "{26C65932-BD54-4EE9-AE3D-7766AB585E0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "source\Web.Tests\Web.Tests.csproj", "{C2CB83FA-40CD-4073-BB41-8F930539CF38}"
 EndProject
