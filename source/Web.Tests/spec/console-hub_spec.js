@@ -2,16 +2,16 @@
 /// <reference path='spec_helper.js' />
 describe('console-hub', function() {
 
-  beforeEach(function () {
-    var fakeConsole = function (that) {
+  beforeEach(function() {
+    var fakeConsole = function(that) {
       var console = jasmine.createSpyObj('Console', ['block', 'terminate']);
 
-      that.console = spyOn(window, 'Console').and.callFake(function () {
+      that.console = spyOn(window, 'Console').and.callFake(function() {
         return console;
       });
     };
 
-    var fakeConnection = function (that) {
+    var fakeConnection = function(that) {
       $.connection = {
         consoleHub: {
           client: {
@@ -25,7 +25,7 @@ describe('console-hub', function() {
       };
     };
 
-    var createConsoleHub = function (that) {
+    var createConsoleHub = function(that) {
       that.parent = $('#parent-container');
       that.sessionId = 'id';
       that.lines = [];
@@ -38,14 +38,13 @@ describe('console-hub', function() {
     createConsoleHub(this);
   });
 
-  describe('setup', function () {
-    it('should start the hub connection', function () {
+  describe('setup', function() {
+    it('should start the hub connection', function() {
       expect($.connection.hub.start).toHaveBeenCalled();
     });
   });
 
-
-  describe('running', function () {
+  describe('running', function() {
     describe('block received', function() {
       beforeEach(function() {
         $.connection.consoleHub.client.block({ SessionId: this.sessionId, Lines: this.lines });
