@@ -1,5 +1,7 @@
 ﻿using System.Web.Optimization;
 
+using Microsoft.AspNet.SignalR;
+
 using Owin;
 
 namespace Web
@@ -8,7 +10,9 @@ namespace Web
   {
     public void Configuration(IAppBuilder app)
     {
-      app.MapSignalR();
+      var config = new HubConfiguration { EnableDetailedErrors = true };
+      app.MapSignalR(config);
+
       BundleConfig.RegisterBundles(BundleTable.Bundles);
     }
   }

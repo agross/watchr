@@ -5,6 +5,29 @@ html, body {
   font-family: Segoe UI, Helveticam, Arial, serif;
 }
 
+#status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 70%;
+  margin: .5rem;
+}
+
+#status.error {
+  background-color: red;
+  color: white;
+}
+
+#status.warning {
+  background-color: gold;
+  color: black;
+}
+
+#status.success {
+  background-color: lime;
+  color: black;
+}
+
 #consoles {
   width: 100%;
   height: 100%;
