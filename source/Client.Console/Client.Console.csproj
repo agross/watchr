@@ -58,11 +58,15 @@
     <Compile Include="BufferActions\IBufferAction.cs" />
     <Compile Include="BufferActions\Noop.cs" />
     <Compile Include="BufferActions\Text.cs" />
+    <Compile Include="ColorCodeNotSupportedException.cs" />
+    <Compile Include="DisplayCodeNotSupportedException.cs" />
     <Compile Include="Line.cs" />
     <Compile Include="Messages\BlockParsed.cs" />
     <Compile Include="Messages\BlockReceived.cs" />
     <Compile Include="Messages\SessionTerminated.cs" />
+    <Compile Include="ParserException.cs" />
     <Compile Include="Subscriber.cs" />
+    <Compile Include="TokenNotSupportedException.cs" />
     <Compile Include="Token\AnsiDisplayCodes.cs" />
     <Compile Include="AnsiToHtmlSpecs.cs" />
     <Compile Include="Token\IToken.cs" />

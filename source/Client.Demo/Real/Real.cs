@@ -26,13 +26,22 @@ namespace Client.Demo.Real
     {
       return RxMessageBrokerMinimod.Default.Register<BlockReceived>(block =>
       {
-        var html = new AnsiToHtml(block.Text).ToHtml();
+        try
+        {
+          var html = new AnsiToHtml(block.Text).ToHtml();
 
-        var lines = html
-          .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
-          .Select((line, index) => new Line(index + block.StartingLineIndex, line));
+          var lines = html
+            .Split(new[] { Environment.NewLine }, StringSplitOptions.None)
+            .Select((line, index) => new Line(index + block.StartingLineIndex, line));
 
-        RxMessageBrokerMinimod.Default.Send(new BlockParsed(block.SessionId, lines));
+          RxMessageBrokerMinimod.Default.Send(new BlockParsed(block.SessionId, lines));
+        }
+        catch (ParserException ex)
+        {
+          System.Console.WriteLine("Session {0}: {1}",
+                                   block.SessionId,
+                                   ex.Message);
+        }
       });
     }
 

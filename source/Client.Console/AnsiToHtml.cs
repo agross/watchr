@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 using Client.Console.BufferActions;
@@ -145,7 +144,7 @@ namespace Client.Console
                 break;
               }
 
-              throw new NotSupportedException("Unsupported display code " + code);
+              throw new DisplayCodeNotSupportedException(code);
 
             case "backspace":
               yield return new Backspace(tokenData.Data);
@@ -156,7 +155,7 @@ namespace Client.Console
               break;
 
             default:
-              throw new NotImplementedException("No handler for token of type " + tokenData.Token);
+              throw new TokenNotSupportedException(tokenData.Token);
           }
         }
 
@@ -238,7 +237,7 @@ namespace Client.Console
         case 7:
           return "white";
         default:
-          throw new NotSupportedException("Unsupported color code: " + code);
+          throw new ColorCodeNotSupportedException(code);
       }
     }
 
