@@ -44,7 +44,6 @@
     <Content Include="Scripts\jasmine\jasmine-html.js" />
     <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="spec\console-hub_spec.js" />
-    <Content Include="spec\some_spec.js" />
     <Content Include="spec\console_spec.js" />
     <Content Include="spec\spec_helper.js" />
   </ItemGroup>

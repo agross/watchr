@@ -1,4 +1,6 @@
-﻿/// <reference path='console.js' />
+﻿/// <reference path='../jquery-2.1.1.js' />
+/// <reference path='../jquery.signalR-2.1.0.js' />
+/// <reference path='console.js' />
 function ConsoleHub() {
   this.setUp = function(parent) {
     $.connection.consoleHub.client.block = function(block) {
@@ -19,22 +21,22 @@ function ConsoleHub() {
 
     $.connection.hub.stateChanged(function(change) {
       if (change.newState === $.signalR.connectionState.connecting) {
-        $('#status').attr('class', 'warning')
+        $('#status').attr('class', 'warning');
         $('#status').text('Connecting...');
       }
 
       if (change.newState === $.signalR.connectionState.reconnecting) {
-        $('#status').attr('class', 'warning')
+        $('#status').attr('class', 'warning');
         $('#status').text('Re-Connecting...');
       }
 
       if (change.newState === $.signalR.connectionState.connected) {
-        $('#status').attr('class', 'success')
+        $('#status').attr('class', 'success');
         $('#status').text('Online');
       }
 
       if (change.newState === $.signalR.connectionState.disconnected) {
-        $('#status').attr('class', 'error')
+        $('#status').attr('class', 'error');
         $('#status').text('Disconnected');
       }
     });

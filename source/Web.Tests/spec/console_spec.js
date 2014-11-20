@@ -1,6 +1,6 @@
 ﻿/// <reference path='../../Web/Scripts/app/console.js' />
 /// <reference path='spec_helper.js' />
-describe('console', function() {
+describe(Console.name, function() {
   beforeEach(function() {
     this.parent = $('<div>').attr('id', 'consoles');
     setFixtures(this.parent);

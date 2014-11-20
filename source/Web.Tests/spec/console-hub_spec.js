@@ -1,7 +1,6 @@
 ﻿/// <reference path='../../Web/Scripts/app/console-hub.js' />
 /// <reference path='spec_helper.js' />
-describe('console-hub', function() {
-
+describe(ConsoleHub.name, function() {
   beforeEach(function() {
     var fakeConsole = function(that) {
       var console = jasmine.createSpyObj('Console', ['block', 'terminate']);
@@ -16,11 +15,14 @@ describe('console-hub', function() {
         consoleHub: {
           client: {
             block: null,
-            terminate: null,
+            terminate: null
           }
         },
         hub: {
-          start: jasmine.createSpy('start')
+          start: jasmine.createSpy('start'),
+          error: jasmine.createSpy('error'),
+          disconnected: jasmine.createSpy('disconnected'),
+          stateChanged: jasmine.createSpy('stateChanged')
         }
       };
     };
