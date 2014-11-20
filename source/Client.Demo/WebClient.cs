@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Linq;
 
 using Client.Console.Messages;
@@ -11,7 +12,6 @@ namespace Client.Demo
 {
   class WebClient : IDisposable
   {
-    const string BaseAddress = "http://localhost:34530/";
     readonly HubConnection _connection;
     readonly IHubProxy _hub;
     readonly IDisposable[] _subscription;
@@ -20,14 +20,14 @@ namespace Client.Demo
     {
       System.Console.WriteLine("Starting web client");
 
-      _connection = new HubConnection(BaseAddress);
+      _connection = new HubConnection(ConfigurationManager.AppSettings["base-address"]);
       _hub = _connection.CreateHubProxy("ConsoleHub");
 
       _connection.Start().ContinueWith(task =>
       {
         if (task.IsFaulted)
         {
-          System.Console.WriteLine("There was an error opening the connection:{0}",
+          System.Console.WriteLine("There was an error opening the connection: {0}",
                                    task.Exception.GetBaseException());
         }
         else
