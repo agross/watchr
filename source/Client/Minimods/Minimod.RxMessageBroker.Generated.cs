@@ -3,7 +3,7 @@ using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-namespace Client.Minimods
+namespace Minimod.RxMessageBroker
 {
     /// <summary>
     /// Minimod.RxMessageBroker, Version 0.0.1

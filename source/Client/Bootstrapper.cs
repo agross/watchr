@@ -5,10 +5,11 @@ using System.Linq;
 using System.Reactive.Disposables;
 
 using Client.Messages;
-using Client.Minimods;
 using Client.Parser;
 using Client.ScreenLogs;
 using Client.Web;
+
+using Minimod.RxMessageBroker;
 
 namespace Client
 {

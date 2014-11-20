@@ -3,7 +3,8 @@ using System.Collections.Concurrent;
 using System.IO;
 
 using Client.Messages;
-using Client.Minimods;
+
+using Minimod.RxMessageBroker;
 
 namespace Client.ScreenLogs
 {

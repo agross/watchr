@@ -3,9 +3,10 @@ using System.Configuration;
 using System.Linq;
 
 using Client.Messages;
-using Client.Minimods;
 
 using Microsoft.AspNet.SignalR.Client.Hubs;
+
+using Minimod.RxMessageBroker;
 
 namespace Client.Web
 {
