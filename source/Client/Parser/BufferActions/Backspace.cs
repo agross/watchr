@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Client.BufferActions
+namespace Client.Parser.BufferActions
 {
   class Backspace : IBufferAction
   {

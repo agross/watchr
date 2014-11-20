@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Client
+namespace Client.Parser
 {
   [Serializable]
   public class ParserException : Exception

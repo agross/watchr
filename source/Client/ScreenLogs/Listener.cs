@@ -4,9 +4,9 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
-namespace Client
+namespace Client.ScreenLogs
 {
-  public class Listener
+  class Listener
   {
     public static IObservable<string> Register(string path, string filter = null)
     {

@@ -7,7 +7,7 @@ using Client.Minimods;
 
 using Microsoft.AspNet.SignalR.Client.Hubs;
 
-namespace Client
+namespace Client.Web
 {
   public class WebClient : IDisposable
   {
@@ -17,7 +17,7 @@ namespace Client
 
     public WebClient()
     {
-      System.Console.WriteLine("Starting web client");
+      Console.WriteLine("Starting web client");
 
       _connection = new HubConnection(ConfigurationManager.AppSettings["base-address"]);
       _hub = _connection.CreateHubProxy("ConsoleHub");
@@ -26,12 +26,12 @@ namespace Client
       {
         if (task.IsFaulted)
         {
-          System.Console.WriteLine("There was an error opening the connection: {0}",
+          Console.WriteLine("There was an error opening the connection: {0}",
                                    task.Exception.GetBaseException());
         }
         else
         {
-          System.Console.WriteLine("Connected");
+          Console.WriteLine("Connected");
         }
       }).Wait();
 
@@ -50,7 +50,7 @@ namespace Client
 
     async void Terminate(SessionTerminated message)
     {
-      System.Console.WriteLine("Session {0}: Closing session", message.SessionId);
+      Console.WriteLine("Session {0}: Closing session", message.SessionId);
 
       try
       {
@@ -58,13 +58,13 @@ namespace Client
       }
       catch (Exception exception)
       {
-        System.Console.WriteLine("Session {0}: Error sending request {1}", message.SessionId, exception);
+        Console.WriteLine("Session {0}: Error sending request {1}", message.SessionId, exception);
       }
     }
 
     async void Send(BlockParsed output)
     {
-      System.Console.WriteLine("Session {0}: Sending {1} lines, starting at index {2}",
+      Console.WriteLine("Session {0}: Sending {1} lines, starting at index {2}",
                                output.SessionId,
                                output.Lines.Count(),
                                output.Lines.First().Index);
@@ -75,7 +75,7 @@ namespace Client
       }
       catch (Exception exception)
       {
-        System.Console.WriteLine("Session {0}: Error sending request {1}", output.SessionId, exception);
+        Console.WriteLine("Session {0}: Error sending request {1}", output.SessionId, exception);
       }
     }
   }

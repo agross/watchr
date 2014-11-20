@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Client.BufferActions
+namespace Client.Parser.BufferActions
 {
   interface IBufferAction
   {

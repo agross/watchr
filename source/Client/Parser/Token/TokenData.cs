@@ -1,9 +1,9 @@
-﻿namespace Client.Token
+﻿namespace Client.Parser.Token
 {
   class TokenData
   {
     public readonly string Data;
-    public string Token;
+    public readonly string Token;
 
     public TokenData(string token, string data)
     {

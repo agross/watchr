@@ -1,12 +1,13 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 
 using Client.Messages;
 using Client.Minimods;
 
-namespace Client
+namespace Client.ScreenLogs
 {
-  public class Subscriber
+  class Subscriber
   {
     class Context
     {
@@ -14,7 +15,7 @@ namespace Client
       public long Offset { get; set; }
       public long CurrentLineIndex { get; set; }
 
-      public Context(string sessionId)
+      Context(string sessionId)
       {
         SessionId = sessionId;
         Offset = 0;
@@ -74,7 +75,7 @@ namespace Client
       Context context;
       _paths.TryRemove(path, out context);
 
-      System.Console.WriteLine("Session {0} ended", context.SessionId);
+      Console.WriteLine("Session {0} ended", context.SessionId);
     }
   }
 }

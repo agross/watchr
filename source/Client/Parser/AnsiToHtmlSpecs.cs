@@ -8,7 +8,7 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-namespace Client
+namespace Client.Parser
 {
   [TestFixture]
   public class AnsiToHtmlSpecs
@@ -574,7 +574,7 @@ namespace Client
         var html = new AnsiToHtml(dump).ToHtml();
 
         sw.Stop();
-        System.Console.WriteLine(sw.Elapsed);
+        Console.WriteLine(sw.Elapsed);
 
         html = "<html><link href='style.css' rel='stylesheet' type='text/css'></link><body><pre>" + html;
         html += "</pre></body></html>";

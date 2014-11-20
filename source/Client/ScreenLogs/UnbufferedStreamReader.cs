@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Client
+namespace Client.ScreenLogs
 {
   class UnbufferedStreamReader : TextReader
   {

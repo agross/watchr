@@ -6,6 +6,9 @@ using System.Reactive.Disposables;
 
 using Client.Messages;
 using Client.Minimods;
+using Client.Parser;
+using Client.ScreenLogs;
+using Client.Web;
 
 namespace Client
 {
@@ -18,12 +21,12 @@ namespace Client
       return new CompositeDisposable
       {
         new WebClient(),
-        SetUpHtmlConverter(),
-        SetUpFileChangeListener(ConfigurationManager.AppSettings["screen-logs"], subscriber)
+        HtmlConverter(),
+        FileChangeListener(ConfigurationManager.AppSettings["screen-logs"], subscriber)
       };
     }
 
-    static IDisposable SetUpHtmlConverter()
+    static IDisposable HtmlConverter()
     {
       return RxMessageBrokerMinimod.Default.Register<BlockReceived>(block =>
       {
@@ -39,14 +42,14 @@ namespace Client
         }
         catch (ParserException ex)
         {
-          System.Console.WriteLine("Session {0}: {1}",
+          Console.WriteLine("Session {0}: {1}",
                                    block.SessionId,
                                    ex.Message);
         }
       });
     }
 
-    static IDisposable SetUpFileChangeListener(string path, Subscriber subscriber)
+    static IDisposable FileChangeListener(string path, Subscriber subscriber)
     {
       return Listener
         .Register(Path.GetDirectoryName(path), Path.GetFileName(path))

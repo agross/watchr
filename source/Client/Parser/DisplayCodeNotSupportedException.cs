@@ -1,6 +1,6 @@
 using System;
 
-namespace Client
+namespace Client.Parser
 {
   [Serializable]
   class DisplayCodeNotSupportedException : ParserException

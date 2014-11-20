@@ -3,7 +3,7 @@ using System.Text;
 
 using NUnit.Framework;
 
-namespace Client
+namespace Client.ScreenLogs
 {
   [TestFixture]
   public class UnbufferedStreamReaderSpecs
