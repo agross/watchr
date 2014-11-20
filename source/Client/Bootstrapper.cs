@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -11,8 +12,6 @@ namespace Client.Console
 {
   public class Bootstrapper
   {
-    const string ScreenLogs = @"c:\Cygwin\tmp\screen*.log";
-
     public static CompositeDisposable Setup()
     {
       var subscriber = new Subscriber();
@@ -21,7 +20,7 @@ namespace Client.Console
       {
         new WebClient(),
         SetUpHtmlConverter(),
-        SetUpFileChangeListener(ScreenLogs, subscriber)
+        SetUpFileChangeListener(ConfigurationManager.AppSettings["screen-logs"], subscriber)
       };
     }
 
