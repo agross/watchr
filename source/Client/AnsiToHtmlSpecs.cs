@@ -8,7 +8,7 @@ using System.Reflection;
 
 using NUnit.Framework;
 
-namespace Client.Console
+namespace Client
 {
   [TestFixture]
   public class AnsiToHtmlSpecs

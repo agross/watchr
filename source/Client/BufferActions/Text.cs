@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Net;
 
-namespace Client.Console.BufferActions
+namespace Client.BufferActions
 {
   class Text : IBufferAction
   {

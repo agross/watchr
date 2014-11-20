@@ -1,4 +1,4 @@
-﻿namespace Client.Console.Token
+﻿namespace Client.Token
 {
   class TokenData
   {

@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Client.Console.Messages
+namespace Client.Messages
 {
   public class BlockReceived
   {

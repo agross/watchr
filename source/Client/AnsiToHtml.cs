@@ -4,10 +4,10 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-using Client.Console.BufferActions;
-using Client.Console.Token;
+using Client.BufferActions;
+using Client.Token;
 
-namespace Client.Console
+namespace Client
 {
   public class AnsiToHtml
   {

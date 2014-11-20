@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Client.Console.Token
+namespace Client.Token
 {
   class ApplyBackspace : IToken
   {

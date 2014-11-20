@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Client.Console.BufferActions
+namespace Client.BufferActions
 {
   class Noop : IBufferAction
   {

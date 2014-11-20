@@ -2,13 +2,12 @@ using System;
 using System.Configuration;
 using System.Linq;
 
-using Client.Console.Messages;
+using Client.Messages;
+using Client.Minimods;
 
 using Microsoft.AspNet.SignalR.Client.Hubs;
 
-using Minimod.RxMessageBroker;
-
-namespace Client.Console
+namespace Client
 {
   public class WebClient : IDisposable
   {

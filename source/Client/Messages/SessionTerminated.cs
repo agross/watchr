@@ -1,4 +1,4 @@
-namespace Client.Console.Messages
+namespace Client.Messages
 {
   public class SessionTerminated
   {

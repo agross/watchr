@@ -4,11 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
 
-using Client.Console.Messages;
+using Client.Messages;
+using Client.Minimods;
 
-using Minimod.RxMessageBroker;
-
-namespace Client.Console
+namespace Client
 {
   public class Bootstrapper
   {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Client.Console
+namespace Client
 {
   class TokenNotSupportedException : ParserException
   {

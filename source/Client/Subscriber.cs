@@ -1,11 +1,10 @@
 ﻿using System.Collections.Concurrent;
 using System.IO;
 
-using Client.Console.Messages;
+using Client.Messages;
+using Client.Minimods;
 
-using Minimod.RxMessageBroker;
-
-namespace Client.Console
+namespace Client
 {
   public class Subscriber
   {

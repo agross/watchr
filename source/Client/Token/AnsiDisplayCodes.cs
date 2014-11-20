@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Client.Console.Token
+namespace Client.Token
 {
   class AnsiDisplayCodes : IToken
   {

@@ -3,7 +3,7 @@ using System.Text;
 
 using NUnit.Framework;
 
-namespace Client.Console
+namespace Client
 {
   [TestFixture]
   public class UnbufferedStreamReaderSpecs

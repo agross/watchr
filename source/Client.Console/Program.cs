@@ -1,8 +1,6 @@
 ﻿using System.Reactive.Disposables;
 
-using Client.Console;
-
-namespace Client.Demo
+namespace Client.Console
 {
   class Program
   {

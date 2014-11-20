@@ -1,4 +1,4 @@
-namespace Client.Console
+namespace Client
 {
   public class Line
   {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Text;
 
-namespace Client.Console
+namespace Client
 {
   class UnbufferedStreamReader : TextReader
   {
