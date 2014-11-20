@@ -30,6 +30,20 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Scripts\jasmine\boot.js">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="Scripts\jasmine\console.js">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="Scripts\jasmine\jasmine-html.js">
+      <Paket>True</Paket>
+    </Content>
+    <Content Include="Scripts\jasmine\jasmine.js">
+      <Paket>True</Paket>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,16 +53,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\jasmine-jquery\jasmine-jquery.js" />
-    <Content Include="Scripts\jasmine\boot.js" />
-    <Content Include="Scripts\jasmine\console.js" />
-    <Content Include="Scripts\jasmine\jasmine-html.js" />
-    <Content Include="Scripts\jasmine\jasmine.js" />
     <Content Include="spec\console-hub_spec.js" />
     <Content Include="spec\console_spec.js" />
     <Content Include="spec\spec_helper.js" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="paket.references" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
@@ -58,4 +68,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="..\..\.paket\paket.targets" />
 </Project>

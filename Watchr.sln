@@ -1,20 +1,19 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "source\Web\Web.csproj", "{AFF0D104-7149-49D7-91D8-7E40F1C7A56B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "source\Client\Client.csproj", "{0E5044EF-9B36-41BC-B522-75D9FC3EDBA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Console", "source\Client.Console\Client.Console.csproj", "{16A5FFE6-07DB-40C1-8877-60E6A8BBD952}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D069F64C-2CD2-4695-B286-E34BD2D1EEBA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{C4A227F0-DB7D-42A4-8A40-E34010C7E71C}"
 	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
+		D:\Users\agross\Coding\Watchr\paket.dependencies = D:\Users\agross\Coding\Watchr\paket.dependencies
+		..\Watchr\paket.lock = ..\Watchr\paket.lock
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Demo", "source\Client.Demo\Client.Demo.csproj", "{26C65932-BD54-4EE9-AE3D-7766AB585E0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "source\Web\Web.csproj", "{AFF0D104-7149-49D7-91D8-7E40F1C7A56B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "source\Client\Client.csproj", "{16A5FFE6-07DB-40C1-8877-60E6A8BBD952}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Console", "source\Client.Console\Client.Console.csproj", "{26C65932-BD54-4EE9-AE3D-7766AB585E0D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "source\Web.Tests\Web.Tests.csproj", "{C2CB83FA-40CD-4073-BB41-8F930539CF38}"
 EndProject
@@ -28,10 +27,6 @@ Global
 		{AFF0D104-7149-49D7-91D8-7E40F1C7A56B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFF0D104-7149-49D7-91D8-7E40F1C7A56B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFF0D104-7149-49D7-91D8-7E40F1C7A56B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0E5044EF-9B36-41BC-B522-75D9FC3EDBA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0E5044EF-9B36-41BC-B522-75D9FC3EDBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0E5044EF-9B36-41BC-B522-75D9FC3EDBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0E5044EF-9B36-41BC-B522-75D9FC3EDBA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{16A5FFE6-07DB-40C1-8877-60E6A8BBD952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{16A5FFE6-07DB-40C1-8877-60E6A8BBD952}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16A5FFE6-07DB-40C1-8877-60E6A8BBD952}.Release|Any CPU.ActiveCfg = Release|Any CPU

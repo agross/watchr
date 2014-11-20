@@ -1,25 +1,28 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reactive.Disposables;
 
-using Client.Console;
 using Client.Console.Messages;
 
 using Minimod.RxMessageBroker;
 
-namespace Client.Demo.Real
+namespace Client.Console
 {
-  public class Real
+  public class Bootstrapper
   {
-    public static void Setup(CompositeDisposable disp)
-    {
-      var path = @"c:\Cygwin\tmp\screen*.log";
+    const string ScreenLogs = @"c:\Cygwin\tmp\screen*.log";
 
+    public static CompositeDisposable Setup()
+    {
       var subscriber = new Subscriber();
 
-      disp.Add(SetUpHtmlConverter());
-      disp.Add(SetUpFileChangeListener(path, subscriber));
+      return new CompositeDisposable
+      {
+        new WebClient(),
+        SetUpHtmlConverter(),
+        SetUpFileChangeListener(ScreenLogs, subscriber)
+      };
     }
 
     static IDisposable SetUpHtmlConverter()

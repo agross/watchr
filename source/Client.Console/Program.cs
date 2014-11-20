@@ -1,33 +1,29 @@
-﻿using System;
-using System.IO;
+﻿using System.Reactive.Disposables;
 
-using Client.Console.Messages;
+using Client.Console;
 
-using Minimod.RxMessageBroker;
-
-namespace Client.Console
+namespace Client.Demo
 {
   class Program
   {
     static void Main(string[] args)
     {
-      RxMessageBrokerMinimod.Default.Register<BlockReceived>(LineReceived);
-      
-      var path = @"c:\Cygwin\tmp\screen*.log";
-      var subscriber = new Subscriber();
+      System.Console.WriteLine("Starting...");
+      CompositeDisposable disp = null;
+      try
+      {
+        disp = Bootstrapper.Setup();
 
-      Listener
-        .Register(Path.GetDirectoryName(path), Path.GetFileName(path))
-        .Subscribe(subscriber.FileChanged,
-                   () => { });
-
-      System.Console.ReadKey();
-    }
-
-    static void LineReceived(BlockReceived message)
-    {
-      System.Console.WriteLine("LINES:");
-      System.Console.WriteLine(message.Text);
+        System.Console.WriteLine("Press any key to exit");
+        System.Console.ReadKey();
+      }
+      finally
+      {
+        if (disp != null)
+        {
+          disp.Dispose();
+        }
+      }
     }
   }
 }

@@ -1,0 +1,14 @@
+Antlr
+jQuery
+Microsoft.AspNet.SignalR
+Microsoft.AspNet.SignalR.Core
+Microsoft.AspNet.SignalR.JS
+Microsoft.AspNet.SignalR.SystemWeb
+Microsoft.AspNet.Web.Optimization
+Microsoft.Owin
+Microsoft.Owin.Host.SystemWeb
+Microsoft.Owin.Security
+Microsoft.Web.Infrastructure
+Newtonsoft.Json
+Owin
+WebGrease

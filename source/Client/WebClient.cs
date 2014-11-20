@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Linq;
 
@@ -8,9 +8,9 @@ using Microsoft.AspNet.SignalR.Client.Hubs;
 
 using Minimod.RxMessageBroker;
 
-namespace Client.Demo
+namespace Client.Console
 {
-  class WebClient : IDisposable
+  public class WebClient : IDisposable
   {
     readonly HubConnection _connection;
     readonly IHubProxy _hub;
