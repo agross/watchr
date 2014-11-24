@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Disposables;
+using System.Threading;
 
 namespace Client.Console
 {
@@ -12,8 +13,7 @@ namespace Client.Console
       {
         disp = Bootstrapper.Setup();
 
-        System.Console.WriteLine("Press any key to exit");
-        System.Console.ReadKey();
+        WaitForCtrlC();
       }
       finally
       {
@@ -22,6 +22,21 @@ namespace Client.Console
           disp.Dispose();
         }
       }
+    }
+
+    static void WaitForCtrlC()
+    {
+      System.Console.WriteLine("Press Ctrl+C to exit");
+
+      var quit = new ManualResetEvent(false);
+
+      System.Console.CancelKeyPress += (o, args) =>
+      {
+        args.Cancel = true;
+        quit.Set();
+      };
+
+      quit.WaitOne();
     }
   }
 }
