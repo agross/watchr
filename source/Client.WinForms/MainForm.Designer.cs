@@ -29,14 +29,11 @@
     private void InitializeComponent()
     {
       this.components = new System.ComponentModel.Container();
-      System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
       this.notificationIcon = new System.Windows.Forms.NotifyIcon(this.components);
       this.SuspendLayout();
       // 
       // notificationIcon
       // 
-      this.notificationIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notificationIcon.Icon")));
-      this.notificationIcon.Text = "Disconnected";
       this.notificationIcon.Visible = true;
       // 
       // MainForm
