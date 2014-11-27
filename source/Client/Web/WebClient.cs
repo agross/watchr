@@ -1,20 +1,46 @@
 using System;
 using System.Configuration;
 using System.Linq;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
+using System.Threading;
 
 using Client.Messages;
 
 using Microsoft.AspNet.SignalR.Client.Hubs;
 
-using Minimod.RxMessageBroker;
-
 namespace Client.Web
 {
+  static class ClassNameExtensions
+  {
+    public static IObservable<T> RetryDo<T, TException>(this IObservable<T> instance,
+                                                        Action<T> onNext) where TException : Exception
+    {
+      return instance
+        .Do(x =>
+        {
+          var failed = true;
+          while (failed)
+          {
+            try
+            {
+              onNext(x);
+              failed = false;
+            }
+            catch (TException _)
+            {
+            }
+          }
+        });
+    }
+  }
+
   public class WebClient : IDisposable
   {
     readonly HubConnection _connection;
     readonly IHubProxy _hub;
-    readonly IDisposable[] _subscription;
+    readonly CompositeDisposable _subscriptions;
 
     public WebClient()
     {
@@ -23,52 +49,77 @@ namespace Client.Web
       _connection = new HubConnection(ConfigurationManager.AppSettings["base-address"]);
       _hub = _connection.CreateHubProxy("ConsoleHub");
 
-      _connection.Start().ContinueWith(task =>
-      {
-        if (task.IsFaulted)
-        {
-          Console.WriteLine("There was an error opening the connection: {0}",
-                                   task.Exception.GetBaseException());
-        }
-        else
-        {
-          Console.WriteLine("Connected");
-        }
-      }).Wait();
+      var connection = new Connection(_connection);
 
-      _subscription = new[]
-                      {
-                        RxMessageBrokerMinimod.Default.Register<BlockParsed>(Send),
-                        RxMessageBrokerMinimod.Default.Register<SessionTerminated>(Terminate)
-                      };
+      var onlineMessages = new Messages()
+        .Stream
+        .Window(connection.State)
+        .Select((d, index) =>
+        {
+          var buffer = new Func<int, bool>(i => i % 2 != 0);
+          if (buffer(index))
+          {
+            Console.WriteLine("Buffering until connection becomes available");
+            return d.ToList().SelectMany(x => x);
+          }
+          return d;
+        })
+        .Concat()
+        .Publish();
+
+      var eventLoop = new EventLoopScheduler();
+
+      _subscriptions = new CompositeDisposable(
+        connection
+          .ConnectRequired
+          .ObserveOn(eventLoop)
+          .Do(Connect)
+          .Retry()
+          .Subscribe(),
+        onlineMessages
+          .OfType<BlockParsed>()
+          .ObserveOn(eventLoop)
+          .RetryDo<BlockParsed, Exception>(Send)
+          .Subscribe(),
+        onlineMessages
+          .OfType<SessionTerminated>()
+          .ObserveOn(eventLoop)
+          .RetryDo<SessionTerminated, Exception>(Terminate)
+          .Subscribe(),
+        onlineMessages.Connect()
+        );
     }
 
     public void Dispose()
     {
-      Array.ForEach(_subscription, x => x.Dispose());
+      _subscriptions.Dispose();
       _connection.Stop();
     }
 
-    async void Terminate(SessionTerminated message)
+    static async void Connect(Microsoft.AspNet.SignalR.Client.Connection connection)
     {
-      Console.WriteLine("Session {0}: Closing session", message.SessionId);
+      Console.WriteLine("{0} SignalR: Starting connection", Thread.CurrentThread.ManagedThreadId);
 
       try
       {
-        await _hub.Invoke<string>("Terminate", message.SessionId);
+        await connection.Start();
       }
       catch (Exception exception)
       {
-        Console.WriteLine("Session {0}: Error sending request {1}", message.SessionId, exception);
+        Console.WriteLine("{0} SignalR: Could not start connection: {1}",
+                          Thread.CurrentThread.ManagedThreadId,
+                          exception);
+        throw;
       }
     }
 
     async void Send(BlockParsed output)
     {
-      Console.WriteLine("Session {0}: Sending {1} lines, starting at index {2}",
-                               output.SessionId,
-                               output.Lines.Count(),
-                               output.Lines.First().Index);
+      Console.WriteLine("{0} Session {1}: Sending {2} lines, starting at index {3}",
+                        Thread.CurrentThread.ManagedThreadId,
+                        output.SessionId,
+                        output.Lines.Count(),
+                        output.Lines.First().Index);
 
       try
       {
@@ -76,7 +127,31 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Console.WriteLine("Session {0}: Error sending request {1}", output.SessionId, exception);
+        Console.WriteLine("{0} Session {1}: Error sending request {2}",
+                          Thread.CurrentThread.ManagedThreadId,
+                          output.SessionId,
+                          exception);
+        throw;
+      }
+    }
+
+    async void Terminate(SessionTerminated message)
+    {
+      Console.WriteLine("{0} Session {1}: Closing session",
+                        Thread.CurrentThread.ManagedThreadId,
+                        message.SessionId);
+
+      try
+      {
+        await _hub.Invoke<string>("Terminate", message.SessionId);
+      }
+      catch (Exception exception)
+      {
+        Console.WriteLine("{0} Session {1}: Error sending request {2}",
+                          Thread.CurrentThread.ManagedThreadId,
+                          message.SessionId,
+                          exception);
+        throw;
       }
     }
   }
