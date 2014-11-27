@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 
 using Minimod.RxMessageBroker;
 
-namespace Client.WinForms
+namespace Client.WinForms.Debug
 {
   class TestEventGenerator : IDisposable
   {
@@ -15,7 +15,8 @@ namespace Client.WinForms
     {
       _subscriptions = new CompositeDisposable(
         Observable
-          .Interval(TimeSpan.FromSeconds(1))
+          .Interval(TimeSpan.FromSeconds(3))
+          .StartWith(42)
           .ObserveOn(ThreadPoolScheduler.Instance)
           .Do(x =>
           {

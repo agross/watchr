@@ -8,12 +8,9 @@ namespace Client.WinForms
     [STAThread]
     static void Main()
     {
-      using (new TestEventGenerator())
-      {
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
-        Application.Run(new MainForm());
-      }
+      Application.EnableVisualStyles();
+      Application.SetCompatibleTextRenderingDefault(false);
+      Application.Run(new MainForm());
     }
   }
 }
