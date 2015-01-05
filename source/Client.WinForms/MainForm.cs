@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -26,6 +27,8 @@ namespace Client.WinForms
     public MainForm()
     {
       InitializeComponent();
+
+      DoubleBuffer(Log);
 
       InitialWindowStateFromAppSettings();
 
@@ -57,6 +60,14 @@ namespace Client.WinForms
         new TestEventGenerator(),
         RxMessageBrokerMinimod.Default.Register<LogMessage>(AppendLogMessage, uiThread)
         );
+    }
+
+    static void DoubleBuffer(ListView listView)
+    {
+      var doubleBufferPropertyInfo = listView.GetType()
+                                             .GetProperty("DoubleBuffered",
+                                                          BindingFlags.Instance | BindingFlags.NonPublic);
+      doubleBufferPropertyInfo.SetValue(listView, true, null);
     }
 
     void AppendLogMessage(LogMessage message)

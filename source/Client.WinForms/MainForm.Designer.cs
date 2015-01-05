@@ -71,7 +71,7 @@
       this.Log.Location = new System.Drawing.Point(0, 0);
       this.Log.MultiSelect = false;
       this.Log.Name = "Log";
-      this.Log.Size = new System.Drawing.Size(695, 300);
+      this.Log.Size = new System.Drawing.Size(810, 300);
       this.Log.TabIndex = 2;
       this.Log.UseCompatibleStateImageBehavior = false;
       this.Log.View = System.Windows.Forms.View.Details;
@@ -80,7 +80,7 @@
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
       this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-      this.ClientSize = new System.Drawing.Size(695, 300);
+      this.ClientSize = new System.Drawing.Size(810, 300);
       this.Controls.Add(this.Log);
       this.Name = "MainForm";
       this.Text = "Watchr";
