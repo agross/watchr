@@ -3,7 +3,7 @@ using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Forms;
 
-namespace Client.WinForms.Streams
+namespace Client.WinForms.Streams.Ui
 {
   class FormWindowStates : IConnectableObservable<FormWindowState>
   {

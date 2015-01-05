@@ -1,4 +1,4 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
 using System.Threading;
 
 namespace Client.Console
@@ -8,7 +8,7 @@ namespace Client.Console
     static void Main(string[] args)
     {
       System.Console.WriteLine("Starting...");
-      CompositeDisposable disp = null;
+      IDisposable disp = null;
       try
       {
         disp = Bootstrapper.Setup();

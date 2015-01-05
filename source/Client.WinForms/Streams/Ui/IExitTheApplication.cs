@@ -1,6 +1,6 @@
 using System;
 
-namespace Client.WinForms.Streams
+namespace Client.WinForms.Streams.Ui
 {
   interface IExitTheApplication
   {

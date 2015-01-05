@@ -1,5 +1,4 @@
 using System;
-using System.Configuration;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
@@ -28,7 +27,7 @@ namespace Client.Web
               onNext(x);
               failed = false;
             }
-            catch (TException _)
+            catch (TException)
             {
             }
           }
@@ -42,11 +41,11 @@ namespace Client.Web
     readonly IHubProxy _hub;
     readonly CompositeDisposable _subscriptions;
 
-    public WebClient()
+    public WebClient(string url)
     {
-      Console.WriteLine("Starting web client");
+      Console.WriteLine("Starting web client for {0}", url);
 
-      _connection = new HubConnection(ConfigurationManager.AppSettings["base-address"]);
+      _connection = new HubConnection(url);
       _hub = _connection.CreateHubProxy("ConsoleHub");
 
       var connection = new Connection(_connection);
@@ -102,7 +101,7 @@ namespace Client.Web
 
       try
       {
-        await connection.Start();
+        await connection.Start().ConfigureAwait(false);
       }
       catch (Exception exception)
       {
@@ -123,7 +122,7 @@ namespace Client.Web
 
       try
       {
-        await _hub.Invoke<string>("Broadcast", output);
+        await _hub.Invoke<string>("Broadcast", output).ConfigureAwait(false);
       }
       catch (Exception exception)
       {
@@ -143,7 +142,7 @@ namespace Client.Web
 
       try
       {
-        await _hub.Invoke<string>("Terminate", message.SessionId);
+        await _hub.Invoke<string>("Terminate", message.SessionId).ConfigureAwait(false);
       }
       catch (Exception exception)
       {

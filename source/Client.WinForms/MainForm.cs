@@ -7,9 +7,10 @@ using System.Reactive.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
+using Client.Web;
 using Client.WinForms.Debug;
 using Client.WinForms.Properties;
-using Client.WinForms.Streams;
+using Client.WinForms.Streams.Ui;
 
 using Minimod.RxMessageBroker;
 
@@ -48,7 +49,7 @@ namespace Client.WinForms
           .ObserveOn(uiThread)
           .Do(x => Close())
           .Subscribe(),
-        RxMessageBrokerMinimod.Default.Register<ConnectionState>(SetState, uiThread),
+        RxMessageBrokerMinimod.Default.Register<ConnectionState>(SetStateIcon, uiThread),
         windowStates.Connect(),
         new TestEventGenerator()
         );
@@ -89,7 +90,7 @@ namespace Client.WinForms
                                                  ConfigurationManager.AppSettings["initial-state"] ?? "Normal");
     }
 
-    void SetState(ConnectionState connectionState)
+    void SetStateIcon(ConnectionState connectionState)
     {
       notificationIcon.Text = connectionState.ToString();
       Icon = notificationIcon.Icon = (Icon) Resources.ResourceManager.GetObject(connectionState.ToString());

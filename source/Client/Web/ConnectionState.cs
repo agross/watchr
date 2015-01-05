@@ -1,6 +1,6 @@
-﻿namespace Client.WinForms
+﻿namespace Client.Web
 {
-  enum ConnectionState
+  public enum ConnectionState
   {
     Disconnected,
     Connecting,

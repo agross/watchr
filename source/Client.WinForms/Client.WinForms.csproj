@@ -478,18 +478,18 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConnectionState.cs" />
-    <Compile Include="Streams\ExitApplicationRequests.cs" />
+    <Compile Include="AppContext.cs" />
+    <Compile Include="Streams\Ui\ExitApplicationRequests.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Streams\FormWindowStates.cs" />
-    <Compile Include="Streams\IExitTheApplication.cs" />
-    <Compile Include="Streams\IShowTheApplication.cs" />
-    <Compile Include="Streams\ShowApplicationRequests.cs" />
+    <Compile Include="Streams\Ui\FormWindowStates.cs" />
+    <Compile Include="Streams\Ui\IExitTheApplication.cs" />
+    <Compile Include="Streams\Ui\IShowTheApplication.cs" />
+    <Compile Include="Streams\Ui\ShowApplicationRequests.cs" />
     <Compile Include="Debug\TestEventGenerator.cs" />
     <Compile Include="Minimods\Minimod.RxMessageBroker.Generated.cs" />
     <Compile Include="Program.cs" />

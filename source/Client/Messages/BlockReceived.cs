@@ -2,7 +2,7 @@ using System.Text;
 
 namespace Client.Messages
 {
-  public class BlockReceived
+  class BlockReceived
   {
     readonly StringBuilder _lines = new StringBuilder();
 

@@ -8,16 +8,25 @@ namespace Client.ScreenLogs
 {
   class Listener
   {
-    public static IObservable<string> Register(string path, string filter = null)
+    readonly string _path;
+    readonly string _filter;
+
+    public Listener(string path, string filter = null)
+    {
+      _path = path;
+      _filter = filter;
+    }
+
+    public IObservable<string> Register()
     {
       return Observable.Create<string>(subject =>
       {
         var disp = new CompositeDisposable();
 
-        var timer = ForceRefreshOfFileSystemEntries(path, filter);
+        var timer = ForceRefreshOfFileSystemEntries(_path, _filter);
         disp.Add(timer);
 
-        var watcher = CreateFileSystemWatcher(path, filter);
+        var watcher = CreateFileSystemWatcher(_path, _filter);
         disp.Add(watcher);
 
         var sources =
@@ -52,13 +61,8 @@ namespace Client.ScreenLogs
     static IDisposable ForceRefreshOfFileSystemEntries(string path, string filter)
     {
       return Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(1))
-                       .Subscribe(x =>
-                       {
-                         foreach (var file in Directory.GetFiles(path, filter ?? "*"))
-                         {
-                           new FileInfo(file).Refresh();
-                         }
-                       });
+                       .Subscribe(_ => Array.ForEach(Directory.GetFiles(path, filter ?? "*"),
+                                                     x => new FileInfo(x).Refresh()));
     }
 
     static FileSystemWatcher CreateFileSystemWatcher(string path, string filter)

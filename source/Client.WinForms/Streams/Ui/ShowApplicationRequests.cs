@@ -2,7 +2,7 @@ using System;
 using System.Reactive.Linq;
 using System.Windows.Forms;
 
-namespace Client.WinForms.Streams
+namespace Client.WinForms.Streams.Ui
 {
   class ShowApplicationRequests : IObservable<FormWindowState>
   {

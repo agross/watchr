@@ -790,7 +790,10 @@
     <Compile Include="Parser\Token\TokenData.cs" />
     <Compile Include="ScreenLogs\UnbufferedStreamReader.cs" />
     <Compile Include="ScreenLogs\UnbufferedStreamReaderSpecs.cs" />
+    <Compile Include="Streams\FileChangeListener.cs" />
+    <Compile Include="Streams\ParsedBlocks.cs" />
     <Compile Include="Web\Connection.cs" />
+    <Compile Include="Web\ConnectionState.cs" />
     <Compile Include="Web\Messages.cs" />
     <Compile Include="Web\WebClient.cs" />
   </ItemGroup>

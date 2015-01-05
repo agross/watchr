@@ -3,6 +3,8 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 
+using Client.Web;
+
 using Minimod.RxMessageBroker;
 
 namespace Client.WinForms.Debug
@@ -23,8 +25,7 @@ namespace Client.WinForms.Debug
             var connectionState = ConnectionState.Disconnected + (int) (x % 3);
             RxMessageBrokerMinimod.Default.Send(connectionState);
           })
-          .Subscribe())
-        ;
+          .Subscribe());
     }
 
     public void Dispose()

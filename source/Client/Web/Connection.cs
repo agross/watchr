@@ -7,6 +7,8 @@ using System.Threading;
 
 using Microsoft.AspNet.SignalR.Client;
 
+using Minimod.RxMessageBroker;
+
 namespace Client.Web
 {
   class Connection : IDisposable
@@ -70,9 +72,9 @@ namespace Client.Web
                         change.OldState,
                         change.NewState);
 
-      if (change.NewState == ConnectionState.Connecting ||
-          change.NewState == ConnectionState.Disconnected ||
-          change.NewState == ConnectionState.Reconnecting)
+      if (change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Connecting ||
+          change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Disconnected ||
+          change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Reconnecting)
       {
         _state.OnNext(new ConnectionDown(_connection));
       }
