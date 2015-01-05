@@ -40,7 +40,7 @@ namespace Client.ScreenLogs
                                     s =>
                                     {
                                       var c = Context.For(s);
-                                      Logger.Info("Session {0}: Started", c.SessionId);
+                                      Logger.Debug("Session {0}: Started", c.SessionId);
                                       return c;
                                     });
 
@@ -76,7 +76,7 @@ namespace Client.ScreenLogs
           }
         }
 
-        Logger.Info("Session {0}: Block received", context.SessionId);
+        Logger.Debug("Session {0}: Block received", context.SessionId);
         RxMessageBrokerMinimod.Default.Send(block);
       }
     }
@@ -86,7 +86,7 @@ namespace Client.ScreenLogs
       Context context;
       _paths.TryRemove(path, out context);
 
-      Logger.Info("Session {0}: Ended", context.SessionId);
+      Logger.Debug("Session {0}: Ended", context.SessionId);
     }
   }
 }
