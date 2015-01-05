@@ -9,10 +9,13 @@ using System.Windows.Forms;
 
 using Client.Web;
 using Client.WinForms.Debug;
+using Client.WinForms.Messages;
 using Client.WinForms.Properties;
 using Client.WinForms.Streams.Ui;
 
 using Minimod.RxMessageBroker;
+
+using NLog;
 
 namespace Client.WinForms
 {
@@ -51,8 +54,36 @@ namespace Client.WinForms
           .Subscribe(),
         RxMessageBrokerMinimod.Default.Register<ConnectionState>(SetStateIcon, uiThread),
         windowStates.Connect(),
-        new TestEventGenerator()
+        new TestEventGenerator(),
+        RxMessageBrokerMinimod.Default.Register<LogMessage>(AppendLogMessage, uiThread)
         );
+    }
+
+    void AppendLogMessage(LogMessage message)
+    {
+      var item = new ListViewItem
+      {
+        Text = (Log.Items.Count + 1).ToString(),
+        ForeColor = LevelToColor(message) ?? Log.ForeColor
+      };
+
+      Log.BeginUpdate();
+
+      foreach (var prop in message.GetType().GetProperties())
+      {
+        if (!Log.Columns.ContainsKey(prop.Name))
+        {
+          Log.Columns.Add(prop.Name, prop.Name);
+        }
+
+        item.SubItems.Add(prop.GetValue(message).ToString());
+      }
+
+      Log.Items.Add(item).EnsureVisible();
+      
+      Log.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+      
+      Log.EndUpdate();
     }
 
     IObservable<object> IExitTheApplication.Requests
@@ -99,6 +130,26 @@ namespace Client.WinForms
     void MainForm_FormClosed(object sender, FormClosedEventArgs e)
     {
       _subscriptions.Dispose();
+    }
+
+    static Color? LevelToColor(LogMessage item)
+    {
+      if (item.Level == LogLevel.Error)
+      {
+        return Color.Red;
+      }
+
+      if (item.Level == LogLevel.Warn)
+      {
+        return Color.DarkOrange;
+      }
+
+      if (item.Level == LogLevel.Debug)
+      {
+        return Color.DarkGray;
+      }
+
+      return null;
     }
   }
 }

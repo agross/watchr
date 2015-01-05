@@ -9,8 +9,8 @@ namespace Client.WinForms
 
     public AppContext()
     {
-      _disp = Bootstrapper.Setup();
       MainForm = new MainForm();
+      _disp = Bootstrapper.Setup();
     }
 
     protected override void Dispose(bool disposing)
