@@ -3,16 +3,17 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using System.Threading;
 
 using Microsoft.AspNet.SignalR.Client;
 
-using Minimod.RxMessageBroker;
+using NLog;
 
 namespace Client.Web
 {
   class Connection : IDisposable
   {
+    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     readonly ISubject<Microsoft.AspNet.SignalR.Client.Connection> _connectRequired =
       new Subject<Microsoft.AspNet.SignalR.Client.Connection>();
 
@@ -67,10 +68,9 @@ namespace Client.Web
 
     void ConnectionStateChange(StateChange change)
     {
-      Console.WriteLine("{0} SignalR: {1} -> {2}",
-                        Thread.CurrentThread.ManagedThreadId,
-                        change.OldState,
-                        change.NewState);
+      Logger.Info("SignalR: {0} -> {1}",
+                  change.OldState,
+                  change.NewState);
 
       if (change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Connecting ||
           change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Disconnected ||
@@ -86,7 +86,7 @@ namespace Client.Web
 
     void ConnectionClosed(Unit unit)
     {
-      Console.WriteLine("{0} SignalR: Connection closed", Thread.CurrentThread.ManagedThreadId);
+      Logger.Warn("SignalR: Connection closed");
 
       _connectRequired.OnNext(_connection);
     }
@@ -98,7 +98,7 @@ namespace Client.Web
         Connection = connection;
       }
 
-      public Microsoft.AspNet.SignalR.Client.Connection Connection { get; private set; }
+      Microsoft.AspNet.SignalR.Client.Connection Connection { get; set; }
 
       public bool Equals(ConnectionDown other)
       {
@@ -145,7 +145,7 @@ namespace Client.Web
         Connection = connection;
       }
 
-      public Microsoft.AspNet.SignalR.Client.Connection Connection { get; private set; }
+      Microsoft.AspNet.SignalR.Client.Connection Connection { get; set; }
 
       public bool Equals(ConnectionUp other)
       {

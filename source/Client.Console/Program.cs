@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Threading;
 
+using NLog;
+
 namespace Client.Console
 {
   class Program
   {
+    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     static void Main(string[] args)
     {
-      System.Console.WriteLine("Starting...");
+      Logger.Info("Starting...");
       IDisposable disp = null;
       try
       {
@@ -26,7 +30,7 @@ namespace Client.Console
 
     static void WaitForCtrlC()
     {
-      System.Console.WriteLine("Press Ctrl+C to exit");
+      Logger.Info("Press Ctrl+C to exit");
 
       var quit = new ManualResetEvent(false);
 

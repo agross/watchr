@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.IO;
 
 using Client.Messages;
 
 using Minimod.RxMessageBroker;
 
+using NLog;
+
 namespace Client.ScreenLogs
 {
   class Subscriber
   {
+    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     class Context
     {
       public string SessionId { get; private set; }
@@ -33,7 +36,13 @@ namespace Client.ScreenLogs
 
     public void FileChanged(string path)
     {
-      var context = _paths.GetOrAdd(path, Context.For);
+      var context = _paths.GetOrAdd(path,
+                                    s =>
+                                    {
+                                      var c = Context.For(s);
+                                      Logger.Info("Session {0}: Started", c.SessionId);
+                                      return c;
+                                    });
 
       if (!File.Exists(path))
       {
@@ -67,6 +76,7 @@ namespace Client.ScreenLogs
           }
         }
 
+        Logger.Info("Session {0}: Block received", context.SessionId);
         RxMessageBrokerMinimod.Default.Send(block);
       }
     }
@@ -76,7 +86,7 @@ namespace Client.ScreenLogs
       Context context;
       _paths.TryRemove(path, out context);
 
-      Console.WriteLine("Session {0} ended", context.SessionId);
+      Logger.Info("Session {0}: Ended", context.SessionId);
     }
   }
 }

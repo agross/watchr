@@ -6,10 +6,14 @@ using Client.Parser;
 
 using Minimod.RxMessageBroker;
 
+using NLog;
+
 namespace Client.Streams
 {
-  public class ParsedBlocks : IObservable<BlockParsed>
+  class ParsedBlocks : IObservable<BlockParsed>
   {
+    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
     public IDisposable Subscribe(IObserver<BlockParsed> observer)
     {
       return RxMessageBrokerMinimod.Default.Register<BlockReceived>(block =>
@@ -20,9 +24,8 @@ namespace Client.Streams
         }
         catch (ParserException ex)
         {
-          Console.WriteLine("Session {0}: {1}",
-                            block.SessionId,
-                            ex.Message);
+          Logger.Error(String.Format("Session {0}: Could not parse ANSI", block.SessionId),
+                       ex.Message);
         }
       });
     }

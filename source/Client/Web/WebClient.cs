@@ -3,11 +3,12 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Threading;
 
 using Client.Messages;
 
 using Microsoft.AspNet.SignalR.Client.Hubs;
+
+using NLog;
 
 namespace Client.Web
 {
@@ -35,15 +36,16 @@ namespace Client.Web
     }
   }
 
-  public class WebClient : IDisposable
+  class WebClient : IDisposable
   {
+    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     readonly HubConnection _connection;
     readonly IHubProxy _hub;
     readonly CompositeDisposable _subscriptions;
 
     public WebClient(string url)
     {
-      Console.WriteLine("Starting web client for {0}", url);
+      Logger.Info("Starting web client for {0}", url);
 
       _connection = new HubConnection(url);
       _hub = _connection.CreateHubProxy("ConsoleHub");
@@ -58,7 +60,7 @@ namespace Client.Web
           var buffer = new Func<int, bool>(i => i % 2 != 0);
           if (buffer(index))
           {
-            Console.WriteLine("Buffering until connection becomes available");
+            Logger.Warn("Buffering until connection becomes available");
             return d.ToList().SelectMany(x => x);
           }
           return d;
@@ -97,7 +99,7 @@ namespace Client.Web
 
     static async void Connect(Microsoft.AspNet.SignalR.Client.Connection connection)
     {
-      Console.WriteLine("{0} SignalR: Starting connection", Thread.CurrentThread.ManagedThreadId);
+      Logger.Info("SignalR: Starting connection");
 
       try
       {
@@ -105,20 +107,17 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Console.WriteLine("{0} SignalR: Could not start connection: {1}",
-                          Thread.CurrentThread.ManagedThreadId,
-                          exception);
+        Logger.Error("SignalR: Could not start connection", exception);
         throw;
       }
     }
 
     async void Send(BlockParsed output)
     {
-      Console.WriteLine("{0} Session {1}: Sending {2} lines, starting at index {3}",
-                        Thread.CurrentThread.ManagedThreadId,
-                        output.SessionId,
-                        output.Lines.Count(),
-                        output.Lines.First().Index);
+      Logger.Info("Session {0}: Sending {1} lines, starting at index {2}",
+                  output.SessionId,
+                  output.Lines.Count(),
+                  output.Lines.First().Index);
 
       try
       {
@@ -126,19 +125,16 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Console.WriteLine("{0} Session {1}: Error sending request {2}",
-                          Thread.CurrentThread.ManagedThreadId,
-                          output.SessionId,
-                          exception);
+        Logger.Error(String.Format("Session {0}: Error sending request",
+                                   output.SessionId),
+                     exception);
         throw;
       }
     }
 
     async void Terminate(SessionTerminated message)
     {
-      Console.WriteLine("{0} Session {1}: Closing session",
-                        Thread.CurrentThread.ManagedThreadId,
-                        message.SessionId);
+      Logger.Info("Session {0}: Terminated", message.SessionId);
 
       try
       {
@@ -146,10 +142,9 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Console.WriteLine("{0} Session {1}: Error sending request {2}",
-                          Thread.CurrentThread.ManagedThreadId,
-                          message.SessionId,
-                          exception);
+        Logger.Error(String.Format("Session {0}: Error sending request",
+                                   message.SessionId),
+                     exception);
         throw;
       }
     }

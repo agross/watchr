@@ -1,4 +1,4 @@
-source https://www.nuget.org/api/v2/
+source https://www.nuget.org/api/v2
 
 nuget Antlr 3.4.1.9004
 nuget Chutzpah 3.2.2
@@ -16,6 +16,7 @@ nuget Microsoft.Owin.Security 2.1.0
 nuget Microsoft.Web.Infrastructure 1.0.0.0
 nuget Minimod.RxMessageBroker 0.0.1
 nuget Newtonsoft.Json 6.0.6
+nuget NLog
 nuget NUnit 2.6.3
 nuget NUnit.Runners 2.6.3
 nuget Owin 1.0
@@ -25,3 +26,4 @@ nuget Rx-Linq 2.2.5
 nuget Rx-Main 2.2.5
 nuget Rx-PlatformServices 2.2.5
 nuget WebGrease 1.5.2
+nuget NLog
