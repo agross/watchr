@@ -117,11 +117,11 @@ namespace Client.Parser
     [Test]
     public void Should_return_plain_text_when_plain_text_is_given()
     {
-      const string Text = "hello\r\nwith\r\nnewlines";
+      var text = "hello" + Environment.NewLine + "with" + Environment.NewLine + "newlines";
 
-      AssertEqual(Text, Text);
+      AssertEqual(text, text);
     }
-    
+
     [Test]
     public void Should_encode_Html()
     {
@@ -554,6 +554,12 @@ namespace Client.Parser
     public void Should_support_dumps()
     {
       var path = "c:/Cygwin/tmp/screen-*.log";
+
+      if (!Directory.Exists(Path.GetDirectoryName(path)))
+      {
+        Assert.Inconclusive("Directory does not exist: " + path);
+      }
+
       var file = Directory.GetFiles(Path.GetDirectoryName(path), Path.GetFileName(path), SearchOption.TopDirectoryOnly).FirstOrDefault();
 
       if (file == null)
