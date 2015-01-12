@@ -1,12 +1,13 @@
 require 'rake/funnel'
 
-Rake::Funnel::Tasks::Timing.new
-Rake::Funnel::Tasks::BinPath.new
 Rake::Funnel::Integration::SyncOutput.new
 Rake::Funnel::Integration::ProgressReport.new
 Rake::Funnel::Integration::TeamCity::ProgressReport.new
 
+Rake::Funnel::Tasks::BinPath.new
 Rake::Funnel::Tasks::Paket.new
+Rake::Funnel::Tasks::QuickTemplate.new
+Rake::Funnel::Tasks::Timing.new
 
 Rake::Funnel::Tasks::MSBuild.new do |t|
   t.args = {
@@ -20,8 +21,21 @@ Rake::Funnel::Tasks::MSBuild.new do |t|
   }.merge(Rake::Win32.windows? ? { node_reuse: false } : {})
 end
 
+Rake::Funnel::Tasks::Copy.new :compile do |t|
+  t.source = FileList['source/Web/**/*']
+    .exclude('**/*.cs')
+    .exclude('**/*.??proj')
+    .exclude('**/obj/**/*')
+    .exclude('**/*.intellisense.js')
+    .exclude('**/*.map')
+    .exclude('**/*-vsdoc.js')
+    .exclude('**/bin/*.xml')
+    .exclude('**/paket.references')
+  t.target = 'build/bin/Web'
+end
+
 Rake::Funnel::Tasks::NUnit.new :test => [:paket, :bin_path] do |t|
-  t.search_pattern = 'build/bin/WinForms/Client.dll'
+  t.files = 'build/bin/WinForms/Client.dll'
   t.args = {
     nologo: nil,
     noshadow: nil,
@@ -42,6 +56,28 @@ if Rake::Win32.windows?
 
     sh(*cmd)
   end
+end
+
+Rake::Funnel::Tasks::Zip.new do |t|
+  t.source = FileList['build/bin/WinForms/**/*'].exclude('**/*.xml')
+  t.target = File.join('deploy', 'winforms.zip')
+end
+
+Rake::Funnel::Tasks::MSDeploy.new :deploy => [:bin_path] do |t|
+  t.log_file = 'deploy/msdeploy.log'
+  t.args = {
+    verb: :sync,
+    source: {
+      dir_path: File.expand_path('build/bin/Web')
+    },
+    dest: {
+      computer_name: 'grossweber.com',
+      username: ENV['DEPLOY_USER'],
+      password: ENV['DEPLOY_PASSWORD'],
+      dir_path: 'C:/GROSSWEBER/watch/test'
+    },
+    use_check_sum: nil
+  }
 end
 
 task default: [:compile, :test]
