@@ -3,12 +3,14 @@ PATH
   specs:
     rake-funnel (0.0.1.pre)
       rake
+      rubyzip (~> 1.0)
       smart_colored
 
 GEM
   remote: https://rubygems.org/
   specs:
-    rake (10.3.2)
+    rake (10.4.2)
+    rubyzip (1.1.6)
     smart_colored (1.1.1)
 
 PLATFORMS
