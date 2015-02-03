@@ -1,15 +1,22 @@
 require 'rake/funnel'
 
-Rake::Funnel::Integration::SyncOutput.new
-Rake::Funnel::Integration::ProgressReport.new
-Rake::Funnel::Integration::TeamCity::ProgressReport.new
+include Rake::Funnel
 
-Rake::Funnel::Tasks::BinPath.new
-Rake::Funnel::Tasks::Paket.new
-Rake::Funnel::Tasks::QuickTemplate.new
-Rake::Funnel::Tasks::Timing.new
+Integration::SyncOutput.new
+Integration::ProgressReport.new
+Integration::TeamCity::ProgressReport.new
 
-Rake::Funnel::Tasks::MSBuild.new do |t|
+Tasks::Paket.new
+Tasks::BinPath.new :bin_path => :paket
+Tasks::QuickTemplate.new
+Tasks::Timing.new
+
+Tasks::SideBySideSpecs.new :compile do |t|
+  t.references = 'NUnit.Framework'
+  t.enabled = true
+end
+
+Tasks::MSBuild.new :compile do |t|
   t.args = {
     nologo: nil,
     verbosity: :minimal,
@@ -21,7 +28,7 @@ Rake::Funnel::Tasks::MSBuild.new do |t|
   }.merge(Rake::Win32.windows? ? { node_reuse: false } : {})
 end
 
-Rake::Funnel::Tasks::Copy.new :compile do |t|
+Tasks::Copy.new :compile do |t|
   t.source = FileList['source/Web/**/*']
     .exclude('**/*.cs')
     .exclude('**/*.??proj')
@@ -34,7 +41,7 @@ Rake::Funnel::Tasks::Copy.new :compile do |t|
   t.target = 'build/bin/Web'
 end
 
-Rake::Funnel::Tasks::NUnit.new :test => [:paket, :bin_path] do |t|
+Tasks::NUnit.new :test => :bin_path do |t|
   t.files = 'build/bin/WinForms/Client.dll'
   t.args = {
     nologo: nil,
@@ -47,7 +54,7 @@ if Rake::Win32.windows?
   task :test do
     cmd = [
       'chutzpah.console.exe',
-      *Rake::Funnel::Support::Mapper.new.map({
+      *Support::Mapper.new.map({
         fail_on_error: nil,
         show_failure_report: nil,
         path: 'source/Web.Tests'
@@ -58,12 +65,12 @@ if Rake::Win32.windows?
   end
 end
 
-Rake::Funnel::Tasks::Zip.new do |t|
+Tasks::Zip.new do |t|
   t.source = FileList['build/bin/WinForms/**/*'].exclude('**/*.xml')
   t.target = File.join('deploy', 'winforms.zip')
 end
 
-Rake::Funnel::Tasks::MSDeploy.new :deploy => [:bin_path] do |t|
+Tasks::MSDeploy.new :deploy => :bin_path do |t|
   t.log_file = 'deploy/msdeploy.log'
   t.args = {
     verb: :sync,
