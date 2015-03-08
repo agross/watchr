@@ -216,7 +216,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_disabled_underline()
     {
@@ -242,8 +242,8 @@ namespace Client.Parser
       var expected = "blink: <blink class='rapid'>what</blink>";
 
       AssertEqual(text, expected);
-    } 
-    
+    }
+
     [Test]
     public void Should_support_inverse()
     {
@@ -261,7 +261,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_strikethrough()
     {
@@ -306,7 +306,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_multiple_attributes_with_trailing_semicolon()
     {
@@ -333,7 +333,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_resetting_to_the_default_background_color()
     {
@@ -351,7 +351,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_apply_backspace_characters_for_HTML_encoded_characters()
     {
@@ -387,7 +387,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_backspace_characters_with_interleaved_escape_codes()
     {
@@ -396,7 +396,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_backspace_characters_across_interleaved_escape_codes()
     {
@@ -414,7 +414,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_remove_markers_for_executing_commands()
     {
@@ -450,7 +450,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_remove_character_set_escapes()
     {
@@ -459,7 +459,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_remove_control_sequence_followed_by_uppercase_character()
     {
@@ -468,7 +468,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_remove_control_sequence_with_question_mark_1_character()
     {
@@ -477,7 +477,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_remove_control_sequence_with_equals()
     {
@@ -486,7 +486,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_remove_control_sequence_with_greater_than()
     {
@@ -504,7 +504,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_keep_escape_with_following_slash()
     {
@@ -531,7 +531,7 @@ namespace Client.Parser
 
       AssertEqual(text, expected);
     }
-    
+
     [Test]
     public void Should_support_colored_completion_with_two_items()
     {
@@ -584,8 +584,9 @@ namespace Client.Parser
 
         html = "<html><link href='style.css' rel='stylesheet' type='text/css'></link><body><pre>" + html;
         html += "</pre></body></html>";
-        File.WriteAllText(Path.Combine(Path.GetDirectoryName(file), Path.GetFileNameWithoutExtension(file) + ".html"),
-                          html);
+        file = Path.Combine(Path.GetTempPath(), "_watchr-html", Path.GetFileNameWithoutExtension(file) + ".html");
+        Directory.CreateDirectory(Path.GetDirectoryName(file));
+        File.WriteAllText(file, html);
         Assert.IsNotEmpty(html);
       }
     }
