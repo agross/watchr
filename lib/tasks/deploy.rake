@@ -19,11 +19,7 @@ Tasks::MSDeploy.new deploy: [:compile, :bin_path] do |t|
       dir_path: configatron.deployment.remote_path
     },
     skip: [
-      {
-        object_name: :dirPath,
-        skip_action: :Delete,
-        absolute_path: 'logs\.*'
-      }
+      { directory: configatron.deployment.remote_path + '\\\\logs$' }
     ],
     post_sync_on_success: {
       run_command: post_sync,
