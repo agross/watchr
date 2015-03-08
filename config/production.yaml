@@ -6,6 +6,8 @@ deployment:
     computer_name: watch.grossweber.com
 
   remote_path: C:/GROSSWEBER/watch
+  canoncial_url: http://watch.grossweber.com/
+
   bindings:
     -
       :protocol: http

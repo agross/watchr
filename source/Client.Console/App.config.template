@@ -4,8 +4,8 @@
 <configuration>
   <appSettings>
     <add key="hub-url"
-         value="http://localhost:34530/" />
-    
+         value="@configatron.deployment.canoncial_url@" />
+
     <add key="screen-logs"
          value="C:\Cygwin\tmp\screen*.log" />
   </appSettings>

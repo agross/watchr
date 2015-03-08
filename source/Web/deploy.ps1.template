@@ -31,7 +31,7 @@ $appPoolIdentity = 'NetworkService'
 $siteName = '(agross) <%= configatron.deployment.bindings.first[:host] %>'
 $bindings = @(
 <% configatron.deployment.bindings.each do |binding| %>
-  @{ Protocol = '<%= binding[:protocol] %>'; HostHeader = '<%= binding[:host] %>' }
+  @{ Protocol = '<%= binding[:protocol] %>'; HostHeader = '<%= binding[:host] %>'; Port = <%= binding[:port] || 80 %> }
 <% end %>
 )
 $physicalPath = "$scriptPath\bin"
@@ -66,11 +66,10 @@ function Check-HttpResponse {
   $tests = @{
     <%
       bindings = configatron.deployment.bindings
-      canonical_domain = bindings.first[:host]
 
       bindings.select { |b| b.fetch(:test_while_deployment, true) }.each do |binding|
-        url = binding[:protocol] + '://' + binding[:host] + '/'
-        response_url = binding[:protocol] + '://' + canonical_domain + '/'
+        url = "#{binding[:protocol]}://#{binding[:host]}:#{binding[:port]}/"
+        response_url = configatron.deployment.canoncial_url
     %>
     '<%= url %>' = @{
       Url = '<%= url %>'
@@ -137,7 +136,7 @@ function Install {
 
   Get-WebBinding -Name $site.Name | Remove-WebBinding
   $bindings | ForEach-Object {
-    New-WebBinding -Name $site.Name -Protocol $_.Protocol -HostHeader $_.HostHeader
+    New-WebBinding -Name $site.Name -Protocol $_.Protocol -HostHeader $_.HostHeader -Port $_.Port
   }
 
   Check-HttpResponse

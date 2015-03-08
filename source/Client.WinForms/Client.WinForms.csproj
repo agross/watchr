@@ -78,6 +78,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config.template" />
     <None Include="App.config" />
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -518,4 +519,11 @@
       </ItemGroup>
     </When>
   </Choose>
+  <PropertyGroup>
+    <PreBuildEvent>if "$(BuildingInsideVisualStudio)" EQU "true" (
+  cd "$(SolutionDir)"
+  set VS_BUILD_EVENT=true
+  build.cmd template
+)</PreBuildEvent>
+  </PropertyGroup>
 </Project>

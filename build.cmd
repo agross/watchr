@@ -2,7 +2,6 @@
 setlocal
 
 set LANG=en_US.UTF-8
-set EnableNuGetPackageRestore=true
 
 :build
 cls
@@ -19,8 +18,9 @@ cls
 call bundle.cmd exec rake %*
 
 :wait
-rem Bail if we're running a TeamCity build.
+rem Bail if we're running a TeamCity build or vom Visual Studio.
 if defined TEAMCITY_PROJECT_NAME goto quit
+if defined VS_BUILD_EVENT goto quit
 
 rem Loop the build script.
 set choice=nothing
