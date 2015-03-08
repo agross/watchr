@@ -26,7 +26,8 @@ Tasks::Copy.new :compile do |t|
     .exclude('**/*-vsdoc.js')
     .exclude('**/bin/*.xml')
     .exclude('**/paket.references')
-    .exclude('**/deploy.ps1*')
+    .exclude('**/deploy.ps1')
+    .exclude('**/*.template')
   t.target = 'build/bin/Web/bin'
 end
 
