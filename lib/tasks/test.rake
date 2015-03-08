@@ -13,7 +13,6 @@ if Rake::Win32.windows?
       'chutzpah.console.exe',
       *Support::Mapper.new.map({
         fail_on_error: nil,
-        show_failure_report: nil,
         path: 'source/Web.Tests'
       })
     ]

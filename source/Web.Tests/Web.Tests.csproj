@@ -30,20 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Scripts\jasmine\boot.js">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="Scripts\jasmine\console.js">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="Scripts\jasmine\jasmine-html.js">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="Scripts\jasmine\jasmine.js">
-      <Paket>True</Paket>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
