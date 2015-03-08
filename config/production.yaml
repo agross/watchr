@@ -3,6 +3,10 @@ build:
 
 deployment:
   connection:
-    computer_name: grossweber.com
+    computer_name: watch.grossweber.com
 
-  remote_path: C:/GROSSWEBER/watch/test-deploy
+  remote_path: C:/GROSSWEBER/watch
+  bindings:
+    -
+      :protocol: http
+      :host: watch.grossweber.com

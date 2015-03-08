@@ -12,3 +12,12 @@ deployment:
     password: <%= ENV['DEPLOY_PASSWORD'] %>
 
   remote_path: <%= (File.join(ENV['TEMP'] || '', '_watchr')).gsub(%r|/|, File::ALT_SEPARATOR || File::SEPARATOR) %>
+
+  bindings:
+    -
+      :protocol: http
+      :host: localhost
+    -
+      :protocol: http
+      :host: watchr.dev
+      :test_while_deployment: false
