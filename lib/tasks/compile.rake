@@ -22,13 +22,11 @@ Tasks::Copy.new :compile do |t|
     .exclude('**/*.cs')
     .exclude('**/*.??proj')
     .exclude('**/obj/**/*')
-    .exclude('**/*.intellisense.js')
     .exclude('**/*.map')
     .exclude('**/*-vsdoc.js')
     .exclude('**/bin/*.xml')
     .exclude('**/paket.references')
-    .exclude('**/deploy.ps1')
-    .exclude('**/*.template')
+    .exclude('**/deploy.ps1*')
   t.target = 'build/bin/Web/bin'
 end
 
