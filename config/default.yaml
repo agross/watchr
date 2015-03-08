@@ -1,0 +1,11 @@
+project: Watchr
+
+build:
+  configuration: Debug
+  version:
+    full: 1.0.0
+
+deployment:
+  computer_name: localhost
+  user: <%= ENV['DEPLOY_USER'] %>
+  password: <%= ENV['DEPLOY_PASSWORD'] %>

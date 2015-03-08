@@ -1,20 +1,18 @@
-PATH
-  remote: d:/Users/agross/Coding/rake-funnel
-  specs:
-    rake-funnel (0.0.1.pre)
-      rake
-      rubyzip (~> 1.0)
-      smart_colored
-
 GEM
   remote: https://rubygems.org/
   specs:
+    configatron (4.5.0)
     rake (10.4.2)
-    rubyzip (1.1.6)
+    rake-funnel (0.0.1.pre)
+      configatron (~> 4.5)
+      rake
+      rubyzip (~> 1.0)
+      smart_colored
+    rubyzip (1.1.7)
     smart_colored (1.1.1)
 
 PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  rake-funnel!
+  rake-funnel

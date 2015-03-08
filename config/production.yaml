@@ -1,0 +1,5 @@
+build:
+  configuration: Release
+
+deployment:
+  computer_name: grossweber.com
