@@ -1,6 +1,7 @@
 source https://www.nuget.org/api/v2
 
 nuget Chutzpah ~> 3.2.2
+nuget MSBuild.Microsoft.VisualStudio.Web.targets
 nuget Microsoft.AspNet.SignalR 2.1.0
 nuget Microsoft.AspNet.SignalR.Client 1.2.1
 nuget Microsoft.AspNet.Web.Optimization 1.1.3
