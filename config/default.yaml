@@ -11,4 +11,4 @@ deployment:
     username: <%= ENV['DEPLOY_USER'] %>
     password: <%= ENV['DEPLOY_PASSWORD'] %>
 
-  remote_path: <%= (File.join(ENV['TEMP'], '_watchr')).gsub(%r|/|, '\\') %>
+  remote_path: <%= (File.join(ENV['TEMP'] || '', '_watchr')).gsub(%r|/|, File::ALT_SEPARATOR || File::SEPARATOR) %>
