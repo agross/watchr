@@ -6,10 +6,10 @@ Tasks::MSDeploy.new deploy: [:compile, :bin_path] do |t|
       dir_path: File.expand_path('build/bin/Web')
     },
     dest: {
-      computer_name: 'grossweber.com',
-      username: ENV['DEPLOY_USER'],
-      password: ENV['DEPLOY_PASSWORD'],
-      dir_path: 'C:/GROSSWEBER/watch/test'
+      computer_name: configatron.deployment.connection.computer_name,
+      username: configatron.deployment.connection.username,
+      password: configatron.deployment.connection.password,
+      dir_path: configatron.deployment.remote_path
     },
     use_check_sum: nil
   }

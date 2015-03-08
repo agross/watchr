@@ -2,4 +2,7 @@ build:
   configuration: Release
 
 deployment:
-  computer_name: grossweber.com
+  connection:
+    computer_name: grossweber.com
+
+  remote_path: C:/GROSSWEBER/watch/test-deploy

@@ -6,6 +6,9 @@ build:
     full: 1.0.0
 
 deployment:
-  computer_name: localhost
-  user: <%= ENV['DEPLOY_USER'] %>
-  password: <%= ENV['DEPLOY_PASSWORD'] %>
+  connection:
+    computer_name: localhost
+    username: <%= ENV['DEPLOY_USER'] %>
+    password: <%= ENV['DEPLOY_PASSWORD'] %>
+
+  remote_path: <%= (File.join(ENV['TEMP'], '_watchr')).gsub(%r|/|, '\\') %>
