@@ -5,7 +5,7 @@ def post_sync
   cmd.join(' ')
 end
 
-Tasks::MSDeploy.new deploy: [:compile, :bin_path] do |t|
+Tasks::MSDeploy.new deploy: :bin_path do |t|
   t.log_file = 'deploy/msdeploy.log'
   t.args = {
     verb: :sync,
