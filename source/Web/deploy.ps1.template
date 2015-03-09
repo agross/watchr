@@ -65,10 +65,11 @@ function Recreate-WebSite {
 function Check-HttpResponse {
   $tests = @{
     <%
+      require 'uri'
       bindings = configatron.deployment.bindings
 
       bindings.select { |b| b.fetch(:test_while_deployment, true) }.each do |binding|
-        url = "#{binding[:protocol]}://#{binding[:host]}:#{binding[:port]}/"
+        url = URI::HTTP.new(binding[:protocol], nil, binding[:host], binding[:port], nil, '/', nil, nil, nil).to_s
         response_url = configatron.deployment.canoncial_url
     %>
     '<%= url %>' = @{
