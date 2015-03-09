@@ -3,7 +3,7 @@ GEM
   specs:
     configatron (4.5.0)
     rake (10.4.2)
-    rake-funnel (0.0.4.pre)
+    rake-funnel (0.0.5.pre)
       configatron (~> 4.5)
       rake
       rubyzip (~> 1.0)
