@@ -2,11 +2,8 @@
 *.user
 *.suo
 
-bin
-obj
-tmp
-build
-deploy
-packages
-
-local-properties.yaml
+bin/
+obj/
+build/
+deploy/
+packages/
