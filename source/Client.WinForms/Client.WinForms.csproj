@@ -97,7 +97,7 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
@@ -520,7 +520,7 @@
     </When>
   </Choose>
   <PropertyGroup>
-    <PreBuildEvent>if "$(BuildingInsideVisualStudio)" EQU "true" (
+    <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">if "$(BuildingInsideVisualStudio)" EQU "true" (
   cd "$(SolutionDir)"
   set VS_BUILD_EVENT=true
   build.cmd template

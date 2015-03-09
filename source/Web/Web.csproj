@@ -284,7 +284,7 @@
     </Reference>
   </ItemGroup>
   <PropertyGroup>
-    <PreBuildEvent>if "$(BuildingInsideVisualStudio)" EQU "true" (
+  <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">if "$(BuildingInsideVisualStudio)" EQU "true" (
   cd "$(SolutionDir)"
   set VS_BUILD_EVENT=true
   build.cmd template
