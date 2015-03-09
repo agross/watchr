@@ -18,7 +18,7 @@ cls
 call bundle.cmd exec rake %*
 
 :wait
-rem Bail if we're running a TeamCity build or vom Visual Studio.
+rem Bail if we're running a TeamCity build or from Visual Studio.
 if defined TEAMCITY_PROJECT_NAME goto quit
 if defined VS_BUILD_EVENT goto quit
 
