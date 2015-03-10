@@ -75,7 +75,7 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="Web.config.template" />
+    <None Include="Web.config.erb" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BundleConfig.cs" />
