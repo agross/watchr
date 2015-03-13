@@ -78,6 +78,12 @@
     <None Include="Web.config.erb" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionInfo.cs">
+      <Link>Properties\SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\VersionInfo.cs">
+      <Link>Properties\VersionInfo.cs</Link>
+    </Compile>
     <Compile Include="BundleConfig.cs" />
     <Compile Include="ConsoleHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -284,7 +290,7 @@
     </Reference>
   </ItemGroup>
   <PropertyGroup>
-  <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">if "$(BuildingInsideVisualStudio)" EQU "true" (
+    <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">if "$(BuildingInsideVisualStudio)" EQU "true" (
   cd "$(SolutionDir)"
   set VS_BUILD_EVENT=true
   build.cmd template
