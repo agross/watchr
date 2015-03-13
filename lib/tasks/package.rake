@@ -10,3 +10,7 @@
     t.target = zip
   end
 end
+
+task :package do
+  Integration::TeamCity::ServiceMessages.build_number(configatron.build.version) if configatron.env == 'production'
+end
