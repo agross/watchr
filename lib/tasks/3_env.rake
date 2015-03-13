@@ -10,7 +10,7 @@ namespace :env do
 
       configatron.build.version = version.assembly_informational_version
 
-      Integration::TeamCity::ServiceMessages.build_number(configatron.build.version) if configatron.env == 'production' || Integration::TeamCity.running?
+      Integration::TeamCity::ServiceMessages.build_number(configatron.build.version) if configatron.env == 'production'
     end
   end
 end
