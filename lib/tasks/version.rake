@@ -6,6 +6,6 @@ if Integration::TeamCity.running?
       build_number: configatron.build.number,
       sha: configatron.build.sha
     }
-    t.target_path = Proc.new { |language, version_info, source| File.join('source', "VersionInfo.#{language}") }
+    t.target_path = proc { |language, _version_info, _source| File.join('source', "VersionInfo.#{language}") }
   end
 end
