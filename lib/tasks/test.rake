@@ -3,7 +3,8 @@ Tasks::NUnit.new :test => :bin_path do |t|
   t.args = {
     nologo: nil,
     noshadow: nil,
-    noresult: nil
+    noresult: nil,
+    framework: 'net-4.0'
   }
 end
 

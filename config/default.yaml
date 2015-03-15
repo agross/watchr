@@ -11,7 +11,7 @@ deployment:
     username: <%= ENV['DEPLOY_USER'] %>
     password: <%= ENV['DEPLOY_PASSWORD'] %>
 
-  remote_path: <%= (File.expand_path(ENV['TEMP'] || '', '_watchr')) %>
+  remote_path: <%= File.expand_path(File.join(ENV['TEMP'] || '', '_watchr')) %>
   canoncial_url: http://localhost:34530/
 
   bindings:

@@ -4,11 +4,11 @@ namespace :env do
     t.customizer = Proc.new do |store|
       version = Support::VersionInfo.parse({
         version: Support::VersionInfo.read_version_from('VERSION'),
-        build_number: configatron.build.number,
-        sha: configatron.build.sha
+        build_number: store.build.number,
+        sha: store.build.sha
       })
 
-      configatron.build.version = version.assembly_informational_version
+      store.build.version = version.assembly_informational_version
     end
   end
 end
