@@ -8,10 +8,10 @@ end
 def remote_path_for(local_path)
   app_assembly = File.join(local_path, 'bin/bin/Web.dll')
 
-  version = Support::BinaryVersionReader.read_from(app_assembly)
+  version = Support::BinaryVersionReader.read_from(app_assembly).file_version
 
-  Integration::TeamCity::ServiceMessages.build_number(version.product_version)
-  File.join(configatron.deployment.remote_path, version.file_version)
+  Integration::TeamCity::ServiceMessages.build_number(version)
+  File.join(configatron.deployment.remote_path, version)
 end
 
 Tasks::MSDeploy.new deploy: :bin_path do |t|

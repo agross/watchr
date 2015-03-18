@@ -1,5 +1,5 @@
 def zip(target)
-  File.join('deploy', "#{configatron.project}-#{target}-#{configatron.build.version}.zip")
+  File.join('deploy', "#{configatron.project}-#{target}-#{configatron.build.version.assembly_informational_version}.zip")
 end
 
 %w(Web WinForms Console).each do |target|
@@ -11,8 +11,4 @@ end
     t.source = FileList["build/bin/#{target}/**/*"].exclude('**/*.xml')
     t.target = zip(target)
   end
-end
-
-task :package do
-  Integration::TeamCity::ServiceMessages.build_number(configatron.build.version) if configatron.env == 'production'
 end

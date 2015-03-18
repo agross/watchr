@@ -1,5 +1,7 @@
 build:
   configuration: Release
+  metadata:
+    pre:
 
 deployment:
   connection:
