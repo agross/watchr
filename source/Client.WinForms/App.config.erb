@@ -5,7 +5,7 @@
   <appSettings>
     <!-- Minimized, Normal, Maximized. -->
     <add key="initial-state"
-         value="Normal" />
+         value="<%= ('Minimized' if configatron.env =~ /production/) or 'Normal' %>" />
 
     <add key="hub-url"
          value="@configatron.deployment.canoncial_url@" />
