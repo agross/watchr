@@ -1,6 +1,6 @@
 def post_sync(remote_path)
   cmd = %w(powershell.exe -Version 3.0 -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Unrestricted -InputFormat none -Command)
-  cmd << File.join(remote_path, 'deploy.ps1').to_windows_path
+  cmd << Rake::Win32.normalize(File.join(remote_path, 'deploy.ps1'))
   cmd << 'Install'
   cmd.join(' ')
 end
