@@ -14,7 +14,20 @@ def remote_path_for(local_path)
   File.join(configatron.deployment.remote_path, version)
 end
 
+def msdeploy_gac_hack
+  # MSDeploy 3.6 installs Microsoft.Web.Deployment.Tracing 9.0.0.0 in the GAC
+  # that is incompatible with MSDeploy's 3.5 Tracing assembly (which has the
+  # same version number).
+  #
+  # We override GAC assemblies by providing a local path.
+  # https://msdn.microsoft.com/en-us/library/cskzh7h6.aspx
+  ENV['DEVPATH'] = File.expand_path('tools/MSDeploy').gsub(/\//, '\\')
+end
+
+
 Tasks::MSDeploy.new deploy: :bin_path do |t|
+  msdeploy_gac_hack
+
   local_path = File.expand_path('build/bin/Web')
   remote_path = remote_path_for(local_path)
 
