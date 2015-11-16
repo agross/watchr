@@ -123,7 +123,7 @@ describe(Console.name, function() {
       this.console.block([]);
       this.console.terminate();
 
-      expect(this.parent.find('section#session-id')).toHaveClass('closed');
+      expect(this.parent.find('section#session-id')).toHaveClass('terminated');
     });
   });
 });

@@ -58,8 +58,17 @@ section header {
   flex: none;
 }
 
-section.closed {
+section.terminated header {
   opacity: .5;
+}
+
+section.terminated header::after {
+  content: " (terminated)";
+}
+
+section.terminated pre:last-child::after {
+  display: block;
+  content: "# Session has been terminated";
 }
 
 section div {

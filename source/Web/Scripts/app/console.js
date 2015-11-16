@@ -46,6 +46,6 @@ function Console(parent, sessionId) {
   };
 
   this.terminate = function() {
-    $('section#' + getSessionId()).attr('class', 'closed');
+    $('section#' + getSessionId()).attr('class', 'terminated');
   };
 }
