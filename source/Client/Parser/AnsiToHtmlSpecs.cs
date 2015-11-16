@@ -551,6 +551,15 @@ namespace Client.Parser
     }
 
     [Test]
+    public void Should_remove_zsh_bracketed_paste_markers()
+    {
+      var text = "[1m[7m%[27m[1m[0m                                                                                                                       \r]0;/scratch\r[0m[27m[24m[J\r[36m1025(B[m [32magross@AXL(B[m [33m/scratch(B[m[32m(B[m[31m[1m[0m(B[m[K\r(B[m$ [K[?2004hlls[?2004l";
+      var expected = "<span class='cyan'>1025</span> <span class='green'>agross@AXL</span> <span class='yellow'>/scratch</span><span class='green'></span><span class='red'><b></b></span>$ ls";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
     [Explicit]
     public void Should_support_dumps()
     {

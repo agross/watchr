@@ -75,6 +75,7 @@
     <Compile Include="Parser\AnsiToHtmlSpecs.cs" />
     <Compile Include="Parser\Token\IToken.cs" />
     <Compile Include="ScreenLogs\Listener.cs" />
+    <Compile Include="Parser\Token\RemoveZshBracketedPasteMarkers.cs" />
     <Compile Include="Parser\Token\RemoveMalformedEscapes.cs" />
     <Compile Include="Parser\Token\NormalizeLineEndings.cs" />
     <Compile Include="Parser\Token\RemoveUninterestingEscapes.cs" />

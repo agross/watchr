@@ -15,6 +15,7 @@ namespace Client.Parser
                                                 {
                                                   //new RemoveCrOnlyLineEndings(),
                                                   new NormalizeLineEndings(),
+                                                  new RemoveZshBracketedPasteMarkers(),
                                                   new RemoveUninterestingEscapes(),
                                                   new AnsiDisplayCodes(),
                                                   new RemoveMalformedEscapes(),
@@ -250,7 +251,7 @@ namespace Client.Parser
         {
           Debug.Assert(RegexOptions.Singleline.HasFlag(token.Pattern.Options) == false,
                        "Patterns with Singleline flag are not supported as we read the file line-by-line.");
-          
+
           Debug.Assert(token.Pattern.ToString().StartsWith("\\A"),
                        "Patterns must start with \\A for performance reasons.");
 
