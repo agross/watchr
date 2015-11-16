@@ -551,6 +551,7 @@ namespace Client.Parser
     }
 
     [Test]
+    [Explicit]
     public void Should_support_dumps()
     {
       var path = "c:/Cygwin/tmp/screen-*.log";
