@@ -89,6 +89,7 @@
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="nlog.config.erb" />
     <None Include="paket.references" />
   </ItemGroup>
   <ItemGroup>

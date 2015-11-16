@@ -1,4 +1,4 @@
-﻿<?xml version="1.0"
+<?xml version="1.0"
       encoding="UTF-8"?>
 
 <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd"
@@ -25,7 +25,7 @@
 
   <variable name="message-exception-layout"
             value="${message-layout}${exception-layout}" />
-  
+
   <variable name="default-layout"
             value="${date:culture=de} ${level-layout} ${thread-layout} ${logger-layout} - ${message-layout}${exception-layout}" />
 
@@ -56,6 +56,6 @@
   <rules>
     <logger name="*"
             minlevel="Trace"
-            writeTo="UI, Debugger, File" />
+            writeTo="UI, Debugger<%= ', File' if configatron.env !~ /production/ %>" />
   </rules>
 </nlog>
