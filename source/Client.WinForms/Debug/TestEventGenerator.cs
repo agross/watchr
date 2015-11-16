@@ -15,7 +15,10 @@ namespace Client.WinForms.Debug
 
     public TestEventGenerator()
     {
-      _subscriptions = new CompositeDisposable(
+      _subscriptions = new CompositeDisposable();
+
+#if DEBUG
+      _subscriptions.Add(
         Observable
           .Interval(TimeSpan.FromSeconds(3))
           .StartWith(42)
@@ -26,6 +29,7 @@ namespace Client.WinForms.Debug
             RxMessageBrokerMinimod.Default.Send(connectionState);
           })
           .Subscribe());
+#endif
     }
 
     public void Dispose()
