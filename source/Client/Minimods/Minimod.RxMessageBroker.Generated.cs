@@ -13,10 +13,10 @@ namespace Minimod.RxMessageBroker
     /// Licensed under the Apache License, Version 2.0; you may not use this file except in compliance with the License.
     /// http://www.apache.org/licenses/LICENSE-2.0
     /// </remarks>
-    class RxMessageBrokerMinimod
+    public class RxMessageBrokerMinimod
     {
         private static RxMessageBrokerMinimod _defaultInstance;
-        private readonly Subject<object> _stream = new Subject<object>();       
+        private readonly Subject<object> _stream = new Subject<object>();
 
         public static RxMessageBrokerMinimod Default { get { return _defaultInstance ?? (_defaultInstance = new RxMessageBrokerMinimod()); } }
         public static void OverrideDefault(RxMessageBrokerMinimod newMessenger) { _defaultInstance = newMessenger; }

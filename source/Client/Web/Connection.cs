@@ -6,6 +6,8 @@ using System.Reactive.Subjects;
 
 using Microsoft.AspNet.SignalR.Client;
 
+using Minimod.RxMessageBroker;
+
 using NLog;
 
 namespace Client.Web
@@ -72,15 +74,23 @@ namespace Client.Web
                   change.OldState,
                   change.NewState);
 
-      if (change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Connecting ||
-          change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Disconnected ||
-          change.NewState == Microsoft.AspNet.SignalR.Client.ConnectionState.Reconnecting)
+      switch (change.NewState)
       {
-        _state.OnNext(new ConnectionDown(_connection));
-      }
-      else
-      {
-        _state.OnNext(new ConnectionUp(_connection));
+        case Microsoft.AspNet.SignalR.Client.ConnectionState.Connecting:
+        case Microsoft.AspNet.SignalR.Client.ConnectionState.Reconnecting:
+          _state.OnNext(new ConnectionDown(_connection));
+          RxMessageBrokerMinimod.Default.Send(ConnectionState.Connecting);
+          return;
+
+        case Microsoft.AspNet.SignalR.Client.ConnectionState.Disconnected:
+          _state.OnNext(new ConnectionDown(_connection));
+          RxMessageBrokerMinimod.Default.Send(ConnectionState.Disconnected);
+          return;
+
+        case Microsoft.AspNet.SignalR.Client.ConnectionState.Connected:
+          _state.OnNext(new ConnectionUp(_connection));
+          RxMessageBrokerMinimod.Default.Send(ConnectionState.Connected);
+          return;
       }
     }
 

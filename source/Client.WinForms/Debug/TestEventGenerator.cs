@@ -15,10 +15,8 @@ namespace Client.WinForms.Debug
 
     public TestEventGenerator()
     {
-      _subscriptions = new CompositeDisposable();
-
 #if DEBUG
-      _subscriptions.Add(
+      _subscriptions = new CompositeDisposable(
         Observable
           .Interval(TimeSpan.FromSeconds(3))
           .StartWith(42)
@@ -34,7 +32,10 @@ namespace Client.WinForms.Debug
 
     public void Dispose()
     {
-      _subscriptions.Dispose();
+      if (_subscriptions != null)
+      {
+        _subscriptions.Dispose();
+      }
     }
   }
 }
