@@ -49,9 +49,22 @@ function Recreate-WebAppPool {
   return New-WebAppPool -Name $Name
 }
 
-function Recreate-WebSite {
+function Recreate-WebSite
+{
+  [CmdletBinding()]
   param (
-    [string] $Name = $(throw "Name is missing")
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Name,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $Pool,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $PhysicalPath,
+    [Parameter(Mandatory = $true)]
+    [ValidateNotNullOrEmpty()]
+    [string] $LogDirectory
   )
 
   # -ErrorAction SilentlyContinue override does not work here for some reason.
@@ -59,7 +72,10 @@ function Recreate-WebSite {
   Remove-WebSite -Name $Name
   $ErrorActionPreference = 'Stop'
 
-  Return New-WebSite -Name $Name
+  $Site = New-WebSite -Name $Name -ApplicationPool $Pool -PhysicalPath $PhysicalPath
+  Set-ItemProperty IIS:\Sites\$Name LogFile.Directory $LogDirectory
+
+  return $Site
 }
 
 function Check-HttpResponse {
@@ -130,15 +146,14 @@ function Install {
   $pool.managedRuntimeVersion = "v4.0"
   $pool | Set-Item
 
-  $site = Recreate-WebSite -Name $siteName
-  Set-ItemProperty IIS:\Sites\$siteName ApplicationPool $pool.Name
-  Set-ItemProperty IIS:\Sites\$siteName PhysicalPath $physicalPath
-  Set-ItemProperty IIS:\Sites\$siteName LogFile.Directory $scriptPath\logs
+  $site = Recreate-WebSite -Name $siteName -Pool $pool.Name -PhysicalPath $physicalPath -LogDirectory $([System.IO.Path]::GetFullPath($(Join-Path $ScriptPath 'logs')))
 
   Get-WebBinding -Name $site.Name | Remove-WebBinding
   $bindings | ForEach-Object {
     New-WebBinding -Name $site.Name -Protocol $_.Protocol -HostHeader $_.HostHeader -Port $_.Port
   }
+
+  Start-Website -Name $site.Name
 
   Check-HttpResponse
 
