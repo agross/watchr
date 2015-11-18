@@ -14,6 +14,21 @@ namespace Client.Web
 {
   static class ObservableExtensions
   {
+    public static IObservable<T> BufferUntil<T>(this IObservable<T> instance, IObservable<T> gateStream, Func<int, bool> shouldBuffer)
+    {
+      return instance
+        .Window(gateStream)
+        .Select((d, index) =>
+        {
+          if (shouldBuffer(index))
+          {
+            return d.ToList().SelectMany(x => x);
+          }
+          return d;
+        })
+        .Concat();
+    }
+
     public static IObservable<T> RetryAfter<T>(this IObservable<T> instance, TimeSpan delay)
     {
       return instance
@@ -51,18 +66,20 @@ namespace Client.Web
 
       var onlineMessages = new Messages()
         .Stream
-        .Window(connection.State)
-        .Select((d, index) =>
-        {
-          var buffer = new Func<int, bool>(i => i % 2 != 0);
-          if (buffer(index))
-          {
-            Logger.Warn("Buffering until connection becomes available");
-            return d.ToList().SelectMany(x => x);
-          }
-          return d;
-        })
-        .Concat()
+        .BufferUntil(connection.State,
+                     gateStreamMessageIndex =>
+                     {
+                       var shouldBuffer = gateStreamMessageIndex % 2 != 0;
+                       if (shouldBuffer)
+                       {
+                         Logger.Warn("Buffering until connection becomes available");
+                       }
+                       else
+                       {
+                         Logger.Warn("Releasing buffer");
+                       }
+                       return shouldBuffer;
+                     })
         .Publish();
 
       var eventLoop = new EventLoopScheduler();
