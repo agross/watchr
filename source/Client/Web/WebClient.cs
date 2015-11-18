@@ -1,8 +1,11 @@
 using System;
 using System.Linq;
+using System.Net;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 
 using Client.Messages;
 
@@ -12,27 +15,24 @@ using NLog;
 
 namespace Client.Web
 {
-  static class ClassNameExtensions
+  static class ObservableExtensions
   {
-    public static IObservable<T> RetryDo<T, TException>(this IObservable<T> instance,
-                                                        Action<T> onNext) where TException : Exception
+    public static IObservable<T> RetryAfter<T>(this IObservable<T> instance, TimeSpan delay)
     {
       return instance
-        .Do(x =>
-        {
-          var failed = true;
-          while (failed)
-          {
-            try
-            {
-              onNext(x);
-              failed = false;
-            }
-            catch (TException)
-            {
-            }
-          }
-        });
+        .Catch<T, Exception>(ex => Observable
+                                     .Throw<T>(ex)
+                                     .DelaySubscription(delay))
+        .Retry();
+    }
+
+    public static IObservable<T> RetryAfter<T>(this IObservable<T> instance, Action<T> onNext, TimeSpan delay)
+    {
+      return instance
+        .SelectMany(x => Observable
+                           .Defer(() => Observable.Start(() => x))
+                           .Do(onNext)
+                           .RetryAfter(delay));
     }
   }
 
@@ -75,17 +75,17 @@ namespace Client.Web
           .ConnectRequired
           .ObserveOn(eventLoop)
           .Do(Connect)
-          .Retry()
+          .RetryAfter(TimeSpan.FromSeconds(10))
           .Subscribe(),
         onlineMessages
           .OfType<BlockParsed>()
           .ObserveOn(eventLoop)
-          .RetryDo<BlockParsed, Exception>(Send)
+          .RetryAfter(Send, TimeSpan.FromSeconds(10))
           .Subscribe(),
         onlineMessages
           .OfType<SessionTerminated>()
           .ObserveOn(eventLoop)
-          .RetryDo<SessionTerminated, Exception>(Terminate)
+          .RetryAfter(Terminate, TimeSpan.FromSeconds(10))
           .Subscribe(),
         onlineMessages.Connect()
         );
@@ -97,22 +97,22 @@ namespace Client.Web
       _connection.Stop();
     }
 
-    static async void Connect(Microsoft.AspNet.SignalR.Client.Connection connection)
+    static void Connect(Microsoft.AspNet.SignalR.Client.Connection connection)
     {
       Logger.Info("SignalR: Starting connection");
 
       try
       {
-        await connection.Start().ConfigureAwait(false);
+        connection.Start().Wait();
       }
       catch (Exception exception)
       {
-        Logger.Error("SignalR: Could not start connection", exception);
+        Logger.Error("SignalR: Could not start connection", MaybeAggregateException(exception));
         throw;
       }
     }
 
-    async void Send(BlockParsed output)
+    void Send(BlockParsed output)
     {
       Logger.Info("Session {0}: Sending {1} lines, starting at index {2}",
                   output.SessionId,
@@ -121,32 +121,42 @@ namespace Client.Web
 
       try
       {
-        await _hub.Invoke<string>("Broadcast", output).ConfigureAwait(false);
+        _hub.Invoke<string>("Broadcast", output).Wait();
       }
       catch (Exception exception)
       {
         Logger.Error(String.Format("Session {0}: Error sending request",
                                    output.SessionId),
-                     exception);
+                     MaybeAggregateException(exception));
         throw;
       }
     }
 
-    async void Terminate(SessionTerminated message)
+    void Terminate(SessionTerminated message)
     {
       Logger.Info("Session {0}: Terminated", message.SessionId);
 
       try
       {
-        await _hub.Invoke<string>("Terminate", message.SessionId).ConfigureAwait(false);
+        _hub.Invoke<string>("Terminate", message.SessionId).Wait();
       }
       catch (Exception exception)
       {
         Logger.Error(String.Format("Session {0}: Error sending request",
                                    message.SessionId),
-                     exception);
+                     MaybeAggregateException(exception));
         throw;
       }
+    }
+
+    static Exception MaybeAggregateException(Exception exception)
+    {
+      var aex = exception as AggregateException;
+      if (aex != null)
+      {
+        exception = aex.GetBaseException();
+      }
+      return exception;
     }
   }
 }
