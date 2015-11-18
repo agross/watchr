@@ -27,7 +27,7 @@ function ConsoleHub() {
 
       if (change.newState === $.signalR.connectionState.reconnecting) {
         $('#status').attr('class', 'warning');
-        $('#status').text('Re-Connecting...');
+        $('#status').text('Reconnecting...');
       }
 
       if (change.newState === $.signalR.connectionState.connected) {
