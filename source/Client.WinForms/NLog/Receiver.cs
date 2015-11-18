@@ -14,6 +14,7 @@ namespace Client.WinForms.NLog
     {
       var parsedDate = DateTime.Parse(date);
       var nlogLevel = LogLevel.FromString(level);
+      message = message.Replace(Environment.NewLine, " ");
       RxMessageBrokerMinimod.Default.Send(new LogMessage(parsedDate, nlogLevel, thread, logger, message));
     }
   }
