@@ -139,7 +139,7 @@ function Check-HttpResponse {
 function Install {
   Set-Permissions -RootPath $scriptPath -Permissions $permissions
 
-  Exec { & "$scriptPath\tools\Web Platform Installer\WebpiCmd.exe" /Install "/Products:NETFramework451" /SuppressReboot /AcceptEula }
+  Exec { & "$scriptPath\tools\Web Platform Installer\WebpiCmd.exe" /Install "/Products:NETFramework451,MVC4Vs2010_Loc" /SuppressReboot /AcceptEula }
 
   $pool = Recreate-WebAppPool -Name $appPool
   $pool.processModel.identityType = $appPoolIdentity
