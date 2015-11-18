@@ -8,7 +8,9 @@ end
   end
 
   Tasks::Zip.new package: :compile do |t|
-    t.source = FileList["build/bin/#{target}/**/*"].exclude('**/*.xml')
+    t.source = FileList["build/bin/#{target}/**/*"]
+      .exclude('**/*.log')
+      .exclude('**/*.xml')
     t.target = zip(target)
   end
 end

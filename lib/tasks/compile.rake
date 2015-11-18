@@ -28,6 +28,8 @@ Tasks::Copy.new :compile do |t|
     .exclude('**/paket.references')
     .exclude('**/deploy.ps1')
     .exclude('**/*.template')
+    .exclude('**/*.erb')
+    .exclude('**/*.user')
   t.target = 'build/bin/Web/bin'
 end
 
