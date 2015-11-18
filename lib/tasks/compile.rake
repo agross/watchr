@@ -25,6 +25,7 @@ Tasks::Copy.new :compile do |t|
     .exclude('**/*.map')
     .exclude('**/*-vsdoc.js')
     .exclude('**/bin/*.xml')
+    .exclude('**/bin/Web.dll.config')
     .exclude('**/paket.references')
     .exclude('**/deploy.ps1')
     .exclude('**/*.template')
