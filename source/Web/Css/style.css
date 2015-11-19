@@ -2,7 +2,28 @@ html, body {
   height: 100%;
   margin: 0;
 
-  font-family: Segoe UI, Helveticam, Arial, serif;
+  font-family: 'Droid Sans', Segoe UI, Helvetica, Arial, sans-serif;
+}
+
+body {
+  position: relative;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+
+#welcome {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+h1 {
+  font-family: 'Droid Serif', serif;
+  font-weight: normal;
+  color: rgb(0, 52, 120);
 }
 
 #status {
@@ -76,7 +97,8 @@ section div {
 }
 
 pre {
-  font-family: Consolas, Courier New, monospace;
+  font-family: 'Droid Sans Mono', Consolas, Courier New, monospace;
+  font-size: 13px;
   margin: 0;
 }
 

@@ -2,13 +2,13 @@
 /// <reference path='../jquery.signalR-2.2.0.js' />
 /// <reference path='console.js' />
 function ConsoleHub() {
-  this.setUp = function(parent) {
+  this.setUp = function(parent, welcome) {
     $.connection.consoleHub.client.block = function(block) {
-      new Console(parent, block.SessionId).block(block.Lines);
+      new Console(parent, welcome, block.SessionId).block(block.Lines);
     };
 
     $.connection.consoleHub.client.terminate = function(sessionId) {
-      new Console(parent, sessionId).terminate();
+      new Console(parent, welcome, sessionId).terminate();
     };
 
     $.connection.hub.error(function(error) {

@@ -2,12 +2,14 @@
 /// <reference path='spec_helper.js' />
 describe(Console.name, function() {
   beforeEach(function() {
-    this.parent = $('<div>').attr('id', 'consoles');
+    this.parent = $('<div>').attr('id', 'parent-container');
+    this.welcome = $('<div>').attr('id', 'welcome-container');
     setFixtures(this.parent);
+    setFixtures(this.welcome);
   });
 
   beforeEach(function() {
-    this.console = new Console(this.parent, 'id');
+    this.console = new Console(this.parent, this.welcome, 'id');
   });
 
   it('should have a session id', function() {
@@ -22,7 +24,11 @@ describe(Console.name, function() {
         this.console.block([{ Index: 0, Html: 'line 1' }]);
       });
 
-      it('should create a new console', function() {
+      it('should hide welcome message', function() {
+        expect(this.welcome).toBeHidden();
+      });
+
+      it('should create a new console', function () {
         expect(this.parent.find('section#session-id')).toExist();
       });
 
@@ -98,7 +104,7 @@ describe(Console.name, function() {
       it('should create a new console', function() {
         this.console.block([]);
 
-        var console2 = new Console(this.parent, 'id-2');
+        var console2 = new Console(this.parent, this.welcome, 'id-2');
         console2.block([]);
 
         expect(this.parent.children()).toHaveLength(2);
@@ -109,13 +115,12 @@ describe(Console.name, function() {
       it('should not create a new console', function() {
         this.console.block([]);
 
-        var second = new Console(this.parent, this.console.sessionId);
+        var second = new Console(this.parent, this.welcome, this.console.sessionId);
         second.block([]);
 
         expect(this.parent.children()).toHaveLength(1);
       });
     });
-
   });
 
   describe('session terminated', function() {

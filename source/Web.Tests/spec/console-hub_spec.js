@@ -29,10 +29,11 @@ describe(ConsoleHub.name, function() {
 
     var createConsoleHub = function(that) {
       that.parent = $('#parent-container');
+      that.welcome = $('#welcome-container');
       that.sessionId = 'id';
       that.lines = [];
 
-      new ConsoleHub().setUp(that.parent);
+      new ConsoleHub().setUp(that.parent, that.welcome);
     };
 
     fakeConsole(this);
@@ -53,7 +54,7 @@ describe(ConsoleHub.name, function() {
       });
 
       it('should create a console for the session', function() {
-        expect(this.console).toHaveBeenCalledWith(this.parent, this.sessionId);
+        expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
       });
 
       it('should send blocks to the console', function() {
@@ -67,7 +68,7 @@ describe(ConsoleHub.name, function() {
       });
 
       it('should create a console for the session', function() {
-        expect(this.console).toHaveBeenCalledWith(this.parent, this.sessionId);
+        expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
       });
 
       it('should terminate the console', function() {
