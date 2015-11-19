@@ -48,7 +48,8 @@ Tasks::MSDeploy.new deploy: :bin_path do |t|
     ],
     post_sync_on_success: {
       run_command: post_sync(remote_path),
-      wait_interval: 60 * 1000
+      wait_interval: 60 * 1000,
+      wait_attempts: 10
     },
     use_check_sum: nil
   }
