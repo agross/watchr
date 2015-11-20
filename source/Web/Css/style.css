@@ -28,7 +28,7 @@ body {
 }
 
 @keyframes drop {
-  100% {
+  to {
     top: 50%
   }
 }
@@ -80,9 +80,21 @@ h1 {
   border: 1px solid gray;
 
   display: flex;
-  flex: 0 1 100%;
+  flex: 0.0001;
   flex-direction: column;
   overflow: hidden;
+
+  animation-name: grow;
+  animation-fill-mode: forwards;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in;
+  animation-duration: .5s;
+}
+
+@keyframes grow {
+  to {
+    flex: 1;
+  }
 }
 
 section header {
