@@ -173,3 +173,8 @@ b .yellow {
   color: white;
   background-color: #BF0000;
 }
+
+.default.foreground {
+  color: #000;
+}
+
