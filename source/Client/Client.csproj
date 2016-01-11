@@ -69,6 +69,7 @@
     <Compile Include="Messages\BlockReceived.cs" />
     <Compile Include="Messages\SessionTerminated.cs" />
     <Compile Include="Parser\ParserException.cs" />
+    <Compile Include="Parser\Token\RemoveTerminalTitle.cs" />
     <Compile Include="ScreenLogs\Subscriber.cs" />
     <Compile Include="Parser\TokenNotSupportedException.cs" />
     <Compile Include="Parser\Token\AnsiDisplayCodes.cs" />

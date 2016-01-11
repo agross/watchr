@@ -560,6 +560,15 @@ namespace Client.Parser
     }
 
     [Test]
+    public void Should_screen_terminal_title_escapes()
+    {
+      var text = "foo\u001bkzsh /scratch\u001b\\bar";
+      var expected = "foobar";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
     [Explicit]
     public void Should_support_dumps()
     {

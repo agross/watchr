@@ -16,6 +16,7 @@ namespace Client.Parser
                                                   //new RemoveCrOnlyLineEndings(),
                                                   new NormalizeLineEndings(),
                                                   new RemoveZshBracketedPasteMarkers(),
+                                                  new RemoveTerminalTitle(),
                                                   new RemoveUninterestingEscapes(),
                                                   new AnsiDisplayCodes(),
                                                   new RemoveMalformedEscapes(),
