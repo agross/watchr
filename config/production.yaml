@@ -4,12 +4,9 @@ build:
     pre:
 
 deployment:
-  connection:
-    computer_name: watch.grossweber.com
-
-  remote_path: C:/GROSSWEBER/watch
   canoncial_url: http://watch.grossweber.com/
 
+web:
   bindings:
     -
       :protocol: http

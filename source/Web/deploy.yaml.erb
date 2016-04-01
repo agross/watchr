@@ -1,0 +1,79 @@
+﻿application:
+  name: watchr-<%= configatron.web.bindings.first[:host] %>
+  version:
+    from: bin/bin/Web.dll
+  dns:
+    inwx:
+      username: env://INWX_USER
+      password: env://INWX_PASSWORD
+      records:
+        -
+          type: cname
+          name: watch.grossweber.com
+          content: grossweber.com
+deployment:
+  - requirements:
+    - NETFramework451
+    - MVC4Vs2010_Loc
+  - permissions:
+      .:
+        FullControl:
+          - sid://BuiltinAdministratorsSid
+          - sid://LocalSystemSid
+      bin:
+        ReadAndExecute:
+          - IUSR
+          - IIS_IUSRs
+      ../../logs:
+        Modify:
+          - IIS_IUSRs
+  - web:
+      name: GW - <%= configatron.web.bindings.first[:host] %>
+      physical_path: bin
+      # Properties:
+      #   Get-Item 'IIS:\Sites\Default Web Site\' | Get-Member -MemberType NoteProperty
+      # Details:
+      #   (Get-Item 'IIS:\Sites\Default Web Site\').id
+      #   (Get-Item 'IIS:\Sites\Default Web Site\').logFile
+      properties:
+        log_file:
+          directory: absolute-path://../../logs
+          log_ext_file_flags: Date,Time,ClientIP,UserName,ServerIP,Method,UriStem,UriQuery,HttpStatus,Win32Status,TimeTaken,ServerPort,UserAgent,Referer,HttpSubStatus
+      app_pool:
+        name: GROSSWEBER @configatron.project@ @configatron.env@
+        # Properties:
+        #   Get-Item IIS:\AppPools\DefaultAppPool\ | Get-Member -MemberType NoteProperty
+        # Details:
+        #   (Get-Item IIS:\AppPools\DefaultAppPool\).managedRuntimeVersion
+        #   (Get-Item IIS:\AppPools\DefaultAppPool\).processModel
+        properties:
+          process_model:
+            identity_type: NetworkService
+          managed_runtime_version: v4.0
+      bindings:
+        <% configatron.web.bindings.each do |binding| %>
+        -
+          protocol: <%= binding[:protocol] %>
+          host_header: <%= binding[:host] %>
+        <% end %>
+      tests:
+        <%
+          def type(protocol)
+            return URI::HTTPS if protocol == 'https'
+            URI::HTTP
+          end
+
+          bindings = configatron.web.bindings
+
+          root = type(bindings.first[:protocol]).build(host: bindings.first[:host], path: '/')
+
+          bindings.each do |binding|
+            url = type(binding[:protocol]).build(host: binding[:host])
+        %>
+        -
+          method: GET
+          url: <%= url %>
+          expect:
+            status: 200
+            url: <%= root %>
+        <% end %>

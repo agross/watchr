@@ -27,7 +27,7 @@ Tasks::Copy.new :compile do |t|
     .exclude('**/bin/*.xml')
     .exclude('**/bin/Web.dll.config')
     .exclude('**/paket.references')
-    .exclude('**/deploy.ps1')
+    .exclude('**/*.yaml')
     .exclude('**/*.template')
     .exclude('**/*.erb')
     .exclude('**/*.user')
@@ -35,16 +35,6 @@ Tasks::Copy.new :compile do |t|
 end
 
 Tasks::Copy.new compile: :template  do |t|
-  t.source = 'source/Web/deploy.ps1'
+  t.source = 'source/Web/deploy.yaml'
   t.target = 'build/bin/Web'
-end
-
-Tasks::Copy.new :compile do |t|
-  t.source = 'tools/Deployment/**/*'
-  t.target = 'build/bin/Web/lib/Deployment'
-end
-
-Tasks::Copy.new :compile do |t|
-  t.source = 'tools/Web Platform Installer/**/*'
-  t.target = 'build/bin/Web/tools/Web Platform Installer'
 end
