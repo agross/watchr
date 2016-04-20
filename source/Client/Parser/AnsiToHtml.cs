@@ -65,84 +65,59 @@ namespace Client.Parser
 
             case "display":
               var code = Convert.ToInt32(tokenData.Data);
-              if (code == 0)
+              switch (code)
               {
-                yield return CloseTags();
-                break;
-              }
-              if (code == 1)
-              {
-                yield return PushTag("b");
-                break;
-              }
-              if (code == 3)
-              {
-                yield return PushTag("i");
-                break;
-              }
-              if (code == 4)
-              {
-                yield return PushTag("u");
-                break;
-              }
-              if (code == 5)
-              {
-                yield return PushTag("blink", "slow");
-                break;
-              }
-              if (code == 6)
-              {
-                yield return PushTag("blink", "rapid");
-                break;
-              }
-              if (code == 7)
-              {
-                yield return PushTagWithClass("inverse");
-                break;
-              }
-              if (code == 8)
-              {
-                yield return PushTagWithClass("conceal");
-                break;
-              }
-              if (code == 9)
-              {
-                yield return PushTag("strike");
-                break;
-              }
-              if (code == 24)
-              {
-                yield return CloseTag("u");
-                break;
-              }
-              if (code == 27)
-              {
-                yield return CloseTag("span");
-                break;
+                case 0:
+                  yield return CloseTags();
+                  continue;
+                case 1:
+                  yield return PushTag("b");
+                  continue;
+                case 3:
+                  yield return PushTag("i");
+                  continue;
+                case 4:
+                  yield return PushTag("u");
+                  continue;
+                case 5:
+                  yield return PushTag("blink", "slow");
+                  continue;
+                case 6:
+                  yield return PushTag("blink", "rapid");
+                  continue;
+                case 7:
+                  yield return PushTagWithClass("inverse");
+                  continue;
+                case 8:
+                  yield return PushTagWithClass("conceal");
+                  continue;
+                case 9:
+                  yield return PushTag("strike");
+                  continue;
+                case 22:
+                  yield return CloseTag("b");
+                  continue;
+                case 24:
+                  yield return CloseTag("u");
+                  continue;
+                case 27:
+                  yield return CloseTag("span");
+                  continue;
+                case 39:
+                  yield return PushTagWithClass("default foreground");
+                  continue;
+                case 49:
+                  yield return PushTagWithClass("default background");
+                  continue;
               }
               if (Enumerable.Range(30, 8).Contains(code))
               {
                 yield return PushTagWithClass(code - 30);
                 break;
               }
-              if (code == 39)
-              {
-                yield return PushTagWithClass("default foreground");
-                break;
-              }
               if (Enumerable.Range(40, 8).Contains(code))
               {
                 yield return PushTagWithClass(code - 40, " background");
-                break;
-              }
-              if (code == 49)
-              {
-                yield return PushTagWithClass("default background");
-                break;
-              }
-
-              if (code == 7 || code == 27)
-              {
                 break;
               }
 

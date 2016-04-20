@@ -227,6 +227,15 @@ namespace Client.Parser
     }
 
     [Test]
+    public void Should_support_normal_color_or_intensity()
+    {
+      var text = "intensity: \u001b[1mstuff\u001b[22mthings";
+      var expected = "intensity: <b>stuff</b>things";
+
+      AssertEqual(text, expected);
+    }
+
+    [Test]
     public void Should_support_slow_blink()
     {
       var text = "blink: \u001b[5mwhat";
