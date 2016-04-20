@@ -7,6 +7,7 @@ using System.Reactive.Linq;
 using Client.Messages;
 
 using Microsoft.AspNet.SignalR.Client.Hubs;
+using Microsoft.AspNet.SignalR.Client.Transports;
 
 using NLog;
 
@@ -117,7 +118,7 @@ namespace Client.Web
 
       try
       {
-        connection.Start().Wait();
+        connection.Start(new LongPollingTransport()).Wait();
       }
       catch (Exception exception)
       {
