@@ -7,6 +7,9 @@ build:
     build: <%= ENV['BUILD_NUMBER'] %>
     sha: <%= (ENV['BUILD_VCS_NUMBER'] || `git rev-parse --short HEAD`)[0...7] %>
 
+client:
+  shell_transscripts: <%= Gem.win_platform? ? 'C:\Cygwin\tmp\screen*.log' : '/tmp/*zsh*.log' %>
+
 deployment:
   canoncial_url: http://localhost:34530/
 
