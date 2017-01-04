@@ -4,7 +4,7 @@ function Console(parent, welcome, sessionId) {
   this.sessionId = sessionId;
 
   var getSessionId = function() {
-    return 'session-' + sessionId;
+    return 'session-' + sessionId.replace(/[\W\s]/g, '_');
   };
 
   var getLineId = function(index) {
