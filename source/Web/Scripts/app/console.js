@@ -21,7 +21,7 @@ function Console(parent, welcome, sessionId) {
     }
 
     console = $('<section>').attr('id', getSessionId())
-      .append($('<header>').text(sessionId))
+      .append($('<header>').text(sessionId.replace(/\s.*/, '')))
       .append($('<div>'));
 
     parent.append(console);
