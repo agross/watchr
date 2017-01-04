@@ -1,4 +1,4 @@
-﻿namespace Client.Web
+namespace Client.Web
 {
   public enum ConnectionState
   {

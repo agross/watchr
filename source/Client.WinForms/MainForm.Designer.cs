@@ -1,4 +1,4 @@
-﻿namespace Client.WinForms
+namespace Client.WinForms
 {
   partial class MainForm
   {

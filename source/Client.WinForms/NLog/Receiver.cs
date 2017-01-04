@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Client.WinForms.Messages;
 

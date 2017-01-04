@@ -1,4 +1,4 @@
-﻿/// <reference path='../../Web/Scripts/app/console-hub.js' />
+/// <reference path='../../Web/Scripts/app/console-hub.js' />
 /// <reference path='spec_helper.js' />
 describe(ConsoleHub.name, function() {
   beforeEach(function() {

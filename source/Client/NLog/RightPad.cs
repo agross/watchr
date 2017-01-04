@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using NLog.Config;
 using NLog.LayoutRenderers;

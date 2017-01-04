@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Configuration;
 using System.Drawing;
 using System.Reactive.Concurrency;

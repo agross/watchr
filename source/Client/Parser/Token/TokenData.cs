@@ -1,4 +1,4 @@
-﻿namespace Client.Parser.Token
+namespace Client.Parser.Token
 {
   class TokenData
   {
