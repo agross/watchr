@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 using Client.Messages;
@@ -61,22 +62,25 @@ namespace Client.ScreenLogs
           return;
         }
 
-        var startOffset = context.Offset;
+        reader.BaseStream.Seek(context.Offset, SeekOrigin.Begin);
+        var buffer = new char[500000];
 
-        reader.BaseStream.Seek(startOffset, SeekOrigin.Begin);
-        var @string = reader.ReadToEnd();
-        context.Offset = reader.BaseStream.Position;
+        int charsRead;
+        while ((charsRead = reader.ReadBlock(buffer, 0, buffer.Length)) > 0)
+        {
+          var text = new TextReceived(context.SessionId,
+                                      context.Offset,
+                                      reader.BaseStream.Position,
+                                      new string(buffer.Take(charsRead).ToArray()));
 
-        var text = new TextReceived(context.SessionId,
-                                    startOffset,
-                                    context.Offset,
-                                    @string);
+          Logger.Debug("Session {0}: Text received, offset {1} to {2}",
+                       context.SessionId,
+                       context.Offset,
+                       reader.BaseStream.Position);
+          RxMessageBrokerMinimod.Default.Send(text);
 
-        Logger.Debug("Session {0}: Text received, offset {1} to {2}",
-                     context.SessionId,
-                     startOffset,
-                     context.Offset);
-        RxMessageBrokerMinimod.Default.Send(text);
+          context.Offset = reader.BaseStream.Position;
+        }
       }
     }
 

@@ -64,6 +64,7 @@
     <Content Include="Css\.gitignore" />
     <None Include="Index.cshtml" />
     <Content Include="Scripts\jquery\jquery.min.js" />
+    <Content Include="Scripts\signalr\jquery.signalR.min.js" />
     <Content Include="Scripts\xterm\fit.js" />
     <Content Include="Scripts\xterm\xterm.js" />
     <Content Include="Web.config">
