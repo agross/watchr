@@ -22,3 +22,7 @@
 .terminal .xterm-rows {
   line-height: 18px !important;
 }
+
+.terminal .xterm-rows.delayed {
+  background-color: #fbc97f;
+}

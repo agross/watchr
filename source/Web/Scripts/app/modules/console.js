@@ -31,8 +31,31 @@ function Console(parent, welcome, sessionId) {
     var terminal = new Terminal({ scrollback: 20000 });
     terminal.__backlog = new Array();
     terminal.__nextOffset = 0;
+    terminal.applyText = function(text) {
+      if(this.__nextOffset === text.StartOffset ||
+        this.__nextOffset === 0) {
+        this.__nextOffset = text.EndOffset;
+        this.write(text.Text);
+
+        return true;
+      }
+
+      return false;
+    };
     terminal.buffer = function(text) {
+      $(this.rowContainer).addClass('delayed');
       return this.__backlog.push(text);
+    };
+    terminal.applyBuffer = function() {
+      var that = this;
+
+      this.__backlog = this.__backlog.filter(function (element) {
+        return !that.applyText(element);
+      });
+
+      if (this.__backlog.length === 0) {
+        $(this.rowContainer).removeClass('delayed');
+      }
     }
 
     div.terminalInstance = function() {
@@ -49,29 +72,11 @@ function Console(parent, welcome, sessionId) {
     return terminal;
   };
 
-  var applyText = function(terminal, text) {
-    if (terminal.__nextOffset === text.StartOffset ||
-        terminal.__nextOffset === 0) {
-      terminal.__nextOffset = text.EndOffset;
-      terminal.write(text.Text);
-
-      return true;
-    }
-
-    return false;
-  }
-
-  var applyBuffer = function(terminal) {
-    terminal.__backlog = terminal.__backlog.filter(function(element) {
-      return !applyText(terminal, element);
-    });
-  }
-
   this.text = function(text) {
     var terminal = findOrCreateTerminal();
 
-    if (applyText(terminal, text)) {
-      applyBuffer(terminal);
+    if (terminal.applyText(text)) {
+      terminal.applyBuffer();
     }
     else {
       terminal.buffer(text);

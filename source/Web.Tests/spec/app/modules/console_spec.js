@@ -10,6 +10,7 @@ describe(Console.name, function() {
 
     var fakeTerminal = function(that) {
       var terminal = jasmine.createSpyObj('Terminal', ['open', 'write']);
+      terminal.rowContainer = document.createElement('div');
 
       that.terminal = spyOn(window, 'Terminal').and.callFake(function() {
         return terminal;
@@ -83,7 +84,7 @@ describe(Console.name, function() {
     });
 
     describe('delayed text for new session', function() {
-      it('writes lines', function() {
+      it('starts session with delayed text', function() {
         this.console.text({ StartOffset: 42, Text: 'line 2' });
 
         expect(this.terminal().write).toHaveBeenCalledWith('line 2');
@@ -91,12 +92,27 @@ describe(Console.name, function() {
     });
 
     describe('delayed text for running session', function() {
-      it('reorders text', function() {
+      beforeEach(function() {
         this.console.text({ StartOffset: 0, EndOffset: 'first'.length, Text: 'first' });
         this.console.text({ StartOffset: 'firstlate'.length, Text: 'early' });
-        this.console.text({ StartOffset: 'first'.length, EndOffset: 'firstlate'.length,  Text: 'late' });
+      });
 
-        expect(this.terminal().write.calls.allArgs()).toEqual([['first'], ['late'], ['early']]);
+      it('marks warning for terminal', function() {
+        expect(this.terminal().rowContainer).toHaveClass('delayed');
+      });
+
+      describe('delay resolved', function () {
+        beforeEach(function() {
+          this.console.text({ StartOffset: 'first'.length, EndOffset: 'firstlate'.length, Text: 'late' });
+        });
+
+        it('reorders text', function() {
+          expect(this.terminal().write.calls.allArgs()).toEqual([['first'], ['late'], ['early']]);
+        });
+
+        it('removes warning', function() {
+          expect(this.terminal().rowContainer).not.toHaveClass('delayed');
+        });
       });
     });
   });
