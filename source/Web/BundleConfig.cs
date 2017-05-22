@@ -2,7 +2,7 @@ using System.Web.Optimization;
 
 namespace Web
 {
-  public class BundleConfig
+  class BundleConfig
   {
     public static void RegisterBundles(BundleCollection bundles)
     {
@@ -11,7 +11,8 @@ namespace Web
 
       bundles.Add(new ScriptBundle("~/assets/js/lib")
                     .Include("~/Scripts/jquery-{version}.js",
-                             "~/Scripts/jquery.signalR-{version}.js"));
+                             "~/Scripts/jquery.signalR-{version}.js",
+                             "~/Scripts/xterm.js"));
 
       bundles.Add(new ScriptBundle("~/assets/js/app")
                     .Include("~/Scripts/app/*.js"));

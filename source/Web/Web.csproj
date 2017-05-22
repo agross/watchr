@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -47,6 +47,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Css\xterm.css" />
     <Content Include="paket.references" />
     <Content Include="Css\style.css" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js">
@@ -75,9 +76,11 @@
     <Content Include="deploy.ps1" />
     <Content Include="deploy.ps1.erb" />
     <None Include="Index.cshtml" />
+    <Content Include="Scripts\xterm.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="Scripts\xterm.js.map" />
     <None Include="Web.config.erb" />
   </ItemGroup>
   <ItemGroup>

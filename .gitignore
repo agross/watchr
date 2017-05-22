@@ -6,5 +6,6 @@ bin/
 obj/
 build/
 deploy/
+node_modules/
 packages/
 .vs/

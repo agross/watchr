@@ -1,0 +1,22 @@
+{
+  "name": "watchr",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "xterm": "^2.6.0"
+  },
+  "devDependencies": {
+    "xterm": "^2.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agross/watchr.git"
+  },
+  "author": "Alexander Groß",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agross/watchr/issues"
+  },
+  "homepage": "https://github.com/agross/watchr#readme"
+}
