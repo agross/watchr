@@ -10,7 +10,6 @@ describe(Console.name, function() {
 
     var fakeTerminal = function(that) {
       var terminal = jasmine.createSpyObj('Terminal', ['open', 'write']);
-      terminal.rowContainer = document.createElement('div');
 
       that.terminal = spyOn(window, 'Terminal').and.callFake(function() {
         return terminal;
@@ -98,7 +97,7 @@ describe(Console.name, function() {
       });
 
       it('marks warning for terminal', function() {
-        expect(this.terminal().rowContainer).toHaveClass('delayed');
+        expect(this.parent.find('section#session-id')).toHaveClass('delayed');
       });
 
       describe('delay resolved', function () {
@@ -111,7 +110,7 @@ describe(Console.name, function() {
         });
 
         it('removes warning', function() {
-          expect(this.terminal().rowContainer).not.toHaveClass('delayed');
+          expect(this.parent.find('section#session-id')).not.toHaveClass('delayed');
         });
       });
     });

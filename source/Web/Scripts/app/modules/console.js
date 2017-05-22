@@ -43,7 +43,8 @@ function Console(parent, welcome, sessionId) {
       return false;
     };
     terminal.buffer = function(text) {
-      $(this.rowContainer).addClass('delayed');
+      $('section#' + getSessionId(), parent).addClass('delayed');
+
       return this.__backlog.push(text);
     };
     terminal.applyBuffer = function() {
@@ -54,7 +55,7 @@ function Console(parent, welcome, sessionId) {
       });
 
       if (this.__backlog.length === 0) {
-        $(this.rowContainer).removeClass('delayed');
+        $('section#' + getSessionId(), parent).removeClass('delayed');
       }
     }
 
@@ -84,6 +85,6 @@ function Console(parent, welcome, sessionId) {
   };
 
   this.terminate = function() {
-    $('section#' + getSessionId(), parent).attr('class', 'terminated');
+    $('section#' + getSessionId(), parent).addClass('terminated');
   };
 }

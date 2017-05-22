@@ -104,6 +104,11 @@ h1 {
   flex: none;
 }
 
+#terminals section.delayed header {
+  background-color: gold;
+  color: #000;
+}
+
 #terminals section.terminated header {
   opacity: .5;
 }
