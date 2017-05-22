@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.IO;
+using System.Text;
 
 using Client.Messages;
 
@@ -15,15 +16,13 @@ namespace Client.ScreenLogs
 
     class Context
     {
-      public string SessionId { get; private set; }
+      public string SessionId { get; }
       public long Offset { get; set; }
-      public long CurrentLineIndex { get; set; }
 
       Context(string sessionId)
       {
         SessionId = sessionId;
         Offset = 0;
-        CurrentLineIndex = 1;
       }
 
       public static Context For(string path)
@@ -51,33 +50,33 @@ namespace Client.ScreenLogs
         return;
       }
 
-      using (var reader = new UnbufferedStreamReader(new FileStream(path,
-                                                                    FileMode.Open,
-                                                                    FileAccess.Read,
-                                                                    FileShare.ReadWrite | FileShare.Delete)))
+      using (var reader = new StreamReader(new FileStream(path,
+                                                          FileMode.Open,
+                                                          FileAccess.Read,
+                                                          FileShare.ReadWrite | FileShare.Delete),
+                                           Encoding.UTF8))
       {
         if (reader.BaseStream.Length == context.Offset)
         {
           return;
         }
 
-        reader.BaseStream.Seek(context.Offset, SeekOrigin.Begin);
+        var startOffset = context.Offset;
 
-        var block = new BlockReceived(context.SessionId, context.CurrentLineIndex);
-        string line;
-        while ((line = reader.ReadLine()) != null)
-        {
-          block.Append(line);
-          
-          if (!reader.EndOfStream)
-          {
-            context.CurrentLineIndex += 1;
-            context.Offset = reader.BaseStream.Position;
-          }
-        }
+        reader.BaseStream.Seek(startOffset, SeekOrigin.Begin);
+        var @string = reader.ReadToEnd();
+        context.Offset = reader.BaseStream.Position;
 
-        Logger.Debug("Session {0}: Block received", context.SessionId);
-        RxMessageBrokerMinimod.Default.Send(block);
+        var text = new TextReceived(context.SessionId,
+                                    startOffset,
+                                    context.Offset,
+                                    @string);
+
+        Logger.Debug("Session {0}: Text received, offset {1} to {2}",
+                     context.SessionId,
+                     startOffset,
+                     context.Offset);
+        RxMessageBrokerMinimod.Default.Send(text);
       }
     }
 

@@ -21,10 +21,7 @@ namespace Client.Console
       }
       finally
       {
-        if (disp != null)
-        {
-          disp.Dispose();
-        }
+        disp?.Dispose();
       }
     }
 

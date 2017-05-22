@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -93,7 +92,7 @@ namespace Client.Web
           .RetryAfter(TimeSpan.FromSeconds(10))
           .Subscribe(),
         onlineMessages
-          .OfType<BlockParsed>()
+          .OfType<TextReceived>()
           .ObserveOn(eventLoop)
           .RetryAfter(Send, TimeSpan.FromSeconds(10))
           .Subscribe(),
@@ -127,12 +126,13 @@ namespace Client.Web
       }
     }
 
-    void Send(BlockParsed output)
+    void Send(TextReceived output)
     {
-      Logger.Info("Session {0}: Sending {1} lines, starting at index {2}",
+      Logger.Info("Session {0}: Sending, offset {1} to {2}: {3}",
                   output.SessionId,
-                  output.Lines.Count(),
-                  output.Lines.First().Index);
+                  output.StartOffset,
+                  output.EndOffset,
+                  Pad(output.Text, 10));
 
       try
       {
@@ -140,11 +140,20 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Logger.Error(String.Format("Session {0}: Error sending request",
-                                   output.SessionId),
+        Logger.Error($"Session {output.SessionId}: Error sending request",
                      MaybeAggregateException(exception));
         throw;
       }
+    }
+
+    static string Pad(string text, int length)
+    {
+      if (text.Length >= length)
+      {
+        return text.Substring(0, length - 1) + "...";
+      }
+
+      return text;
     }
 
     void Terminate(SessionTerminated message)
@@ -157,8 +166,7 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Logger.Error(String.Format("Session {0}: Error sending request",
-                                   message.SessionId),
+        Logger.Error($"Session {message.SessionId}: Error sending request",
                      MaybeAggregateException(exception));
         throw;
       }

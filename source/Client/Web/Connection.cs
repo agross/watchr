@@ -39,30 +39,16 @@ namespace Client.Web
     }
 
     public IObservable<object> State
-    {
-      get
-      {
-        return _state
-          .StartWith(new ConnectionDown(_connection))
-          .DistinctUntilChanged();
-      }
-    }
+      => _state
+        .StartWith(new ConnectionDown(_connection))
+        .DistinctUntilChanged();
 
     public IObservable<Microsoft.AspNet.SignalR.Client.Connection> ConnectRequired
-    {
-      get
-      {
-        return _connectRequired
-          .StartWith(_connection);
-      }
-    }
+      => _connectRequired.StartWith(_connection);
 
     public void Dispose()
     {
-      if (_subscriptions != null)
-      {
-        _subscriptions.Dispose();
-      }
+      _subscriptions?.Dispose();
 
       _state.OnCompleted();
       _connectRequired.OnCompleted();
@@ -108,7 +94,7 @@ namespace Client.Web
         Connection = connection;
       }
 
-      Microsoft.AspNet.SignalR.Client.Connection Connection { get; set; }
+      Microsoft.AspNet.SignalR.Client.Connection Connection { get; }
 
       public bool Equals(ConnectionDown other)
       {
@@ -143,8 +129,8 @@ namespace Client.Web
 
       public override int GetHashCode()
       {
-        return ((Connection != null ? Connection.Url.GetHashCode() : 0) * 397)
-               ^ ((Connection != null && Connection.QueryString != null) ? Connection.QueryString.GetHashCode() : 0);
+        return ((Connection?.Url.GetHashCode() ?? 0) * 397)
+               ^ (Connection?.QueryString?.GetHashCode() ?? 0);
       }
     }
 
@@ -155,7 +141,7 @@ namespace Client.Web
         Connection = connection;
       }
 
-      Microsoft.AspNet.SignalR.Client.Connection Connection { get; set; }
+      Microsoft.AspNet.SignalR.Client.Connection Connection { get; }
 
       public bool Equals(ConnectionUp other)
       {
@@ -190,8 +176,8 @@ namespace Client.Web
 
       public override int GetHashCode()
       {
-        return ((Connection != null ? Connection.Url.GetHashCode() : 0) * 397)
-               ^ ((Connection != null && Connection.QueryString != null) ? Connection.QueryString.GetHashCode() : 0);
+        return ((Connection?.Url.GetHashCode() ?? 0) * 397)
+               ^ (Connection?.QueryString?.GetHashCode() ?? 0);
       }
     }
   }

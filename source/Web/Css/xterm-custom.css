@@ -1,0 +1,24 @@
+.terminal {
+  background-color: #fff;
+  color: #000;
+  font-family: 'Droid Sans Mono', Consolas, Courier New, monospace;
+  font-size: 13px;
+}
+
+.terminal .xterm-viewport {
+  background-color: #fff;
+}
+
+.terminal.focus:not(.xterm-cursor-style-underline):not(.xterm-cursor-style-bar) .terminal-cursor {
+  background-color: #000;
+  color: #fff;
+}
+
+.terminal:not(.focus) .terminal-cursor {
+  outline-color: #000;
+  color: #000;
+}
+
+.terminal .xterm-rows {
+  line-height: 18px !important;
+}

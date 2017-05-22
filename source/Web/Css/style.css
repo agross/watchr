@@ -62,7 +62,7 @@ h1 {
   color: black;
 }
 
-#consoles {
+#terminals {
   width: 100%;
   height: 100%;
   box-sizing: border-box;
@@ -70,12 +70,12 @@ h1 {
 }
 
 @media all and (max-width: 800px) {
-  #consoles {
+  #terminals {
     flex-direction: column;
   }
 }
 
-#consoles section {
+#terminals section {
   margin: .5em;
   border: 1px solid gray;
 
@@ -97,88 +97,27 @@ h1 {
   }
 }
 
-section header {
+#terminals section header {
   text-align: center;
   background-color: gray;
   color: #fff;
   flex: none;
 }
 
-section.terminated header {
+#terminals section.terminated header {
   opacity: .5;
 }
 
-section.terminated header::after {
+#terminals section.terminated header::after {
   content: " (terminated)";
 }
 
-section.terminated pre:last-child::after {
+#terminals section.terminated pre:last-child::after {
   display: block;
   content: "# Session has been terminated";
 }
 
-section div {
+#terminals section .term {
   overflow: auto;
+  height: 100%;
 }
-
-pre {
-  font-family: 'Droid Sans Mono', Consolas, Courier New, monospace;
-  font-size: 13px;
-  margin: 0;
-}
-
-b {
-  font-weight: normal;
-  color: #555555;
-}
-
-.red {
-  color: red;
-}
-
-.green {
-  color: #00BF00;
-}
-
-.blue {
-  color: #0000FF;
-}
-
-.cyan {
-  color: #00BFBF;
-}
-
-.magenta {
-  color: #FF40FF;
-}
-
-.yellow {
-  color: #BFBF00;
-}
-
-b .red, .red b {
-  color: #FF4040;
-}
-
-b .green {
-  color: #40FF40;
-}
-
-b .cyan {
-  color: #40FFFF;
-}
-
-b .yellow {
-  color: #FFFF40;
-}
-
-.inverse .red,
-.red .inverse  {
-  color: white;
-  background-color: #BF0000;
-}
-
-.default.foreground {
-  color: #000;
-}
-

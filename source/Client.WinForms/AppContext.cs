@@ -15,10 +15,7 @@ namespace Client.WinForms
 
     protected override void Dispose(bool disposing)
     {
-      if (_disp != null)
-      {
-        _disp.Dispose();
-      }
+      _disp?.Dispose();
 
       base.Dispose(disposing);
     }

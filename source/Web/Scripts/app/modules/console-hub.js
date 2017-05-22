@@ -1,10 +1,11 @@
 /// <reference path='../jquery-2.1.3.js' />
 /// <reference path='../jquery.signalR-2.2.0.js' />
 /// <reference path='console.js' />
+
 function ConsoleHub() {
   this.setUp = function(parent, welcome) {
-    $.connection.consoleHub.client.block = function(block) {
-      new Console(parent, welcome, block.SessionId).block(block.Lines);
+    $.connection.consoleHub.client.text = function(text) {
+      new Console(parent, welcome, text.SessionId).text(text);
     };
 
     $.connection.consoleHub.client.terminate = function(sessionId) {

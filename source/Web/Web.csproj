@@ -47,9 +47,11 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Css\xterm-custom.css" />
     <Content Include="Css\xterm.css" />
     <Content Include="paket.references" />
     <Content Include="Css\style.css" />
+    <Content Include="Scripts\css-element-queries\ResizeSensor.js" />
     <Content Include="Scripts\jquery.signalR-2.2.0.js">
       <Paket>True</Paket>
     </Content>
@@ -68,19 +70,24 @@
     <Content Include="Scripts\jquery-2.1.3.min.map">
       <Paket>True</Paket>
     </Content>
-    <Content Include="Scripts\app\console-hub.js" />
-    <Content Include="Scripts\app\console.js" />
+    <Content Include="Scripts\app\modules\console-hub.js" />
+    <Content Include="Scripts\app\modules\console.js" />
     <Content Include="Scripts\app\run.js" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="deploy.ps1" />
-    <Content Include="deploy.ps1.erb" />
+    <Content Include="deploy.yaml" />
+    <Content Include="deploy.yaml.erb" />
+    <Content Include=".gitignore" />
+    <Content Include="Css\.gitignore" />
     <None Include="Index.cshtml" />
-    <Content Include="Scripts\xterm.js" />
+    <Content Include="Scripts\xterm\fit.js" />
+    <Content Include="Scripts\xterm\xterm.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\xterm.js.map" />
+    <Content Include="Scripts\css-element-queries\.gitignore" />
+    <Content Include="Scripts\xterm\.gitignore" />
+    <Content Include="Scripts\xterm\xterm.js.map" />
     <None Include="Web.config.erb" />
   </ItemGroup>
   <ItemGroup>
@@ -91,6 +98,7 @@
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
     <Compile Include="BundleConfig.cs" />
+    <Compile Include="BundleExtensions.cs" />
     <Compile Include="ConsoleHub.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -295,11 +303,15 @@
       <Paket>True</Paket>
     </Reference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <PreBuildEvent Condition="'$(OS)' == 'Windows_NT'">if "$(BuildingInsideVisualStudio)" EQU "true" (
   cd "$(SolutionDir)"
   set VS_BUILD_EVENT=true
   build.cmd template
 )</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent />
   </PropertyGroup>
 </Project>

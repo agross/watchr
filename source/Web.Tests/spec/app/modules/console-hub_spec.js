@@ -1,9 +1,10 @@
-/// <reference path='../../Web/Scripts/app/console-hub.js' />
-/// <reference path='spec_helper.js' />
+/// <reference path='../../../../Web/Scripts/app/modules/console-hub.js' />
+/// <reference path='../../spec_helper.js' />
+
 describe(ConsoleHub.name, function() {
   beforeEach(function() {
     var fakeConsole = function(that) {
-      var console = jasmine.createSpyObj('Console', ['block', 'terminate']);
+      var console = jasmine.createSpyObj('Console', ['text', 'terminate']);
 
       that.console = spyOn(window, 'Console').and.callFake(function() {
         return console;
@@ -14,7 +15,7 @@ describe(ConsoleHub.name, function() {
       $.connection = {
         consoleHub: {
           client: {
-            block: null,
+            text: null,
             terminate: null
           }
         },
@@ -30,8 +31,6 @@ describe(ConsoleHub.name, function() {
     var createConsoleHub = function(that) {
       that.parent = $('#parent-container');
       that.welcome = $('#welcome-container');
-      that.sessionId = 'id';
-      that.lines = [];
 
       new ConsoleHub().setUp(that.parent, that.welcome);
     };
@@ -42,36 +41,40 @@ describe(ConsoleHub.name, function() {
   });
 
   describe('setup', function() {
-    it('should start the hub connection', function() {
+    it('starts the hub connection', function() {
       expect($.connection.hub.start).toHaveBeenCalled();
     });
   });
 
   describe('running', function() {
-    describe('block received', function() {
+    describe('text received', function() {
       beforeEach(function() {
-        $.connection.consoleHub.client.block({ SessionId: this.sessionId, Lines: this.lines });
+        this.text = { SessionId: 'id', Offset: 0, Text: 'text' };
+
+        $.connection.consoleHub.client.text(this.text);
       });
 
-      it('should create a console for the session', function() {
-        expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
+      it('creates a console for the session', function() {
+        expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.text.SessionId);
       });
 
-      it('should send blocks to the console', function() {
-        expect(this.console().block).toHaveBeenCalledWith(this.lines);
+      it('sends text to the console', function() {
+        expect(this.console().text).toHaveBeenCalledWith(this.text);
       });
     });
 
     describe('session terminated', function() {
       beforeEach(function() {
+        this.sessionId = 'session ID';
+
         $.connection.consoleHub.client.terminate(this.sessionId);
       });
 
-      it('should create a console for the session', function() {
+      it('creates a console for the session', function() {
         expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
       });
 
-      it('should terminate the console', function() {
+      it('terminates the console', function() {
         expect(this.console().terminate).toHaveBeenCalled();
       });
     });

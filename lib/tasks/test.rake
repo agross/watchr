@@ -1,4 +1,4 @@
-Tasks::NUnit.new(test: :bin_path) do |t|
+Tasks::NUnit.new(test: %i(bin_path npm)) do |t|
   t.files = 'build/bin/WinForms/Client.dll'
 
   framework = if ENV['OS'] == 'Windows_NT'

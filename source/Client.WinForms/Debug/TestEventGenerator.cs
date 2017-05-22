@@ -32,10 +32,7 @@ namespace Client.WinForms.Debug
 
     public void Dispose()
     {
-      if (_subscriptions != null)
-      {
-        _subscriptions.Dispose();
-      }
+      _subscriptions?.Dispose();
     }
   }
 }

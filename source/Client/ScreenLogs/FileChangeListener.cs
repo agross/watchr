@@ -1,11 +1,9 @@
 using System;
 using System.IO;
 
-using Client.ScreenLogs;
-
-namespace Client.Streams
+namespace Client.ScreenLogs
 {
-  public class FileChangeListener : IObservable<string>
+  class FileChangeListener : IObservable<string>
   {
     readonly IObservable<string> _stream;
 

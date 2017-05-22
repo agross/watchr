@@ -9,22 +9,14 @@ namespace Client.Web
 {
   class Messages
   {
-    readonly IObservable<object> _stream;
-
     internal Messages()
     {
-      var blocks = RxMessageBrokerMinimod.Default.Stream.OfType<BlockParsed>().Cast<object>();
+      var texts = RxMessageBrokerMinimod.Default.Stream.OfType<TextReceived>().Cast<object>();
       var terminates = RxMessageBrokerMinimod.Default.Stream.OfType<SessionTerminated>().Cast<object>();
 
-      _stream = blocks.Merge(terminates);
+      Stream = texts.Merge(terminates);
     }
 
-    public IObservable<object> Stream
-    {
-      get
-      {
-        return _stream;
-      }
-    }
+    public IObservable<object> Stream { get; }
   }
 }

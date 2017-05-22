@@ -1,4 +1,5 @@
-/// <reference path="console-hub.js" />
+/// <reference path="modules/console-hub.js" />
+
 $(function() {
-  new ConsoleHub().setUp($('#consoles'), $('#welcome'));
+  new ConsoleHub().setUp($('#terminals'), $('#welcome'));
 });

@@ -3,7 +3,6 @@ using System.Configuration;
 using System.Reactive.Disposables;
 
 using Client.ScreenLogs;
-using Client.Streams;
 using Client.Web;
 
 namespace Client
@@ -17,7 +16,6 @@ namespace Client
       return new CompositeDisposable
       {
         new WebClient(ConfigurationManager.AppSettings["hub-url"]),
-        new ParsedBlocks().Subscribe(),
         new FileChangeListener(ConfigurationManager.AppSettings["screen-logs"]).Subscribe(x => subscriber.FileChanged(x))
       };
     }
