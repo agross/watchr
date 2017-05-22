@@ -14,7 +14,7 @@ namespace Web
 
       bundles.Add(new ScriptBundle("~/assets/js/lib")
                     .Include("~/Scripts/jquery/jquery.min.js")
-                    .Include("~/Scripts/jquery.signalR-{version}.js")
+                    .Include("~/Scripts/signalr/jquery.signalR.min.js")
                     .Include("~/Scripts/xterm/xterm.js")
                     .Include("~/Scripts/xterm/fit.js")
                     .Include("~/Scripts/css-element-queries/*.js")

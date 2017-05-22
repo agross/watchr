@@ -1,5 +1,5 @@
 /// <reference path='../../jquery/jquery.min.js' />
-/// <reference path='../jquery.signalR-2.2.0.js' />
+/// <reference path='../../signalr/jquery.signalR.min.js' />
 /// <reference path='console.js' />
 
 function ConsoleHub() {

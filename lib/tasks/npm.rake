@@ -20,3 +20,8 @@ task :npm do
   cp(Dir['node_modules/jquery/dist/jquery.min.*'],
      'source/Web/Scripts/jquery/')
 end
+
+task :npm do
+  cp(Dir['node_modules/signalr/jquery.signalR.min.js'],
+     'source/Web/Scripts/signalr/')
+end
