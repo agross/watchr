@@ -6,6 +6,10 @@ build:
 deployment:
   canoncial_url: http://watch.grossweber.com/
 
+client:
+  log:
+    level: Warn
+
 web:
   bindings:
     -

@@ -9,6 +9,8 @@ build:
 
 client:
   shell_transscripts: <%= Gem.win_platform? ? 'C:\Cygwin\tmp\screen*.log' : '/tmp/*zsh*.log' %>
+  log:
+    level: Trace
 
 deployment:
   canoncial_url: http://localhost:34530/

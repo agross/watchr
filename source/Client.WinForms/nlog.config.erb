@@ -55,7 +55,7 @@
 
   <rules>
     <logger name="*"
-            minlevel="Trace"
+            minlevel="@configatron.client.log.level@"
             writeTo="UI, Debugger<%= ', File' if configatron.env !~ /production/ %>" />
   </rules>
 </nlog>

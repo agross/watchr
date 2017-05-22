@@ -53,6 +53,7 @@
   <ItemGroup>
     <None Include="App.config.erb" />
     <None Include="App.config" />
+    <None Include="nlog.config.erb" />
     <None Include="nlog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
