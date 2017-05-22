@@ -48,11 +48,19 @@ function Console(parent, welcome, sessionId) {
       return this.__backlog.push(text);
     };
     terminal.applyBuffer = function() {
+      if(this.__backlog.length === 0) {
+        return;
+      }
+
       var that = this;
 
-      this.__backlog = this.__backlog.filter(function (element) {
-        return !that.applyText(element);
-      });
+      this.__backlog = this.__backlog
+        .sort(function(a, b) {
+          return a.StartOffset - b.StartOffset;
+        })
+        .filter(function(item) {
+          return !that.applyText(item);
+        });
 
       if (this.__backlog.length === 0) {
         $('section#' + getSessionId(), parent).removeClass('delayed');
