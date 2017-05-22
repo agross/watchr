@@ -1,10 +1,17 @@
 @echo off
+setlocal
 
-if not exist .paket\paket.exe (
-  .paket\paket.bootstrapper.exe
+pushd "%~dp0"
+
+set dir=.paket
+set bootstrapper=%dir%\paket.bootstrapper.exe
+set paket=%dir%\paket.exe
+
+if not exist "%paket%" (
+  "%bootstrapper%"
   if errorlevel 1 (
     exit /b %errorlevel%
   )
 )
 
-.paket\paket.exe %*
+"%paket%" %*
