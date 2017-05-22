@@ -13,7 +13,7 @@ namespace Web
                     .ForceOrdered());
 
       bundles.Add(new ScriptBundle("~/assets/js/lib")
-                    .Include("~/Scripts/jquery-{version}.js")
+                    .Include("~/Scripts/jquery/jquery.min.js")
                     .Include("~/Scripts/jquery.signalR-{version}.js")
                     .Include("~/Scripts/xterm/xterm.js")
                     .Include("~/Scripts/xterm/fit.js")

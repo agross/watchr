@@ -1,4 +1,4 @@
-/// <reference path="../../jquery-2.1.3.js" />
+/// <reference path='../../jquery/jquery.min.js' />
 /// <reference path="../../xterm/xterm.js" />
 /// <reference path="../../css-element-queries/ResizeSensor.js" />
 

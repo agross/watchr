@@ -58,18 +58,6 @@
     <Content Include="Scripts\jquery.signalR-2.2.0.min.js">
       <Paket>True</Paket>
     </Content>
-    <Content Include="Scripts\jquery-2.1.3-vsdoc.js">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="Scripts\jquery-2.1.3.js">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="Scripts\jquery-2.1.3.min.js">
-      <Paket>True</Paket>
-    </Content>
-    <Content Include="Scripts\jquery-2.1.3.min.map">
-      <Paket>True</Paket>
-    </Content>
     <Content Include="Scripts\app\modules\console-hub.js" />
     <Content Include="Scripts\app\modules\console.js" />
     <Content Include="Scripts\app\run.js" />
@@ -80,6 +68,8 @@
     <Content Include=".gitignore" />
     <Content Include="Css\.gitignore" />
     <None Include="Index.cshtml" />
+    <Content Include="Scripts\jquery\jquery.slim.js" />
+    <Content Include="Scripts\jquery\jquery.slim.min.js" />
     <Content Include="Scripts\xterm\fit.js" />
     <Content Include="Scripts\xterm\xterm.js" />
     <Content Include="Web.config">
@@ -88,6 +78,8 @@
     <Content Include="Scripts\css-element-queries\.gitignore" />
     <Content Include="Scripts\xterm\.gitignore" />
     <Content Include="Scripts\xterm\xterm.js.map" />
+    <Content Include="Scripts\jquery\.gitignore" />
+    <Content Include="Scripts\jquery\jquery.slim.min.map" />
     <None Include="Web.config.erb" />
   </ItemGroup>
   <ItemGroup>

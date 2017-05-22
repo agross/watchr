@@ -15,3 +15,8 @@ task :npm do
   cp('node_modules/css-element-queries/src/ResizeSensor.js',
      'source/Web/Scripts/css-element-queries/')
 end
+
+task :npm do
+  cp(Dir['node_modules/jquery/dist/jquery.min.*'],
+     'source/Web/Scripts/jquery/')
+end
