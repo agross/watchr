@@ -54,7 +54,7 @@ describe(ConsoleHub.name, function() {
         $.connection.consoleHub.client.text(this.text);
       });
 
-      it('creates a console for the session', function() {
+      xit('creates a console for the session', function() {
         expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.text.SessionId);
       });
 
@@ -70,7 +70,7 @@ describe(ConsoleHub.name, function() {
         $.connection.consoleHub.client.terminate(this.sessionId);
       });
 
-      it('creates a console for the session', function() {
+      xit('creates a console for the session', function() {
         expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
       });
 
