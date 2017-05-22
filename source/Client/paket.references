@@ -2,4 +2,4 @@ Microsoft.AspNet.SignalR.Client
 Minimod.RxMessageBroker
 NLog
 NUnit
-Rx-Main
+System.Reactive

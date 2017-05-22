@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
@@ -16,7 +16,7 @@ namespace Minimod.RxMessageBroker
     public class RxMessageBrokerMinimod
     {
         private static RxMessageBrokerMinimod _defaultInstance;
-        private readonly Subject<object> _stream = new Subject<object>();
+        private readonly Subject<object> _stream = new Subject<object>();       
 
         public static RxMessageBrokerMinimod Default { get { return _defaultInstance ?? (_defaultInstance = new RxMessageBrokerMinimod()); } }
         public static void OverrideDefault(RxMessageBrokerMinimod newMessenger) { _defaultInstance = newMessenger; }

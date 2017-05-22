@@ -5,7 +5,7 @@ using System.Reactive.Linq;
 
 using Client.Messages;
 
-using Microsoft.AspNet.SignalR.Client.Hubs;
+using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Transports;
 
 using NLog;
@@ -121,7 +121,7 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Logger.Error("SignalR: Could not start connection", MaybeAggregateException(exception));
+        Logger.Error(MaybeAggregateException(exception), "SignalR: Could not start connection");
         throw;
       }
     }
@@ -140,8 +140,8 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Logger.Error($"Session {output.SessionId}: Error sending request",
-                     MaybeAggregateException(exception));
+        Logger.Error(MaybeAggregateException(exception),
+                     $"Session {output.SessionId}: Error sending request");
         throw;
       }
     }
@@ -166,8 +166,8 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Logger.Error($"Session {message.SessionId}: Error sending request",
-                     MaybeAggregateException(exception));
+        Logger.Error(MaybeAggregateException(exception),
+                     $"Session {message.SessionId}: Error sending request");
         throw;
       }
     }
