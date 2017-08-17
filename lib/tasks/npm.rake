@@ -1,6 +1,7 @@
 desc 'Install npm packages'
 task :npm do
   sh(*%w(npm install))
+  sh(*%w(npm list))
 end
 
 task :npm do
