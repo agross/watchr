@@ -1,11 +1,8 @@
 {
   "name": "watchr",
   "version": "1.0.0",
-  "description": "",
+  "description": "A web-based command line logger",
   "main": "index.js",
-  "dependencies": {
-    "xterm": "^2.6.0"
-  },
   "devDependencies": {
     "css-element-queries": "^0.4.0",
     "jquery": "^2.1.3",
