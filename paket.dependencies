@@ -7,7 +7,7 @@ nuget MSBuild.Microsoft.VisualStudio.Web.targets
 nuget Microsoft.AspNet.SignalR ~> 2.2 content: none
 nuget Microsoft.AspNet.SignalR.Client ~> 2.2 content: none
 nuget Microsoft.AspNet.Web.Optimization ~> 1.1
-nuget Minimod.RxMessageBroker
+nuget Minimod.RxMessageBroker content: once
 nuget NLog
 nuget NUnit ~> 2.6
 nuget NUnit.Runners ~> 2.6
