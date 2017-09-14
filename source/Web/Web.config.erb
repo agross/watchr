@@ -6,11 +6,28 @@
     <add key="webPages:Version"
          value="2.0" />
   </appSettings>
+
   <system.web>
     <compilation debug="<%= configatron.env != 'production' %>"
                  targetFramework="4.5.1" />
     <httpRuntime targetFramework="4.5.1" />
   </system.web>
+
+  <% if configatron.env == 'production' %>
+  <system.webServer>
+    <rewrite>
+      <rules>
+        <rule name="Enforce HTTPS">
+          <match url="(.*)" />
+          <conditions logicalGrouping="MatchAny">
+            <add input="{HTTPS}" pattern="^OFF$" />
+          </conditions>
+          <action type="Redirect" url="https://{HTTP_HOST}/{R:1}" appendQueryString="true" redirectType="Permanent" />
+        </rule>
+      </rules>
+    </rewrite>
+  </system.webServer>
+  <% end %>
 
   <runtime>
     <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">

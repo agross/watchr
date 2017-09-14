@@ -4,7 +4,7 @@ build:
     pre:
 
 deployment:
-  canoncial_url: http://watch.grossweber.com/
+  canoncial_url: https://watch.grossweber.com/
 
 client:
   log:
@@ -14,4 +14,7 @@ web:
   bindings:
     -
       :protocol: http
+      :host: watch.grossweber.com
+    -
+      :protocol: https
       :host: watch.grossweber.com

@@ -13,6 +13,7 @@ application:
           content: grossweber.com
 deployment:
   - requirements:
+    - UrlRewrite2
     - NETFramework451
     - MVC4Vs2010_Loc
   - permissions:
@@ -27,6 +28,8 @@ deployment:
       ../../logs:
         Modify:
           - IIS_IUSRs
+  - certificates:
+      grossweber.com.pfx: env://CERT_PASSWORD
   - web:
       name: GW - <%= configatron.web.bindings.first[:host] %>
       physical_path: bin
@@ -60,6 +63,7 @@ deployment:
         <%
           def type(protocol)
             return URI::HTTPS if protocol == 'https'
+            return URI::HTTPS if configatron.env == 'production'
             URI::HTTP
           end
 
