@@ -58,6 +58,11 @@ deployment:
         -
           protocol: <%= binding[:protocol] %>
           host_header: <%= binding[:host] %>
+          ip_address: 85.25.226.100
+        -
+          protocol: <%= binding[:protocol] %>
+          host_header: <%= binding[:host] %>
+          ip_address: '[2001:470:1f0a:8fa::2]'
         <% end %>
       tests:
         <%
