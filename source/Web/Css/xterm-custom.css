@@ -22,3 +22,7 @@
 .terminal .xterm-rows {
   line-height: 18px !important;
 }
+
+.terminal .xterm-color-11 {
+  color: #c4a000;
+}
