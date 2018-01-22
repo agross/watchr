@@ -49,7 +49,6 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Css\xterm-custom.css" />
     <Content Include="Css\xterm.css" />
     <Content Include="paket.references" />
     <Content Include="Css\style.css" />

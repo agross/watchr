@@ -1,8 +1,11 @@
 /// <reference path='../../jquery/jquery.js' />
 /// <reference path="../../xterm/xterm.js" />
+/// <reference path="../../xterm/fit.js" />
 /// <reference path="../../css-element-queries/ResizeSensor.js" />
 
 function Console(parent, welcome, sessionId) {
+  Terminal.applyAddon(fit);
+
   this.sessionId = sessionId;
 
   var getSessionId = function() {
@@ -28,12 +31,34 @@ function Console(parent, welcome, sessionId) {
     parent.append(element);
     var div = getTerminalDiv(element);
 
-    var terminal = new Terminal({ scrollback: 20000, focus: false });
+    var terminal = new Terminal({
+      scrollback: 20000,
+      cursorBlink: false,
+      cursorStyle: 'block',
+      fontFamily: 'Droid Sans Mono, Consolas, Courier New, monospace',
+      fontSize: 13,
+      disableStdin: true,
+      focus: false,
+      theme: {
+        foreground: '#000',
+        background: '#fff',
+        cursor: '#000',
+        cursorAccent: '#000',
+        selection: 'rgba(0, 52, 120, 0.25)',
+        brightYellow: '#c4a000'
+      }
+    });
+
+    div.terminalInstance = function() {
+      return terminal;
+    }
+
+    // Support buffering.
     terminal.__backlog = new Array();
     terminal.__nextOffset = 0;
-    terminal.applyText = function(text) {
+    terminal.__applyText = function(text) {
       if(this.__nextOffset === text.StartOffset ||
-        this.__nextOffset === 0) {
+         this.__nextOffset === 0) {
         this.__nextOffset = text.EndOffset;
         this.write(text.Text);
 
@@ -42,12 +67,12 @@ function Console(parent, welcome, sessionId) {
 
       return false;
     };
-    terminal.buffer = function(text) {
+    terminal.__buffer = function(text) {
       $('section#' + getSessionId(), parent).addClass('delayed');
 
       return this.__backlog.push(text);
     };
-    terminal.applyBuffer = function() {
+    terminal.__applyBuffer = function() {
       if(this.__backlog.length === 0) {
         return;
       }
@@ -59,7 +84,7 @@ function Console(parent, welcome, sessionId) {
           return a.StartOffset - b.StartOffset;
         })
         .filter(function(item) {
-          return !that.applyText(item);
+          return !that.__applyText(item);
         });
 
       if (this.__backlog.length === 0) {
@@ -67,13 +92,14 @@ function Console(parent, welcome, sessionId) {
       }
     }
 
-    div.terminalInstance = function() {
-      return terminal;
-    }
-
     terminal.open(div);
     terminal.cursor = true;
 
+    // Initial fit.
+    try {
+      terminal.fit();
+    } catch(e) { /* Fails with Jasmine for reasons beyond me. */ };
+    // Fit on resize.
     new ResizeSensor(div, function() {
       terminal.fit();
     });
@@ -84,11 +110,11 @@ function Console(parent, welcome, sessionId) {
   this.text = function(text) {
     var terminal = findOrCreateTerminal();
 
-    if (terminal.applyText(text)) {
-      terminal.applyBuffer();
+    if (terminal.__applyText(text)) {
+      terminal.__applyBuffer();
     }
     else {
-      terminal.buffer(text);
+      terminal.__buffer(text);
     }
   };
 
