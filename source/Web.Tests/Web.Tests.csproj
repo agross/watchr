@@ -41,7 +41,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jasmine-jquery\jasmine-jquery.js" />
     <Content Include="spec\app\modules\console-hub_spec.js" />
     <Content Include="spec\app\modules\console_spec.js" />
     <Content Include="spec\spec_helper.js" />

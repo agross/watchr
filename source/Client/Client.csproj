@@ -44,9 +44,7 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
-    <Compile Include="Minimods\Minimod.RxMessageBroker.Generated.cs">
-      <Paket>True</Paket>
-    </Compile>
+    <Compile Include="Minimods\Minimod.RxMessageBroker.Generated.cs" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

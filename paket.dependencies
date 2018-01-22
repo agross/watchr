@@ -2,7 +2,7 @@ source https://www.nuget.org/api/v2
 
 framework: auto-detect
 
-nuget Chutzpah ~> 3.2
+nuget Chutzpah ~> 4.3
 nuget MSBuild.Microsoft.VisualStudio.Web.targets
 nuget Microsoft.AspNet.SignalR ~> 2.2 content: none
 nuget Microsoft.AspNet.SignalR.Client ~> 2.2 content: none

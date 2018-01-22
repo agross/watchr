@@ -1,4 +1,4 @@
-/// <reference path='../../jquery/jquery.min.js' />
+/// <reference path='../../jquery/jquery.js' />
 /// <reference path="../../xterm/xterm.js" />
 /// <reference path="../../css-element-queries/ResizeSensor.js" />
 
@@ -28,7 +28,7 @@ function Console(parent, welcome, sessionId) {
     parent.append(element);
     var div = getTerminalDiv(element);
 
-    var terminal = new Terminal({ scrollback: 20000 });
+    var terminal = new Terminal({ scrollback: 20000, focus: false });
     terminal.__backlog = new Array();
     terminal.__nextOffset = 0;
     terminal.applyText = function(text) {

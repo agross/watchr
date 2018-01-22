@@ -8,4 +8,5 @@ build/
 deploy/
 node_modules/
 packages/
+paket-files/
 .vs/

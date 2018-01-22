@@ -22,6 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <WebGreaseLibPath>..\..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -63,7 +64,7 @@
     <Content Include=".gitignore" />
     <Content Include="Css\.gitignore" />
     <None Include="Index.cshtml" />
-    <Content Include="Scripts\jquery\jquery.min.js" />
+    <Content Include="Scripts\jquery\jquery.js" />
     <Content Include="Scripts\signalr\jquery.signalR.min.js" />
     <Content Include="Scripts\xterm\fit.js" />
     <Content Include="Scripts\xterm\xterm.js" />
@@ -74,7 +75,6 @@
     <Content Include="Scripts\xterm\.gitignore" />
     <Content Include="Scripts\xterm\xterm.js.map" />
     <Content Include="Scripts\jquery\.gitignore" />
-    <Content Include="Scripts\jquery\jquery.min.map" />
     <Content Include="Scripts\signalr\.gitignore" />
     <None Include="Web.config.erb" />
   </ItemGroup>

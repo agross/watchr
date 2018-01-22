@@ -18,7 +18,7 @@ task :npm do
 end
 
 task :npm do
-  cp(Dir['node_modules/jquery/dist/jquery.min.*'],
+  cp(Dir['node_modules/jquery/dist/jquery.js'],
      'source/Web/Scripts/jquery/')
 end
 

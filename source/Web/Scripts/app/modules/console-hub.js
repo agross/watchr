@@ -1,4 +1,4 @@
-/// <reference path='../../jquery/jquery.min.js' />
+/// <reference path='../../jquery/jquery.js' />
 /// <reference path='../../signalr/jquery.signalR.min.js' />
 /// <reference path='console.js' />
 

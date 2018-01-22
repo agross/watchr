@@ -1,3 +1,3 @@
-/// <reference path='../../../packages/tools/Chutzpah/TestFiles/Jasmine/v2/boot.js' />
-/// <reference path='../../../packages/tools/Chutzpah/TestFiles/Jasmine/v2/jasmine.js' />
-/// <reference path='../Scripts/jasmine-jquery/jasmine-jquery.js' />
+/// <reference path='../../../packages/Chutzpah/tools/ChutzpahTestHarnessFiles/Jasmine/v2/boot.js' />
+/// <reference path='../../../packages/Chutzpah/tools/ChutzpahTestHarnessFiles/Jasmine/v2/jasmine.js' />
+/// <reference path='../../../node_modules/jasmine-jquery/lib/jasmine-jquery.js' />
