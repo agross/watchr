@@ -72,7 +72,7 @@ namespace Client.Web
                        var shouldBuffer = gateStreamMessageIndex % 2 != 0;
                        if (shouldBuffer)
                        {
-                         Logger.Warn("Buffering until connection becomes available");
+                         Logger.Warn("Buffering until connection becomes available: {0}", url);
                        }
                        else
                        {
