@@ -8,7 +8,7 @@ build:
     sha: <%= (ENV['BUILD_VCS_NUMBER'] || `git rev-parse --short HEAD`)[0...7] %>
 
 client:
-  shell_transscripts: <%= Gem.win_platform? ? 'C:\Cygwin\tmp\screen*.log' : '/tmp/*zsh*.log' %>
+  shell_transscripts: <%= Gem.win_platform? ? 'C:\Cygwin\tmp\screen*.log' : File.join(ENV['HOME'], '*zsh*.log') %>
   log:
     level: Trace
 
