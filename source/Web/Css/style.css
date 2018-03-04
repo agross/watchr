@@ -114,3 +114,7 @@ h1 {
   overflow: auto;
   height: 100%;
 }
+
+.xterm {
+  font-family: Menlo, Monaco, Consolas, 'Courier New', Courier, monospace !important;
+}
