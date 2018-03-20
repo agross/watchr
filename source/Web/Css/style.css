@@ -111,8 +111,9 @@ h1 {
 }
 
 #terminals section .term {
-  overflow: auto;
   height: 100%;
+  margin: 3px;
+  overflow: auto;
 }
 
 .xterm {
