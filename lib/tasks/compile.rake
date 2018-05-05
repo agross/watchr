@@ -3,7 +3,7 @@ Tasks::SideBySideSpecs.new :compile do |t|
   t.enabled = configatron.env == 'production'
 end
 
-Tasks::MSBuild.new compile: [:paket, :npm, :version, :template] do |t|
+Tasks::MSBuild.new compile: %i(bin_path npm version template) do |t|
   t.args = {
     nologo: nil,
     verbosity: :minimal,

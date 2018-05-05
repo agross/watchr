@@ -1,3 +1,5 @@
 Microsoft.AspNet.SignalR
 Microsoft.AspNet.Web.Optimization
-MSBuild.Microsoft.VisualStudio.Web.targets
+
+group Build
+  MSBuild.Microsoft.VisualStudio.Web.targets

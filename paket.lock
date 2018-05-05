@@ -2,7 +2,6 @@ RESTRICTION: || (== net40) (== net451)
 NUGET
   remote: https://www.nuget.org/api/v2
     Antlr (3.5.0.2)
-    Chutzpah (4.3.6)
     jQuery (3.3.1) - content: none
     Microsoft.AspNet.SignalR (2.2.3) - content: none
       Microsoft.AspNet.SignalR.JS (>= 2.2.3)
@@ -32,11 +31,8 @@ NUGET
       Owin (>= 1.0)
     Microsoft.Web.Infrastructure (1.0)
     Minimod.RxMessageBroker (0.0.1) - content: once
-    MSBuild.Microsoft.VisualStudio.Web.targets (14.0.0.3)
     Newtonsoft.Json (11.0.1) - content: none
     NLog (4.4.13)
-    NUnit (2.6.4)
-    NUnit.Runners (2.6.4)
     Owin (1.0) - content: none
     System.Reactive (3.1.1)
       System.Reactive.PlatformServices (>= 3.1.1)
@@ -53,3 +49,16 @@ NUGET
     WebGrease (1.6)
       Antlr (>= 3.4.1.9004)
       Newtonsoft.Json (>= 5.0.4)
+
+GROUP Build
+NUGET
+  remote: https://www.nuget.org/api/v2
+    MSBuild.Microsoft.VisualStudio.Web.targets (14.0.0.3)
+    vswhere (2.4.1)
+
+GROUP Test
+NUGET
+  remote: https://www.nuget.org/api/v2
+    Chutzpah (4.3.7)
+    NUnit (2.6.5)
+    NUnit.Runners (2.6.5)

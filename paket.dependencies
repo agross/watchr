@@ -2,13 +2,22 @@ source https://www.nuget.org/api/v2
 
 framework: auto-detect
 
-nuget Chutzpah ~> 4.3
-nuget MSBuild.Microsoft.VisualStudio.Web.targets
 nuget Microsoft.AspNet.SignalR ~> 2.2 content: none
 nuget Microsoft.AspNet.SignalR.Client ~> 2.2 content: none
 nuget Microsoft.AspNet.Web.Optimization ~> 1.1
 nuget Minimod.RxMessageBroker content: once
 nuget NLog
-nuget NUnit ~> 2.6
-nuget NUnit.Runners ~> 2.6
 nuget System.Reactive ~> 3.1
+
+group Build
+  source https://www.nuget.org/api/v2
+
+  nuget MSBuild.Microsoft.VisualStudio.Web.targets
+  nuget vswhere ~> 2.4
+
+group Test
+  source https://www.nuget.org/api/v2
+
+  nuget Chutzpah ~> 4.3
+  nuget NUnit ~> 2.6
+  nuget NUnit.Runners ~> 2.6

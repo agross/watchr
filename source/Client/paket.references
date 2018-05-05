@@ -1,5 +1,7 @@
 Microsoft.AspNet.SignalR.Client
 Minimod.RxMessageBroker
 NLog
-NUnit
 System.Reactive
+
+group Test
+  NUnit
