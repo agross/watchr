@@ -8,7 +8,7 @@
     "jasmine-jquery": "^2.1.1",
     "jquery": "^3.3.1",
     "signalr": "^2.2.3",
-    "xterm": "^3.2.0"
+    "xterm": "^3.3.0"
   },
   "repository": {
     "type": "git",
