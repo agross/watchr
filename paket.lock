@@ -1,4 +1,4 @@
-RESTRICTION: || (== net40) (== net451)
+RESTRICTION: == net462
 NUGET
   remote: https://www.nuget.org/api/v2
     Antlr (3.5.0.2)
@@ -32,19 +32,19 @@ NUGET
     Microsoft.Web.Infrastructure (1.0)
     Minimod.RxMessageBroker (0.0.1) - content: once
     Newtonsoft.Json (11.0.1) - content: none
-    NLog (4.4.13)
+    NLog (4.5.5)
     Owin (1.0) - content: none
     System.Reactive (3.1.1)
       System.Reactive.PlatformServices (>= 3.1.1)
-      System.Reactive.Windows.Threading (>= 3.1.1) - restriction: || (&& (== net40) (>= net45)) (&& (== net40) (>= win81)) (&& (== net40) (>= wpa81)) (== net451)
-    System.Reactive.Core (3.1.1) - restriction: || (&& (== net40) (>= net45)) (&& (== net40) (>= win81)) (&& (== net40) (>= wpa81)) (== net451)
-      System.Reactive.Interfaces (>= 3.1.1) - restriction: || (&& (== net40) (>= netstandard1.0)) (== net451)
-    System.Reactive.Interfaces (3.1.1) - restriction: || (&& (== net40) (>= net45)) (&& (== net40) (>= netstandard1.0) (>= win81)) (&& (== net40) (>= wpa81)) (== net451)
+      System.Reactive.Windows.Threading (>= 3.1.1)
+    System.Reactive.Core (3.1.1)
+      System.Reactive.Interfaces (>= 3.1.1)
+    System.Reactive.Interfaces (3.1.1)
     System.Reactive.Linq (3.1.1)
-      System.Reactive.Core (>= 3.1.1) - restriction: || (&& (== net40) (>= netstandard1.0)) (== net451)
+      System.Reactive.Core (>= 3.1.1)
     System.Reactive.PlatformServices (3.1.1)
       System.Reactive.Linq (>= 3.1.1)
-    System.Reactive.Windows.Threading (3.1.1) - restriction: || (&& (== net40) (>= net45)) (&& (== net40) (>= win81)) (&& (== net40) (>= wpa81)) (== net451)
+    System.Reactive.Windows.Threading (3.1.1)
       System.Reactive.Core (>= 3.1.1)
     WebGrease (1.6)
       Antlr (>= 3.4.1.9004)
