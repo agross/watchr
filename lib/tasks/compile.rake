@@ -1,9 +1,13 @@
-Tasks::SideBySideSpecs.new :compile do |t|
+# frozen_string_literal: true
+
+require 'rake/funnel'
+
+Rake::Funnel::Tasks::SideBySideSpecs.new(:compile) do |t|
   t.references = 'NUnit.Framework'
   t.enabled = configatron.env == 'production'
 end
 
-Tasks::MSBuild.new compile: %i(bin_path npm version template) do |t|
+Rake::Funnel::Tasks::MSBuild.new compile: %i(bin_path npm version template) do |t|
   t.args = {
     nologo: nil,
     verbosity: :minimal,
@@ -17,24 +21,24 @@ Tasks::MSBuild.new compile: %i(bin_path npm version template) do |t|
   }.merge(Rake::Win32.windows? ? { node_reuse: false } : {})
 end
 
-Tasks::Copy.new :compile do |t|
+Rake::Funnel::Tasks::Copy.new :compile do |t|
   t.source = FileList['source/Web/**/*']
-    .exclude('**/*.cs')
-    .exclude('**/*.??proj')
-    .exclude('**/obj/**/*')
-    .exclude('**/*.map')
-    .exclude('**/*-vsdoc.js')
-    .exclude('**/bin/*.xml')
-    .exclude('**/bin/Web.dll.config')
-    .exclude('**/paket.references')
-    .exclude('**/*.yaml')
-    .exclude('**/*.template')
-    .exclude('**/*.erb')
-    .exclude('**/*.user')
+             .exclude('**/*.cs')
+             .exclude('**/*.??proj')
+             .exclude('**/obj/**/*')
+             .exclude('**/*.map')
+             .exclude('**/*-vsdoc.js')
+             .exclude('**/bin/*.xml')
+             .exclude('**/bin/Web.dll.config')
+             .exclude('**/paket.references')
+             .exclude('**/*.yaml')
+             .exclude('**/*.template')
+             .exclude('**/*.erb')
+             .exclude('**/*.user')
   t.target = 'build/bin/Web/bin'
 end
 
-Tasks::Copy.new compile: :template  do |t|
+Rake::Funnel::Tasks::Copy.new compile: :template  do |t|
   t.source = 'source/Web/deploy.yaml'
   t.target = 'build/bin/Web'
 end

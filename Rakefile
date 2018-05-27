@@ -1,7 +1,3 @@
-require 'rake/funnel'
-
-include Rake::Funnel
+# frozen_string_literal: true
 
 Dir['lib/tasks/*.rake'].each { |file| load(file) }
-
-task default: [:compile, :test]
