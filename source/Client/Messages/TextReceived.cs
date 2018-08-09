@@ -2,7 +2,10 @@ namespace Client.Messages
 {
   class TextReceived
   {
-    public TextReceived(string sessionId, long startOffset, long endOffset, string text)
+    public TextReceived(string sessionId,
+                        long startOffset,
+                        long endOffset,
+                        string text)
     {
       SessionId = sessionId;
       StartOffset = startOffset;

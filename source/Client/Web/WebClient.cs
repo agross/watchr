@@ -51,13 +51,16 @@ namespace Client.Web
   class WebClient : IDisposable
   {
     static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    readonly string _groupId;
     readonly HubConnection _connection;
     readonly IHubProxy _hub;
     readonly CompositeDisposable _subscriptions;
 
-    public WebClient(string url)
+    public WebClient(string url, string groupId)
     {
-      Logger.Info("Starting web client for {0}", url);
+      Logger.Info("Starting web client for {0} (group {1})", url, groupId);
+
+      _groupId = groupId;
 
       _connection = new HubConnection(url);
       _hub = _connection.CreateHubProxy("ConsoleHub");
@@ -121,7 +124,8 @@ namespace Client.Web
       }
       catch (Exception exception)
       {
-        Logger.Error(MaybeAggregateException(exception), "SignalR: Could not start connection");
+        Logger.Error(MaybeAggregateException(exception),
+                     "SignalR: Could not start connection");
         throw;
       }
     }
@@ -136,7 +140,7 @@ namespace Client.Web
 
       try
       {
-        _hub.Invoke<string>("Broadcast", output).Wait();
+        _hub.Invoke<string>("Broadcast", _groupId, output).Wait();
       }
       catch (Exception exception)
       {
@@ -162,7 +166,10 @@ namespace Client.Web
 
       try
       {
-        _hub.Invoke<string>("Terminate", message.SessionId).Wait();
+        _hub.Invoke<string>("Terminate",
+                            _groupId,
+                            message.SessionId)
+            .Wait();
       }
       catch (Exception exception)
       {

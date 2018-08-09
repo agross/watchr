@@ -17,10 +17,13 @@ describe(ConsoleHub.name, function() {
           client: {
             text: null,
             terminate: null
+          },
+          server: {
+            joinGroup: jasmine.createSpy('joinGroup')
           }
         },
         hub: {
-          start: jasmine.createSpy('start'),
+          start: jasmine.createSpy('start').and.returnValue(Promise.resolve()),
           error: jasmine.createSpy('error'),
           disconnected: jasmine.createSpy('disconnected'),
           stateChanged: jasmine.createSpy('stateChanged')
@@ -28,11 +31,17 @@ describe(ConsoleHub.name, function() {
       };
     };
 
+    this.fakeWindow = {
+      location: {
+        search: "?something"
+      }
+    };
+
     var createConsoleHub = function(that) {
       that.parent = $('#parent-container');
       that.welcome = $('#welcome-container');
 
-      new ConsoleHub().setUp(that.parent, that.welcome);
+      new ConsoleHub().setUp(that.fakeWindow, that.parent, that.welcome);
     };
 
     fakeConsole(this);
@@ -42,7 +51,13 @@ describe(ConsoleHub.name, function() {
 
   describe('setup', function() {
     it('starts the hub connection', function() {
-      expect($.connection.hub.start).toHaveBeenCalled();
+      expect($.connection.hub.start)
+        .toHaveBeenCalled();
+    });
+
+    it('joins group by query string', function() {
+      expect($.connection.consoleHub.server.joinGroup)
+        .toHaveBeenCalledWith(this.fakeWindow.location.search);
     });
   });
 
@@ -55,11 +70,13 @@ describe(ConsoleHub.name, function() {
       });
 
       xit('creates a console for the session', function() {
-        expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.text.SessionId);
+        expect(this.console)
+          .toHaveBeenCalledWith(this.parent, this.welcome, this.text.SessionId);
       });
 
       it('sends text to the console', function() {
-        expect(this.console().text).toHaveBeenCalledWith(this.text);
+        expect(this.console().text)
+          .toHaveBeenCalledWith(this.text);
       });
     });
 
@@ -71,11 +88,13 @@ describe(ConsoleHub.name, function() {
       });
 
       xit('creates a console for the session', function() {
-        expect(this.console).toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
+        expect(this.console)
+          .toHaveBeenCalledWith(this.parent, this.welcome, this.sessionId);
       });
 
       it('terminates the console', function() {
-        expect(this.console().terminate).toHaveBeenCalled();
+        expect(this.console().terminate)
+          .toHaveBeenCalled();
       });
     });
   });

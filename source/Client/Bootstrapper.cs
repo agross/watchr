@@ -15,7 +15,8 @@ namespace Client
 
       return new CompositeDisposable
       {
-        new WebClient(ConfigurationManager.AppSettings["hub-url"]),
+        new WebClient(ConfigurationManager.AppSettings["hub-url"],
+                      ConfigurationManager.AppSettings["group-id"]),
         new FileChangeListener(ConfigurationManager.AppSettings["screen-logs"]).Subscribe(x => subscriber.FileChanged(x))
       };
     }

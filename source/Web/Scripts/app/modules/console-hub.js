@@ -3,7 +3,7 @@
 /// <reference path='console.js' />
 
 function ConsoleHub() {
-  this.setUp = function(parent, welcome) {
+  this.setUp = function(window, parent, welcome) {
     $.connection.consoleHub.client.text = function(text) {
       new Console(parent, welcome, text.SessionId).text(text);
     };
@@ -43,6 +43,11 @@ function ConsoleHub() {
     });
 
     $.connection.hub.logging = true;
-    $.connection.hub.start();
+    $.connection
+      .hub
+      .start()
+      .done(function() {
+        $.connection.consoleHub.server.joinGroup(window.location.search);
+      });
   };
 }

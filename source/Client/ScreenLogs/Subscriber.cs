@@ -40,7 +40,8 @@ namespace Client.ScreenLogs
                                     s =>
                                     {
                                       var c = Context.For(s);
-                                      Logger.Debug("Session {0}: Started", c.SessionId);
+                                      Logger.Debug("Session {0}: Started",
+                                                   c.SessionId);
                                       return c;
                                     });
 
