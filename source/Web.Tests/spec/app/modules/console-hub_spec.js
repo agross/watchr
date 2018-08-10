@@ -23,7 +23,9 @@ describe(ConsoleHub.name, function() {
           }
         },
         hub: {
-          start: jasmine.createSpy('start').and.returnValue(Promise.resolve()),
+          start: jasmine.createSpy('start')
+                        .and
+                        .returnValue($.Deferred().resolve().promise()),
           error: jasmine.createSpy('error'),
           disconnected: jasmine.createSpy('disconnected'),
           stateChanged: jasmine.createSpy('stateChanged')
