@@ -1,7 +1,7 @@
-/// <reference path='../../jquery/jquery.js' />
-/// <reference path="../../xterm/xterm.js" />
-/// <reference path="../../xterm/fit.js" />
-/// <reference path="../../css-element-queries/ResizeSensor.js" />
+/// <reference path='../../lib/jquery/jquery.js' />
+/// <reference path="../../lib/xterm/xterm.js" />
+/// <reference path="../../lib/xterm/fit.js" />
+/// <reference path="../../lib/css-element-queries/ResizeSensor.js" />
 
 function Console(parent, welcome, sessionId) {
   Terminal.applyAddon(fit);
@@ -35,7 +35,7 @@ function Console(parent, welcome, sessionId) {
       scrollback: 20000,
       cursorBlink: false,
       cursorStyle: 'block',
-      fontFamily: 'Droid Sans Mono, Consolas, Courier New, monospace',
+      fontFamily: 'Droid Sans Mono',
       fontSize: 13,
       disableStdin: true,
       focus: false,
@@ -51,7 +51,7 @@ function Console(parent, welcome, sessionId) {
 
     div.terminalInstance = function() {
       return terminal;
-    }
+    };
 
     // Support buffering.
     terminal.__backlog = new Array();
@@ -90,7 +90,7 @@ function Console(parent, welcome, sessionId) {
       if (this.__backlog.length === 0) {
         $('section#' + getSessionId(), parent).removeClass('delayed');
       }
-    }
+    };
 
     terminal.open(div);
     terminal.cursor = true;
@@ -99,6 +99,7 @@ function Console(parent, welcome, sessionId) {
     try {
       terminal.fit();
     } catch(e) { /* Fails with Jasmine for reasons beyond me. */ };
+
     // Fit on resize.
     new ResizeSensor(div, function() {
       terminal.fit();

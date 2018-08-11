@@ -2,7 +2,7 @@
 
 require 'rake/funnel'
 
-Rake::Funnel::Tasks::NUnit.new(test: %i(bin_path npm)) do |t|
+Rake::Funnel::Tasks::NUnit.new(test: :bin_path) do |t|
   t.files = 'build/bin/WinForms/Client.dll'
 
   framework = if ENV['OS'] == 'Windows_NT'
@@ -27,23 +27,12 @@ task :test do
                  path: 'build/spec/nunit.xml')
 end
 
-if Rake::Win32.windows?
-  task :test do
-    report = 'build/spec/chutzpah.xml'
-    mkdir_p(File.dirname(report))
+task test: :npm do
+  cmd = %w(
+    npm
+    run
+    test
+  )
 
-    cmd = [
-      'chutzpah.console.exe',
-      *Rake::Funnel::Support::Mapper.new.map(
-        fail_on_error: nil,
-        path: 'source/Web.Tests',
-        nunit2: report
-      )
-    ]
-
-    sh(*cmd)
-
-    Rake::Funnel::Integration::TeamCity::ServiceMessages
-      .import_data(type: :nunit, path: report)
-  end
+  sh(*cmd)
 end

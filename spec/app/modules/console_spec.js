@@ -1,5 +1,4 @@
-/// <reference path='../../../../Web/Scripts/app/modules/console.js' />
-/// <reference path='../../spec_helper.js' />
+/// <reference path='../../../source/Web/Scripts/app/modules/console.js' />
 
 describe(Console.name, function() {
   beforeEach(function() {
@@ -9,7 +8,12 @@ describe(Console.name, function() {
     setFixtures(this.welcome);
 
     var fakeTerminal = function(that) {
-      var terminal = jasmine.createSpyObj('Terminal', ['open', 'write']);
+      var terminal = jasmine
+        .createSpyObj('Terminal',
+                      {
+                        'open': jasmine.createSpy('open'),
+                        'write': jasmine.createSpy('write')
+                      });
 
       that.terminal = spyOn(window, 'Terminal').and.callFake(function() {
         return terminal;
@@ -32,27 +36,33 @@ describe(Console.name, function() {
       });
 
       it('hides welcome message', function() {
-        expect(this.welcome).toBeHidden();
+        expect(this.welcome)
+          .toBeHidden();
       });
 
       it('creates a new terminal', function() {
-        expect(this.parent.find('section#session-id')).toExist();
+        expect(this.parent.find('section#session-id'))
+          .toExist();
       });
 
       it('sets terminal title', function() {
-        expect(this.parent.find('section#session-id header')).toHaveText('id');
+        expect(this.parent.find('section#session-id header'))
+          .toHaveText('id');
       });
 
       it('creates container for xterm', function() {
-        expect(this.parent.find('section#session-id div.term')).toExist();
+        expect(this.parent.find('section#session-id div.term'))
+          .toExist();
       });
 
       it('creates a xterm instance', function() {
-        expect(this.terminal().open).toHaveBeenCalledWith(this.parent.find('section#session-id div.term')[0]);
+        expect(this.terminal().open)
+          .toHaveBeenCalledWith(this.parent.find('section#session-id div.term')[0]);
       });
 
       it('writes lines', function() {
-        expect(this.terminal().write).toHaveBeenCalledWith('line 1');
+        expect(this.terminal().write)
+          .toHaveBeenCalledWith('line 1');
       });
     });
 
@@ -63,11 +73,13 @@ describe(Console.name, function() {
       });
 
       it('uses existing xterm instance', function() {
-        expect(this.terminal().open.calls.count()).toEqual(1);
+        expect(this.terminal().open.calls.count())
+          .toEqual(1);
       });
 
       it('writes lines', function() {
-        expect(this.terminal().write.calls.allArgs()).toEqual([['line 1'], ['line 2']]);
+        expect(this.terminal().write.calls.allArgs())
+          .toEqual([['line 1'], ['line 2']]);
       });
     });
 
@@ -78,7 +90,8 @@ describe(Console.name, function() {
         var second = new Console(this.parent, this.welcome, 'id-2');
         second.text({ StartOffset: 0, Text: 'line 1' });
 
-        expect(this.parent.children()).toHaveLength(2);
+        expect(this.parent.children())
+          .toHaveLength(2);
       });
     });
 
@@ -86,31 +99,35 @@ describe(Console.name, function() {
       it('starts session with delayed text', function() {
         this.console.text({ StartOffset: 42, Text: 'line 2' });
 
-        expect(this.terminal().write).toHaveBeenCalledWith('line 2');
+        expect(this.terminal().write)
+          .toHaveBeenCalledWith('line 2');
       });
     });
 
     describe('delayed text for running session', function() {
       beforeEach(function() {
         this.console.text({ StartOffset: 0, EndOffset: 'first'.length, Text: 'first' });
-        this.console.text({ StartOffset: 'firstlate'.length, Text: 'early' });
+        this.console.text({ StartOffset: 'first-late'.length, Text: 'early' });
       });
 
       it('marks warning for terminal', function() {
-        expect(this.parent.find('section#session-id')).toHaveClass('delayed');
+        expect(this.parent.find('section#session-id'))
+          .toHaveClass('delayed');
       });
 
       describe('delay resolved', function () {
         beforeEach(function() {
-          this.console.text({ StartOffset: 'first'.length, EndOffset: 'firstlate'.length, Text: 'late' });
+          this.console.text({ StartOffset: 'first'.length, EndOffset: 'first-late'.length, Text: 'late' });
         });
 
         it('reorders text', function() {
-          expect(this.terminal().write.calls.allArgs()).toEqual([['first'], ['late'], ['early']]);
+          expect(this.terminal().write.calls.allArgs())
+            .toEqual([['first'], ['late'], ['early']]);
         });
 
         it('removes warning', function() {
-          expect(this.parent.find('section#session-id')).not.toHaveClass('delayed');
+          expect(this.parent.find('section#session-id'))
+            .not.toHaveClass('delayed');
         });
       });
     });
@@ -121,7 +138,8 @@ describe(Console.name, function() {
       this.console.text({ StartOffset: 0, Text: 'line 1' });
       this.console.terminate();
 
-      expect(this.parent.find('section#session-id')).toHaveClass('terminated');
+      expect(this.parent.find('section#session-id'))
+        .toHaveClass('terminated');
     });
   });
 });

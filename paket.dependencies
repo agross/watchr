@@ -4,6 +4,8 @@ framework: auto-detect
 
 nuget Microsoft.AspNet.SignalR ~> 2.2 content: none
 nuget Microsoft.AspNet.SignalR.Client ~> 2.2 content: none
+nuget Microsoft.AspNet.SignalR.Utils
+
 nuget Microsoft.AspNet.Web.Optimization ~> 1.1
 nuget Minimod.RxMessageBroker content: once
 nuget NLog
@@ -18,6 +20,5 @@ group Build
 group Test
   source https://www.nuget.org/api/v2
 
-  nuget Chutzpah ~> 4.3
   nuget NUnit ~> 2.6
   nuget NUnit.Runners ~> 2.6

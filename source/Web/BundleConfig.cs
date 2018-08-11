@@ -12,11 +12,12 @@ namespace Web
                     .ForceOrdered());
 
       bundles.Add(new ScriptBundle("~/assets/js/lib")
-                    .Include("~/Scripts/jquery/jquery.js")
-                    .Include("~/Scripts/signalr/jquery.signalR.min.js")
-                    .Include("~/Scripts/xterm/xterm.js")
-                    .Include("~/Scripts/xterm/fit.js")
-                    .Include("~/Scripts/css-element-queries/*.js")
+                    .Include("~/Scripts/lib/jquery/jquery.js")
+                    .Include("~/Scripts/lib/signalr/jquery.signalR.min.js")
+                    .Include("~/Scripts/lib/signalr/server.js")
+                    .Include("~/Scripts/lib/xterm/xterm.js")
+                    .Include("~/Scripts/lib/xterm/fit.js")
+                    .Include("~/Scripts/lib/css-element-queries/*.js")
                     .ForceOrdered());
 
       bundles.Add(new ScriptBundle("~/assets/js/app")

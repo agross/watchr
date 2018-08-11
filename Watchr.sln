@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "source\Client\Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.Console", "source\Client.Console\Client.Console.csproj", "{26C65932-BD54-4EE9-AE3D-7766AB585E0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Tests", "source\Web.Tests\Web.Tests.csproj", "{C2CB83FA-40CD-4073-BB41-8F930539CF38}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client.WinForms", "source\Client.WinForms\Client.WinForms.csproj", "{DBB8DB86-A807-4BCB-92A6-6BB08ECC821D}"
 EndProject
 Global
