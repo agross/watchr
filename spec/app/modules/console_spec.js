@@ -7,20 +7,14 @@ describe(Console.name, function() {
     setFixtures(this.parent);
     setFixtures(this.welcome);
 
-    var fakeTerminal = function(that) {
-      var terminal = jasmine
-        .createSpyObj('Terminal',
-                      {
-                        'open': jasmine.createSpy('open'),
-                        'write': jasmine.createSpy('write')
-                      });
-
-      that.terminal = spyOn(window, 'Terminal').and.callFake(function() {
-        return terminal;
+    this.terminal = jasmine
+      .createSpyObj('Terminal', {
+        loadWebfontAndOpen: jasmine.createSpy('loadWebfontAndOpen'),
+                                   //.and.returnValue($.Deferred().resolve().promise()),
+        write: jasmine.createSpy('write')
       });
-    };
 
-    fakeTerminal(this);
+    spyOn(window, 'Terminal').and.returnValue(this.terminal);
 
     this.console = new Console(this.parent, this.welcome, 'id');
   });
@@ -56,12 +50,12 @@ describe(Console.name, function() {
       });
 
       it('creates a xterm instance', function() {
-        expect(this.terminal().open)
+        expect(this.terminal.loadWebfontAndOpen)
           .toHaveBeenCalledWith(this.parent.find('section#session-id div.term')[0]);
       });
 
       it('writes lines', function() {
-        expect(this.terminal().write)
+        expect(this.terminal.write)
           .toHaveBeenCalledWith('line 1');
       });
     });
@@ -73,12 +67,12 @@ describe(Console.name, function() {
       });
 
       it('uses existing xterm instance', function() {
-        expect(this.terminal().open.calls.count())
+        expect(this.terminal.loadWebfontAndOpen.calls.count())
           .toEqual(1);
       });
 
       it('writes lines', function() {
-        expect(this.terminal().write.calls.allArgs())
+        expect(this.terminal.write.calls.allArgs())
           .toEqual([['line 1'], ['line 2']]);
       });
     });
@@ -99,7 +93,7 @@ describe(Console.name, function() {
       it('starts session with delayed text', function() {
         this.console.text({ StartOffset: 42, Text: 'line 2' });
 
-        expect(this.terminal().write)
+        expect(this.terminal.write)
           .toHaveBeenCalledWith('line 2');
       });
     });
@@ -121,7 +115,7 @@ describe(Console.name, function() {
         });
 
         it('reorders text', function() {
-          expect(this.terminal().write.calls.allArgs())
+          expect(this.terminal.write.calls.allArgs())
             .toEqual([['first'], ['late'], ['early']]);
         });
 

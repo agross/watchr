@@ -1,6 +1,7 @@
 /// <reference path='../../lib/jquery/jquery.js' />
 /// <reference path="../../lib/xterm/xterm.js" />
 /// <reference path="../../lib/xterm/fit.js" />
+/// <reference path="../../lib/xterm-webfont-custom/xterm-webfont.js" />
 /// <reference path="../../lib/css-element-queries/ResizeSensor.js" />
 
 function Console(parent, welcome, sessionId) {
@@ -92,7 +93,7 @@ function Console(parent, welcome, sessionId) {
       }
     };
 
-    terminal.open(div);
+    terminal.loadWebfontAndOpen(div);
     terminal.cursor = true;
 
     // Initial fit.

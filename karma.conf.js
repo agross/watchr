@@ -42,6 +42,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'source/Web/Scripts/lib/xterm/*.js',
       'source/Web/Scripts/lib/**/*.js',
       'source/Web/Scripts/app/modules/**/*.js',
 

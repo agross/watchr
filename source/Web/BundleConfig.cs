@@ -18,6 +18,8 @@ namespace Web
                     .Include("~/Scripts/lib/xterm/xterm.js")
                     .Include("~/Scripts/lib/xterm/fit.js")
                     .Include("~/Scripts/lib/css-element-queries/*.js")
+                    .Include("~/Scripts/lib/fontfaceobserver/fontfaceobserver.js")
+                    .Include("~/Scripts/lib/xterm-webfont-custom/xterm-webfont.js")
                     .ForceOrdered());
 
       bundles.Add(new ScriptBundle("~/assets/js/app")

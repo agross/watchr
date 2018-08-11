@@ -15,6 +15,11 @@ task :npm do
 end
 
 task :npm do
+  cp('node_modules/fontfaceobserver/fontfaceobserver.js',
+     'source/Web/Scripts/lib/fontfaceobserver/')
+end
+
+task :npm do
   cp('node_modules/css-element-queries/src/ResizeSensor.js',
      'source/Web/Scripts/lib/css-element-queries/')
 end

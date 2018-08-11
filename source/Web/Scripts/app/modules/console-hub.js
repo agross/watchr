@@ -10,7 +10,7 @@ function ConsoleHub() {
         .done(function() {
           hub.invoke('joinGroup', window.location.search)
             .done(function() {
-              console.log('Joined group');
+              console.log('Joined group with ' + window.location.search);
             }).fail(function(error) {
               console.log('Could not join group. Error: ' + error);
             });
