@@ -23,7 +23,7 @@ describe(ConsoleHub.name, function() {
       stateChanged: jasmine.createSpy('stateChanged'),
       start: jasmine.createSpy('start')
                     .and.returnValue($.Deferred().resolve().promise())
-    };
+    }; 
 
     $.hubConnection = jasmine.createSpy('hubConnection')
                              .and.returnValue(this.connection);

@@ -92,7 +92,7 @@ function Console(parent, welcome, sessionId) {
         $('section#' + getSessionId(), parent).removeClass('delayed');
       }
     };
-
+    
     terminal.loadWebfontAndOpen(div)
             .then(function(terminal) {
               terminal.cursor = true;

@@ -1,21 +1,25 @@
 /// <reference path='../../../source/Web/Scripts/app/modules/console.js' />
 
 describe(Console.name, function() {
+  let terminal;
+
   beforeEach(function() {
     this.parent = $('<div>').attr('id', 'parent-container');
     this.welcome = $('<div>').attr('id', 'welcome-container');
     setFixtures(this.parent);
     setFixtures(this.welcome);
 
-    this.terminal = jasmine
-      .createSpyObj('Terminal', {
-        loadWebfontAndOpen: jasmine.createSpy('loadWebfontAndOpen')
-                                   .and.returnValue(Promise.resolve(42)),
-        write: jasmine.createSpy('write'),
-        fit: jasmine.createSpy('fit')
-      });
+    terminal = jasmine.createSpyObj('Terminal', [
+      'loadWebfontAndOpen',
+      'write',
+      'fit'
+    ]);
 
-    spyOn(window, 'Terminal').and.returnValue(this.terminal);
+    terminal.loadWebfontAndOpen.and.returnValue(
+      new Promise(resolve => resolve(terminal))
+    );
+
+    spyOn(window, 'Terminal').and.returnValue(terminal);
 
     this.console = new Console(this.parent, this.welcome, 'id');
   });
@@ -31,55 +35,55 @@ describe(Console.name, function() {
       });
 
       it('hides welcome message', function() {
-        expect(this.welcome)
-          .toBeHidden();
+        expect(this.welcome).toBeHidden();
       });
 
       it('creates a new terminal', function() {
-        expect(this.parent.find('section#session-id'))
-          .toExist();
+        expect(this.parent.find('section#session-id')).toExist();
       });
 
       it('sets terminal title', function() {
-        expect(this.parent.find('section#session-id header'))
-          .toHaveText('id');
+        expect(this.parent.find('section#session-id header')).toHaveText('id');
       });
 
       it('creates container for xterm', function() {
-        expect(this.parent.find('section#session-id div.term'))
-          .toExist();
+        expect(this.parent.find('section#session-id div.term')).toExist();
       });
 
       it('creates a xterm instance', function() {
-        expect(this.terminal.loadWebfontAndOpen)
-          .toHaveBeenCalledWith(this.parent.find('section#session-id div.term')[0]);
+        expect(terminal.loadWebfontAndOpen).toHaveBeenCalledWith(
+          this.parent.find('section#session-id div.term')[0]
+        );
       });
 
       it('writes lines', function() {
-        expect(this.terminal.write)
-          .toHaveBeenCalledWith('line 1');
+        expect(terminal.write).toHaveBeenCalledWith('line 1');
       });
 
       it('fits the terminal to the screen', function() {
-        expect(this.terminal.fit)
-          .toHaveBeenCalled();
+        expect(terminal.fit).toHaveBeenCalled();
       });
     });
 
     describe('text for running session', function() {
       beforeEach(function() {
-        this.console.text({ StartOffset: 0, EndOffset: 'line 1'.length, Text: 'line 1' });
+        this.console.text({
+          StartOffset: 0,
+          EndOffset: 'line 1'.length,
+          Text: 'line 1'
+        });
         this.console.text({ StartOffset: 'line 1'.length, Text: 'line 2' });
       });
 
       it('uses existing xterm instance', function() {
-        expect(this.terminal.loadWebfontAndOpen.calls.count())
-          .toEqual(1);
+        expect(terminal.loadWebfontAndOpen.calls.count()).toEqual(1);
       });
 
       it('writes lines', function() {
-        expect(this.terminal.write.calls.allArgs())
-          .toEqual([['line 1'], ['line 2']]);
+        expect(terminal.write.calls.allArgs()).toEqual([
+          ['line 1'],
+          ['line 2']
+        ]);
       });
     });
 
@@ -90,8 +94,7 @@ describe(Console.name, function() {
         var second = new Console(this.parent, this.welcome, 'id-2');
         second.text({ StartOffset: 0, Text: 'line 1' });
 
-        expect(this.parent.children())
-          .toHaveLength(2);
+        expect(this.parent.children()).toHaveLength(2);
       });
     });
 
@@ -99,35 +102,45 @@ describe(Console.name, function() {
       it('starts session with delayed text', function() {
         this.console.text({ StartOffset: 42, Text: 'line 2' });
 
-        expect(this.terminal.write)
-          .toHaveBeenCalledWith('line 2');
+        expect(terminal.write).toHaveBeenCalledWith('line 2');
       });
     });
 
     describe('delayed text for running session', function() {
       beforeEach(function() {
-        this.console.text({ StartOffset: 0, EndOffset: 'first'.length, Text: 'first' });
+        this.console.text({
+          StartOffset: 0,
+          EndOffset: 'first'.length,
+          Text: 'first'
+        });
         this.console.text({ StartOffset: 'first-late'.length, Text: 'early' });
       });
 
       it('marks warning for terminal', function() {
-        expect(this.parent.find('section#session-id'))
-          .toHaveClass('delayed');
+        expect(this.parent.find('section#session-id')).toHaveClass('delayed');
       });
 
-      describe('delay resolved', function () {
+      describe('delay resolved', function() {
         beforeEach(function() {
-          this.console.text({ StartOffset: 'first'.length, EndOffset: 'first-late'.length, Text: 'late' });
+          this.console.text({
+            StartOffset: 'first'.length,
+            EndOffset: 'first-late'.length,
+            Text: 'late'
+          });
         });
 
         it('reorders text', function() {
-          expect(this.terminal.write.calls.allArgs())
-            .toEqual([['first'], ['late'], ['early']]);
+          expect(terminal.write.calls.allArgs()).toEqual([
+            ['first'],
+            ['late'],
+            ['early']
+          ]);
         });
 
         it('removes warning', function() {
-          expect(this.parent.find('section#session-id'))
-            .not.toHaveClass('delayed');
+          expect(this.parent.find('section#session-id')).not.toHaveClass(
+            'delayed'
+          );
         });
       });
     });
@@ -138,8 +151,7 @@ describe(Console.name, function() {
       this.console.text({ StartOffset: 0, Text: 'line 1' });
       this.console.terminate();
 
-      expect(this.parent.find('section#session-id'))
-        .toHaveClass('terminated');
+      expect(this.parent.find('section#session-id')).toHaveClass('terminated');
     });
   });
 });
