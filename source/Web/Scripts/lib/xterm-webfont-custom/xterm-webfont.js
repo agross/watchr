@@ -1,7 +1,6 @@
 /// <reference path="../xterm/xterm.js" />
 
 Terminal.prototype.loadWebfontAndOpen = function(element) {
-  console.log('here!')
   var _this = this;
 
   var fontFamily = this.getOption('fontFamily');

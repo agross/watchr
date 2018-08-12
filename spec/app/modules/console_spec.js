@@ -9,9 +9,10 @@ describe(Console.name, function() {
 
     this.terminal = jasmine
       .createSpyObj('Terminal', {
-        loadWebfontAndOpen: jasmine.createSpy('loadWebfontAndOpen'),
-                                   //.and.returnValue($.Deferred().resolve().promise()),
-        write: jasmine.createSpy('write')
+        loadWebfontAndOpen: jasmine.createSpy('loadWebfontAndOpen')
+                                   .and.returnValue(Promise.resolve(42)),
+        write: jasmine.createSpy('write'),
+        fit: jasmine.createSpy('fit')
       });
 
     spyOn(window, 'Terminal').and.returnValue(this.terminal);
@@ -57,6 +58,11 @@ describe(Console.name, function() {
       it('writes lines', function() {
         expect(this.terminal.write)
           .toHaveBeenCalledWith('line 1');
+      });
+
+      it('fits the terminal to the screen', function() {
+        expect(this.terminal.fit)
+          .toHaveBeenCalled();
       });
     });
 

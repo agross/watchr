@@ -93,18 +93,18 @@ function Console(parent, welcome, sessionId) {
       }
     };
 
-    terminal.loadWebfontAndOpen(div);
-    terminal.cursor = true;
+    terminal.loadWebfontAndOpen(div)
+            .then(function(terminal) {
+              terminal.cursor = true;
 
-    // Initial fit.
-    try {
-      terminal.fit();
-    } catch(e) { /* Fails with Jasmine for reasons beyond me. */ };
+              // Initial fit.
+              terminal.fit();
 
-    // Fit on resize.
-    new ResizeSensor(div, function() {
-      terminal.fit();
-    });
+              // Fit on resize.
+              new ResizeSensor(div, function() {
+                terminal.fit();
+              });
+            });
 
     return terminal;
   };
