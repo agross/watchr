@@ -2,12 +2,15 @@
 
 describe(Console.name, function() {
   let terminal;
+  let _console;
+  let _parent;
+  let _welcome;
 
   beforeEach(function() {
-    this.parent = $('<div>').attr('id', 'parent-container');
-    this.welcome = $('<div>').attr('id', 'welcome-container');
-    setFixtures(this.parent);
-    setFixtures(this.welcome);
+    _parent = $('<div>').attr('id', 'parent-container');
+    _welcome = $('<div>').attr('id', 'welcome-container');
+    setFixtures(_parent);
+    setFixtures(_welcome);
 
     terminal = jasmine.createSpyObj('Terminal', [
       'loadWebfontAndOpen',
@@ -21,38 +24,38 @@ describe(Console.name, function() {
 
     spyOn(window, 'Terminal').and.returnValue(terminal);
 
-    this.console = new Console(this.parent, this.welcome, 'id');
+    _console = new Console(_parent, _welcome, 'id');
   });
 
   it('has a session id', function() {
-    expect(this.console.sessionId).toEqual('id');
+    expect(_console.sessionId).toEqual('id');
   });
 
   describe('text received', function() {
     describe('new session started', function() {
-      beforeEach(function() {
-        this.console.text({ StartOffset: 0, Text: 'line 1' });
+      beforeEach(done => {
+        _console.text({ StartOffset: 0, Text: 'line 1' }).then(done);
       });
 
       it('hides welcome message', function() {
-        expect(this.welcome).toBeHidden();
+        expect(_welcome).toBeHidden();
       });
 
       it('creates a new terminal', function() {
-        expect(this.parent.find('section#session-id')).toExist();
+        expect(_parent.find('section#session-id')).toExist();
       });
 
       it('sets terminal title', function() {
-        expect(this.parent.find('section#session-id header')).toHaveText('id');
+        expect(_parent.find('section#session-id header')).toHaveText('id');
       });
 
       it('creates container for xterm', function() {
-        expect(this.parent.find('section#session-id div.term')).toExist();
+        expect(_parent.find('section#session-id div.term')).toExist();
       });
 
       it('creates a xterm instance', function() {
         expect(terminal.loadWebfontAndOpen).toHaveBeenCalledWith(
-          this.parent.find('section#session-id div.term')[0]
+          _parent.find('section#session-id div.term')[0]
         );
       });
 
@@ -66,13 +69,17 @@ describe(Console.name, function() {
     });
 
     describe('text for running session', function() {
-      beforeEach(function() {
-        this.console.text({
-          StartOffset: 0,
-          EndOffset: 'line 1'.length,
-          Text: 'line 1'
-        });
-        this.console.text({ StartOffset: 'line 1'.length, Text: 'line 2' });
+      beforeEach(done => {
+        _console
+          .text({
+            StartOffset: 0,
+            EndOffset: 'line 1'.length,
+            Text: 'line 1'
+          })
+          .then(() =>
+            _console.text({ StartOffset: 'line 1'.length, Text: 'line 2' })
+          )
+          .then(done);
       });
 
       it('uses existing xterm instance', function() {
@@ -88,45 +95,59 @@ describe(Console.name, function() {
     });
 
     describe('new session started with another session running', function() {
-      it('creates a new terminal', function() {
-        this.console.text({ StartOffset: 0, Text: 'line 1' });
+      beforeEach(done =>
+        _console.text({ StartOffset: 0, Text: 'line 1' }).then(done));
 
-        var second = new Console(this.parent, this.welcome, 'id-2');
-        second.text({ StartOffset: 0, Text: 'line 1' });
+      it('creates a new terminal', done => {
+        var second = new Console(_parent, _welcome, 'id-2');
+        const parent = _parent;
 
-        expect(this.parent.children()).toHaveLength(2);
+        second.text({ StartOffset: 0, Text: 'line 1' }).then(() => {
+          expect(parent.children()).toHaveLength(2);
+          done();
+        });
       });
     });
 
     describe('delayed text for new session', function() {
-      it('starts session with delayed text', function() {
-        this.console.text({ StartOffset: 42, Text: 'line 2' });
+      beforeEach(done =>
+        _console.text({ StartOffset: 42, Text: 'line 2' }).then(done));
 
+      it('starts session with delayed text', function() {
         expect(terminal.write).toHaveBeenCalledWith('line 2');
       });
     });
 
     describe('delayed text for running session', function() {
-      beforeEach(function() {
-        this.console.text({
-          StartOffset: 0,
-          EndOffset: 'first'.length,
-          Text: 'first'
-        });
-        this.console.text({ StartOffset: 'first-late'.length, Text: 'early' });
+      beforeEach(done => {
+        _console
+          .text({
+            StartOffset: 0,
+            EndOffset: 'first'.length,
+            Text: 'first'
+          })
+          .then(() => {
+            _console.text({
+              StartOffset: 'first-late'.length,
+              Text: 'early'
+            });
+            done();
+          });
       });
 
       it('marks warning for terminal', function() {
-        expect(this.parent.find('section#session-id')).toHaveClass('delayed');
+        expect(_parent.find('section#session-id')).toHaveClass('delayed');
       });
 
       describe('delay resolved', function() {
-        beforeEach(function() {
-          this.console.text({
-            StartOffset: 'first'.length,
-            EndOffset: 'first-late'.length,
-            Text: 'late'
-          });
+        beforeEach(done => {
+          _console
+            .text({
+              StartOffset: 'first'.length,
+              EndOffset: 'first-late'.length,
+              Text: 'late'
+            })
+            .then(done);
         });
 
         it('reorders text', function() {
@@ -138,20 +159,20 @@ describe(Console.name, function() {
         });
 
         it('removes warning', function() {
-          expect(this.parent.find('section#session-id')).not.toHaveClass(
-            'delayed'
-          );
+          expect(_parent.find('section#session-id')).not.toHaveClass('delayed');
         });
       });
     });
   });
 
   describe('session terminated', function() {
-    it('disables the terminal', function() {
-      this.console.text({ StartOffset: 0, Text: 'line 1' });
-      this.console.terminate();
+    beforeEach(done =>
+      _console.text({ StartOffset: 0, Text: 'line 1' }).then(done));
 
-      expect(this.parent.find('section#session-id')).toHaveClass('terminated');
+    it('disables the terminal', function() {
+      _console.terminate();
+
+      expect(_parent.find('section#session-id')).toHaveClass('terminated');
     });
   });
 });

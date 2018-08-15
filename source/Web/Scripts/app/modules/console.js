@@ -18,14 +18,18 @@ function Console(parent, welcome, sessionId) {
   }
 
   var findOrCreateTerminal = function() {
+    const deferral = $.Deferred();
+    
     welcome.hide();
 
     var element = parent.find('section#' + getSessionId());
+
     if (element.length) {
-      return getTerminalDiv(element).terminalInstance();
+      return deferral.resolve(getTerminalDiv(element).terminalInstance());
     }
 
-    element = $('<section>').attr('id', getSessionId())
+    element = $('<section>')
+      .attr('id', getSessionId())
       .append($('<header>').text(sessionId.replace(/\s.*/, '')))
       .append($('<div>').addClass('term'));
 
@@ -49,7 +53,7 @@ function Console(parent, welcome, sessionId) {
         brightYellow: '#c4a000'
       }
     });
-
+    
     div.terminalInstance = function() {
       return terminal;
     };
@@ -57,9 +61,9 @@ function Console(parent, welcome, sessionId) {
     // Support buffering.
     terminal.__backlog = new Array();
     terminal.__nextOffset = 0;
+    
     terminal.__applyText = function(text) {
-      if(this.__nextOffset === text.StartOffset ||
-         this.__nextOffset === 0) {
+      if (this.__nextOffset === text.StartOffset || this.__nextOffset === 0) {
         this.__nextOffset = text.EndOffset;
         this.write(text.Text);
 
@@ -68,13 +72,15 @@ function Console(parent, welcome, sessionId) {
 
       return false;
     };
+
     terminal.__buffer = function(text) {
       $('section#' + getSessionId(), parent).addClass('delayed');
+      console.log('BUFFFFFFFFER', parent)
 
       return this.__backlog.push(text);
     };
     terminal.__applyBuffer = function() {
-      if(this.__backlog.length === 0) {
+      if (this.__backlog.length === 0) {
         return;
       }
 
@@ -93,29 +99,33 @@ function Console(parent, welcome, sessionId) {
       }
     };
 
-    terminal.loadWebfontAndOpen(div)
-            .then(function(terminal) {
-              // Initial fit.
-              terminal.fit();
+    terminal
+      .loadWebfontAndOpen(div)
+      .then(function(terminal) {
+        // Initial fit.
+        terminal.fit();
 
-              // Fit on resize.
-              new ResizeSensor(div, function() {
-                terminal.fit();
-              });
-            });
+        // Fit on resize.
+        new ResizeSensor(div, function() {
+          terminal.fit();
+        });
 
-    return terminal;
+        return terminal;
+      })
+      .then(terminal => deferral.resolve(terminal));
+
+    return deferral.promise();
   };
 
   this.text = function(text) {
-    var terminal = findOrCreateTerminal();
-
-    if (terminal.__applyText(text)) {
-      terminal.__applyBuffer();
-    }
-    else {
-      terminal.__buffer(text);
-    }
+    return findOrCreateTerminal().then(terminal => {
+      if (terminal.__applyText(text)) {
+        terminal.__applyBuffer();
+      } else {
+        terminal.__buffer(text);
+      }
+      return terminal;
+    });
   };
 
   this.terminate = function() {
