@@ -9,7 +9,7 @@ function Console(parent, welcome, sessionId) {
 
   this.sessionId = sessionId;
 
-  var getSessionId = function() {
+  var getSessionId = function () {
     return 'session-' + sessionId.replace(/[\W\s]/g, '_');
   };
 
@@ -17,7 +17,7 @@ function Console(parent, welcome, sessionId) {
     return element.children().last()[0];
   }
 
-  var findOrCreateTerminal = function() {
+  var findOrCreateTerminal = function () {
     const deferral = $.Deferred();
 
     welcome.hide();
@@ -54,7 +54,7 @@ function Console(parent, welcome, sessionId) {
       }
     });
 
-    div.terminalInstance = function() {
+    div.terminalInstance = function () {
       return terminal;
     };
 
@@ -62,7 +62,7 @@ function Console(parent, welcome, sessionId) {
     terminal.__backlog = new Array();
     terminal.__nextOffset = 0;
 
-    terminal.__applyText = function(text) {
+    terminal.__applyText = function (text) {
       if (this.__nextOffset === text.StartOffset || this.__nextOffset === 0) {
         this.__nextOffset = text.EndOffset;
         this.write(text.Text);
@@ -73,12 +73,12 @@ function Console(parent, welcome, sessionId) {
       return false;
     };
 
-    terminal.__buffer = function(text) {
+    terminal.__buffer = function (text) {
       $('section#' + getSessionId(), parent).addClass('delayed');
       return this.__backlog.push(text);
     };
 
-    terminal.__applyBuffer = function() {
+    terminal.__applyBuffer = function () {
       if (this.__backlog.length === 0) {
         return;
       }
@@ -86,10 +86,10 @@ function Console(parent, welcome, sessionId) {
       var that = this;
 
       this.__backlog = this.__backlog
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           return a.StartOffset - b.StartOffset;
         })
-        .filter(function(item) {
+        .filter(function (item) {
           return !that.__applyText(item);
         });
 
@@ -100,24 +100,26 @@ function Console(parent, welcome, sessionId) {
 
     terminal
       .loadWebfontAndOpen(div)
-      .then(function(terminal) {
+      .then(function (terminal) {
         // Initial fit.
         terminal.fit();
 
         // Fit on resize.
-        new ResizeSensor(div, function() {
+        new ResizeSensor(div, function () {
           terminal.fit();
         });
 
         return terminal;
       })
-      .then(terminal => deferral.resolve(terminal));
+      .then(function (terminal) {
+        deferral.resolve(terminal)
+      });
 
     return deferral.promise();
   };
 
-  this.text = function(text) {
-    return findOrCreateTerminal().then(terminal => {
+  this.text = function (text) {
+    return findOrCreateTerminal().then(function (terminal) {
       if (terminal.__applyText(text)) {
         terminal.__applyBuffer();
       } else {
@@ -127,7 +129,7 @@ function Console(parent, welcome, sessionId) {
     });
   };
 
-  this.terminate = function() {
+  this.terminate = function () {
     $('section#' + getSessionId(), parent).addClass('terminated');
   };
 }
