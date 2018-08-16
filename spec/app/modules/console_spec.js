@@ -126,17 +126,19 @@ describe(Console.name, function() {
             EndOffset: 'first'.length,
             Text: 'first'
           })
-          .then(() => {
-            _console.text({
-              StartOffset: 'first-late'.length,
-              Text: 'early'
-            });
-            done();
-          });
+          .then(done);
       });
 
-      it('marks warning for terminal', function() {
-        expect(_parent.find('section#session-id')).toHaveClass('delayed');
+      it('marks warning for terminal', done => {
+        _console
+          .text({
+            StartOffset: 'first-late'.length,
+            Text: 'early'
+          })
+          .then(() => {
+            expect(_parent.find('section#session-id')).toHaveClass('delayed');
+            done();
+          });
       });
 
       describe('delay resolved', function() {
@@ -147,6 +149,12 @@ describe(Console.name, function() {
               EndOffset: 'first-late'.length,
               Text: 'late'
             })
+            .then(() =>
+              _console.text({
+                StartOffset: 'first-late'.length,
+                Text: 'early'
+              })
+            )
             .then(done);
         });
 

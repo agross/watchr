@@ -75,10 +75,9 @@ function Console(parent, welcome, sessionId) {
 
     terminal.__buffer = function(text) {
       $('section#' + getSessionId(), parent).addClass('delayed');
-      console.log('BUFFFFFFFFER', parent)
-
       return this.__backlog.push(text);
     };
+
     terminal.__applyBuffer = function() {
       if (this.__backlog.length === 0) {
         return;
