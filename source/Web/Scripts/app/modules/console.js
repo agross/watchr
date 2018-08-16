@@ -18,7 +18,7 @@ function Console(parent, welcome, sessionId) {
   }
 
   var findOrCreateTerminal = function () {
-    const deferral = $.Deferred();
+    var deferral = $.Deferred();
 
     welcome.hide();
 
@@ -59,7 +59,7 @@ function Console(parent, welcome, sessionId) {
     };
 
     // Support buffering.
-    terminal.__backlog = new Array();
+    terminal.__backlog = [];
     terminal.__nextOffset = 0;
 
     terminal.__applyText = function (text) {
@@ -112,7 +112,7 @@ function Console(parent, welcome, sessionId) {
         return terminal;
       })
       .then(function (terminal) {
-        deferral.resolve(terminal)
+        deferral.resolve(terminal);
       });
 
     return deferral.promise();
