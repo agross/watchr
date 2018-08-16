@@ -19,7 +19,7 @@ function Console(parent, welcome, sessionId) {
 
   var findOrCreateTerminal = function() {
     const deferral = $.Deferred();
-    
+
     welcome.hide();
 
     var element = parent.find('section#' + getSessionId());
@@ -53,7 +53,7 @@ function Console(parent, welcome, sessionId) {
         brightYellow: '#c4a000'
       }
     });
-    
+
     div.terminalInstance = function() {
       return terminal;
     };
@@ -61,7 +61,7 @@ function Console(parent, welcome, sessionId) {
     // Support buffering.
     terminal.__backlog = new Array();
     terminal.__nextOffset = 0;
-    
+
     terminal.__applyText = function(text) {
       if (this.__nextOffset === text.StartOffset || this.__nextOffset === 0) {
         this.__nextOffset = text.EndOffset;
