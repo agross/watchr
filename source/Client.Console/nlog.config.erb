@@ -55,6 +55,6 @@
   <rules>
     <logger name="*"
             minlevel="@configatron.client.log.level@"
-            writeTo="ColoredConsole, Debugger, File" />
+            writeTo="ColoredConsole, Debugger<%= ', File' if configatron.env !~ /production/ %>" />
   </rules>
 </nlog>
