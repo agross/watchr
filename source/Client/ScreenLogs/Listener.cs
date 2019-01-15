@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -23,15 +24,13 @@ namespace Client.ScreenLogs
       {
         var disp = new CompositeDisposable();
 
-        var timer = ForceRefreshOfFileSystemEntries(_path, _filter);
-        disp.Add(timer);
-
         var watcher = CreateFileSystemWatcher(_path, _filter);
         disp.Add(watcher);
 
         var sources =
           new[]
           {
+            ForceRefresh(_path, _filter, TimeSpan.FromSeconds(3)),
             Observable.FromEventPattern
               <FileSystemEventHandler, FileSystemEventArgs>(x => watcher.Changed += x,
                                                             x => watcher.Changed -= x),
@@ -58,11 +57,15 @@ namespace Client.ScreenLogs
       }).Publish().RefCount();
     }
 
-    static IDisposable ForceRefreshOfFileSystemEntries(string path, string filter)
+    IObservable<EventPattern<FileSystemEventArgs>> ForceRefresh(string path, string filter, TimeSpan tick)
     {
-      return Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(1))
-                       .Subscribe(_ => Array.ForEach(Directory.GetFiles(path, filter ?? "*"),
-                                                     x => new FileInfo(x).Refresh()));
+      return Observable.Timer(TimeSpan.Zero, tick)
+                       .SelectMany(_ => Directory.GetFiles(path, filter)
+                                                 .ToArray()
+                                                 .Select(f => new FileSystemEventArgs(WatcherChangeTypes.Changed,
+                                                                                      Path.GetDirectoryName(f),
+                                                                                      Path.GetFileName(f))))
+                       .Select(e => new EventPattern<FileSystemEventArgs>(this, e));
     }
 
     static FileSystemWatcher CreateFileSystemWatcher(string path, string filter)
@@ -71,10 +74,8 @@ namespace Client.ScreenLogs
       {
         NotifyFilter = NotifyFilters.CreationTime |
                        NotifyFilters.LastWrite |
-                       NotifyFilters.DirectoryName |
                        NotifyFilters.FileName |
-                       NotifyFilters.Size |
-                       NotifyFilters.Attributes
+                       NotifyFilters.Size
       };
     }
   }
