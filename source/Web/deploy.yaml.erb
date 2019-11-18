@@ -28,8 +28,6 @@ deployment:
       ../../logs:
         Modify:
           - IIS_IUSRs
-  - certificates:
-      grossweber.com.pfx: env://CERT_PASSWORD
   - web:
       name: GW - <%= configatron.web.bindings.first[:host] %>
       physical_path: bin
