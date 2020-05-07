@@ -46,10 +46,10 @@ end
 task :compile do
   # https://github.com/SignalR/SignalR/issues/933#issuecomment-266250392
   cp('build/bin/Web/bin/Web.config',
-     'packages/Microsoft.AspNet.SignalR.Utils/tools/signalr.exe.config')
+     'packages/Microsoft.AspNet.SignalR.Utils/tools/net40/signalr.exe.config')
 
   cmd = %w(
-    packages/Microsoft.AspNet.SignalR.Utils/tools/signalr.exe
+    packages/Microsoft.AspNet.SignalR.Utils/tools/net40/signalr.exe
     ghp
     /path:build/bin/Web/bin/bin
   )
