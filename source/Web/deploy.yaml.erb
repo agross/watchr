@@ -15,7 +15,8 @@ deployment:
   - requirements:
     - UrlRewrite2
     - NETFramework451
-    - MVC4Vs2010_Loc
+    # ASP.NET Web Pages 2 need to be installed manually. Nice!
+    # https://www.microsoft.com/en-us/download/details.aspx?id=30683
   - permissions:
       .:
         FullControl:
@@ -55,12 +56,10 @@ deployment:
         <% configatron.web.bindings.each do |binding| %>
         -
           protocol: <%= binding[:protocol] %>
+          <% if binding[:protocol] == 'https' %>
+          ssl_flags: 1
+          <% end %>
           host_header: <%= binding[:host] %>
-          ip_address: 85.25.226.100
-        -
-          protocol: <%= binding[:protocol] %>
-          host_header: <%= binding[:host] %>
-          ip_address: '[2001:470:1f0a:8fa::2]'
         <% end %>
       tests:
         <%
