@@ -8,7 +8,7 @@ GEM
       rake (>= 10.4, < 13)
       rubyzip (~> 1.0)
       smart_colored
-    rubyzip (1.2.2)
+    rubyzip (1.3.0)
     smart_colored (1.1.1)
 
 PLATFORMS
