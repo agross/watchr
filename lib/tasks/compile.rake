@@ -2,6 +2,11 @@
 
 require 'rake/funnel'
 
+task compile: %i(npm) do
+  sh(*%w(git clean -xdf source/Web/Scripts/app/))
+  sh(*%w(npm run rollup))
+end
+
 Rake::Funnel::Tasks::SideBySideSpecs.new(:compile) do |t|
   t.references = 'NUnit.Framework'
   t.enabled = configatron.env == 'production'
@@ -26,7 +31,7 @@ Rake::Funnel::Tasks::Copy.new :compile do |t|
              .exclude('**/*.cs')
              .exclude('**/*.??proj')
              .exclude('**/obj/**/*')
-             .exclude('**/*.map')
+             .exclude('**/*.ts')
              .exclude('**/*-vsdoc.js')
              .exclude('**/bin/*.xml')
              .exclude('**/bin/Web.dll.config')
@@ -58,6 +63,7 @@ task :compile do
 
   raise 'The generated server.js is empty' if File.size('server.js').zero?
 
+  mkdir_p('build/bin/Web/bin/Scripts/lib')
   mv('server.js',
-     'build/bin/Web/bin/Scripts/lib/signalr')
+     'build/bin/Web/bin/Scripts/lib')
 end
