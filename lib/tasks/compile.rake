@@ -32,6 +32,7 @@ Rake::Funnel::Tasks::Copy.new :compile do |t|
              .exclude('**/*.??proj')
              .exclude('**/obj/**/*')
              .exclude('**/*.ts')
+             .exclude('**/modules/*')
              .exclude('**/*-vsdoc.js')
              .exclude('**/bin/*.xml')
              .exclude('**/bin/Web.dll.config')
