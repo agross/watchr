@@ -18,7 +18,6 @@ export default {
     {
       file: 'source/Web/Scripts/index.js',
       format: 'iife',
-      name: 'Watchr',
       globals: {
         xterm: 'window',
         'xterm-addon-fit': 'FitAddon',
@@ -31,7 +30,6 @@ export default {
       file: 'source/Web/Scripts/index.min.js',
       format: 'iife',
       sourcemap: true,
-      name: 'Watchr',
       globals: {
         xterm: 'window',
         'xterm-addon-fit': 'FitAddon',

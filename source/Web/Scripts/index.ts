@@ -1,7 +1,4 @@
 import { ConsoleHub } from './modules/console-hub';
-import { ConsoleView } from './modules/console-view';
-import { BufferedTerminal } from './modules/buffered-terminal';
-import { Terminal } from 'xterm';
 
 jQuery(async () => {
   await new ConsoleHub().setUp({
@@ -11,6 +8,3 @@ jQuery(async () => {
     group: window.location.search,
   });
 });
-
-// No idea why this has to show up here to be exported by rollup.
-export { ConsoleHub, ConsoleView, BufferedTerminal, Terminal };
