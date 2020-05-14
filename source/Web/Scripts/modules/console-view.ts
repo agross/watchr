@@ -1,9 +1,8 @@
-import { BufferedTerminal } from './buffered-terminal';
+import { ResizeSensor } from 'css-element-queries';
 import { FitAddon } from 'xterm-addon-fit';
 import { WebLinksAddon } from 'xterm-addon-web-links';
 import * as XtermWebfont from 'xterm-webfont';
-import { ResizeSensor } from 'css-element-queries';
-import { Terminal } from 'xterm';
+import { BufferedTerminal } from './buffered-terminal';
 import { TextReceived } from './console-hub';
 
 export interface ConsoleViewSettings {
