@@ -6,5 +6,3 @@
   },
   "include": ["node_modules/xterm/typings/xterm.d.ts"]
 }
-
-// TODO: How can TypeScript errors in VS Code be prevented with the current tsconfig.json?
