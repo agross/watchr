@@ -2,13 +2,13 @@
 *.user
 *.suo
 
+.paket/
+.vs/
+.vscode/
 bin/
-obj/
 build/
-deploy/
+coverage/
 node_modules/
+obj/
 packages/
 paket-files/
-.vs/
-.ionide/
-coverage/

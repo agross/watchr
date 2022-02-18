@@ -1,21 +1,6 @@
-namespace Client.Messages
-{
-  class TextReceived
-  {
-    public TextReceived(string sessionId,
-                        long startOffset,
-                        long endOffset,
-                        string text)
-    {
-      SessionId = sessionId;
-      StartOffset = startOffset;
-      EndOffset = endOffset;
-      Text = text;
-    }
+namespace Client.Messages;
 
-    public string SessionId { get; }
-    public long StartOffset { get; }
-    public long EndOffset { get; }
-    public string Text { get; }
-  }
-}
+public record TextReceived(string SessionId,
+                           long StartOffset,
+                           long EndOffset,
+                           string Text);

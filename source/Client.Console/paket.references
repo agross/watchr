@@ -1,2 +1,6 @@
-NLog
-System.Reactive
+Microsoft.Extensions.Hosting
+Serilog.Exceptions
+Serilog.Expressions
+Serilog.Extensions.Hosting
+Serilog.Settings.Configuration
+Serilog.Sinks.Console

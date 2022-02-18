@@ -1,43 +1,31 @@
-using System;
-using System.Threading;
+using Client.Hosting;
 
-using NLog;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-namespace Client.Console
-{
-  class Program
-  {
-    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+using Serilog;
+using Serilog.Debugging;
 
-    static void Main(string[] args)
-    {
-      Logger.Info("Starting...");
-      IDisposable disp = null;
-      try
-      {
-        disp = Bootstrapper.Setup();
+SelfLog.Enable(Console.Error);
+Log.Logger = new LoggerConfiguration()
+             .WriteTo.Console()
+             .CreateBootstrapLogger();
 
-        WaitForCtrlC();
-      }
-      finally
-      {
-        disp?.Dispose();
-      }
-    }
+var host = Host
+           .CreateDefaultBuilder(args)
+           .UseConsoleLifetime()
+           .UseDefaultServiceProvider((_, options) =>
+           {
+             options.ValidateScopes = true;
+             options.ValidateOnBuild = true;
+           })
+           .UseSerilog(Client.Console.Serilog.Configure)
+           .ConfigureClient()
+           .Build();
 
-    static void WaitForCtrlC()
-    {
-      Logger.Info("Press Ctrl+C to exit");
+var config = host.Services.GetRequiredService<IConfiguration>();
+Log.ForContext<Program>().Information("Configuration:\n{Config}",
+                                      ((IConfigurationRoot) config).GetDebugView());
 
-      var quit = new ManualResetEvent(false);
-
-      System.Console.CancelKeyPress += (o, args) =>
-      {
-        args.Cancel = true;
-        quit.Set();
-      };
-
-      quit.WaitOne();
-    }
-  }
-}
+host.Run();

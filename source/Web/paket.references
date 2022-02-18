@@ -1,5 +1,2 @@
-Microsoft.AspNet.SignalR
-Microsoft.AspNet.Web.Optimization
-
-group Build
-  MSBuild.Microsoft.VisualStudio.Web.targets
+LigerShark.WebOptimizer.Core
+Microsoft.AspNetCore.SignalR

@@ -1,7 +1,5 @@
-Microsoft.AspNet.SignalR.Client
+Microsoft.AspNetCore.SignalR.Client
 Minimod.RxMessageBroker
-NLog
+Microsoft.Extensions.Configuration.Binder
+Microsoft.Extensions.Hosting.Abstractions
 System.Reactive
-
-group Test
-  NUnit

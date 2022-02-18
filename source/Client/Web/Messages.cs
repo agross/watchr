@@ -5,18 +5,17 @@ using Client.Messages;
 
 using Minimod.RxMessageBroker;
 
-namespace Client.Web
+namespace Client.Web;
+
+class Messages
 {
-  class Messages
+  internal Messages()
   {
-    internal Messages()
-    {
-      var texts = RxMessageBrokerMinimod.Default.Stream.OfType<TextReceived>().Cast<object>();
-      var terminates = RxMessageBrokerMinimod.Default.Stream.OfType<SessionTerminated>().Cast<object>();
+    var texts = RxMessageBrokerMinimod.Default.Stream.OfType<TextReceived>().Cast<object>();
+    var terminates = RxMessageBrokerMinimod.Default.Stream.OfType<SessionTerminated>().Cast<object>();
 
-      Stream = texts.Merge(terminates);
-    }
-
-    public IObservable<object> Stream { get; }
+    Stream = texts.Merge(terminates);
   }
+
+  public IObservable<object> Stream { get; }
 }

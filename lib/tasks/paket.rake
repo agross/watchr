@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
-require 'rake/funnel'
+task paket: :dotnet_tool do
+  cmd = %w[dotnet paket restore]
 
-Rake::Funnel::Tasks::Paket.new
+  sh(*cmd)
+end

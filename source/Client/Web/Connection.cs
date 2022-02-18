@@ -1,184 +1,151 @@
-using System;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 
-using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 
-using Minimod.RxMessageBroker;
+namespace Client.Web;
 
-using NLog;
-
-namespace Client.Web
+public class Connection : IAsyncDisposable
 {
-  class Connection : IDisposable
+  readonly ILogger<Connection> _logger;
+
+  public string Url { get; }
+  public HubConnection Hub { get; private set; }
+
+  readonly ISubject<object> _state = new Subject<object>();
+  CompositeDisposable _subscriptions;
+
+  public Connection(ILogger<Connection> logger, HubOptions options)
   {
-    static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    _logger = logger;
 
-    readonly ISubject<Microsoft.AspNet.SignalR.Client.Connection> _connectRequired =
-      new Subject<Microsoft.AspNet.SignalR.Client.Connection>();
+    Url = options.Url;
+  }
 
-    readonly Microsoft.AspNet.SignalR.Client.Connection _connection;
-    readonly ISubject<object> _state = new Subject<object>();
-    readonly CompositeDisposable _subscriptions;
+  public async Task Start(TimeSpan reconnectTimeout,
+                          CancellationToken cancellationToken)
+  {
+    Hub = new HubConnectionBuilder()
+          .WithUrl(Url)
+          .WithAutomaticReconnect(new AlwaysRetryPolicy(reconnectTimeout))
+          .Build();
 
-    internal Connection(Microsoft.AspNet.SignalR.Client.Connection connection)
+    _subscriptions = new CompositeDisposable(Observable
+                                             .FromEvent<Func<string, Task>, string>(action => str =>
+                                                                                    {
+                                                                                      action(str);
+
+                                                                                      return Task.CompletedTask;
+                                                                                    },
+                                                                                    f => Hub.Reconnected += f,
+                                                                                    f => Hub.Reconnected -= f)
+                                             .Do(_ => ConnectionEstablished())
+                                             .Subscribe(),
+                                             Observable
+                                               .FromEvent<Func<Exception, Task>, Exception>(action => ex =>
+                                                                                            {
+                                                                                              action(ex);
+
+                                                                                              return Task.CompletedTask;
+                                                                                            },
+                                                                                            f => Hub.Reconnecting += f,
+                                                                                            f => Hub.Reconnecting -= f)
+                                               .Do(ConnectionLost)
+                                               .Subscribe(),
+                                             Observable
+                                               .FromEvent<Func<Exception, Task>, Exception>(action => ex =>
+                                                                                            {
+                                                                                              action(ex);
+
+                                                                                              return Task.CompletedTask;
+                                                                                            },
+                                                                                            f => Hub.Closed += f,
+                                                                                            f => Hub.Closed -= f)
+                                               .Do(ConnectionLost)
+                                               .Subscribe()
+                                            );
+
+    await Connect(reconnectTimeout, cancellationToken);
+  }
+
+  class AlwaysRetryPolicy : IRetryPolicy
+  {
+    readonly TimeSpan _reconnectTimeout;
+
+    public AlwaysRetryPolicy(TimeSpan reconnectTimeout)
     {
-      _connection = connection;
-
-      _subscriptions = new CompositeDisposable(
-        Observable
-          .FromEvent<StateChange>(x => connection.StateChanged += x,
-                                  x => connection.StateChanged -= x)
-          .Subscribe(ConnectionStateChange),
-        Observable
-          .FromEvent(x => connection.Closed += x, x => connection.Closed -= x)
-          .Subscribe(ConnectionClosed)
-        );
+      _reconnectTimeout = reconnectTimeout;
     }
 
-    public IObservable<object> State
-      => _state
-        .StartWith(new ConnectionDown(_connection))
-        .DistinctUntilChanged();
+    public TimeSpan? NextRetryDelay(RetryContext retryContext)
+      => _reconnectTimeout;
+  }
 
-    public IObservable<Microsoft.AspNet.SignalR.Client.Connection> ConnectRequired
-      => _connectRequired.StartWith(_connection);
+  public async Task Stop(CancellationToken cancellationToken)
+  {
+    _logger.LogInformation("SignalR: Stopping connection");
 
-    public void Dispose()
+    await Hub.StopAsync(cancellationToken);
+  }
+
+  async Task Connect(TimeSpan reconnectTimeout, CancellationToken cancellationToken)
+  {
+    while (true)
     {
-      _subscriptions?.Dispose();
-
-      _state.OnCompleted();
-      _connectRequired.OnCompleted();
-    }
-
-    void ConnectionStateChange(StateChange change)
-    {
-      Logger.Info("SignalR: {0} -> {1}",
-                  change.OldState,
-                  change.NewState);
-
-      switch (change.NewState)
+      try
       {
-        case Microsoft.AspNet.SignalR.Client.ConnectionState.Connecting:
-        case Microsoft.AspNet.SignalR.Client.ConnectionState.Reconnecting:
-          _state.OnNext(new ConnectionDown(_connection));
-          RxMessageBrokerMinimod.Default.Send(ConnectionState.Connecting);
-          return;
+        _logger.LogInformation("SignalR: Starting connection to {Url}", Url);
+        await Hub.StartAsync(cancellationToken);
 
-        case Microsoft.AspNet.SignalR.Client.ConnectionState.Disconnected:
-          _state.OnNext(new ConnectionDown(_connection));
-          RxMessageBrokerMinimod.Default.Send(ConnectionState.Disconnected);
-          return;
+        ConnectionEstablished();
 
-        case Microsoft.AspNet.SignalR.Client.ConnectionState.Connected:
-          _state.OnNext(new ConnectionUp(_connection));
-          RxMessageBrokerMinimod.Default.Send(ConnectionState.Connected);
-          return;
+        return;
       }
-    }
-
-    void ConnectionClosed(Unit unit)
-    {
-      Logger.Warn("SignalR: Connection closed");
-
-      _connectRequired.OnNext(_connection);
-    }
-
-    internal class ConnectionDown : IEquatable<ConnectionDown>
-    {
-      public ConnectionDown(Microsoft.AspNet.SignalR.Client.Connection connection)
+      catch when (cancellationToken.IsCancellationRequested)
       {
-        Connection = connection;
+        _logger.LogError("SignalR: Cancelled starting connection");
+
+        return;
       }
-
-      Microsoft.AspNet.SignalR.Client.Connection Connection { get; }
-
-      public bool Equals(ConnectionDown other)
+      catch (Exception ex)
       {
-        if (ReferenceEquals(null, other))
-        {
-          return false;
-        }
-        if (ReferenceEquals(this, other))
-        {
-          return true;
-        }
-        return Equals(Connection.Url, other.Connection.Url) &&
-               Equals(Connection.QueryString, other.Connection.QueryString);
-      }
+        _logger.LogError("SignalR: Error starting connection");
+        ConnectionLost(ex);
 
-      public override bool Equals(object obj)
-      {
-        if (ReferenceEquals(null, obj))
-        {
-          return false;
-        }
-        if (ReferenceEquals(this, obj))
-        {
-          return true;
-        }
-        if (obj.GetType() != GetType())
-        {
-          return false;
-        }
-        return Equals((ConnectionDown) obj);
-      }
-
-      public override int GetHashCode()
-      {
-        return ((Connection?.Url.GetHashCode() ?? 0) * 397)
-               ^ (Connection?.QueryString?.GetHashCode() ?? 0);
-      }
-    }
-
-    internal class ConnectionUp : IEquatable<ConnectionUp>
-    {
-      public ConnectionUp(Microsoft.AspNet.SignalR.Client.Connection connection)
-      {
-        Connection = connection;
-      }
-
-      Microsoft.AspNet.SignalR.Client.Connection Connection { get; }
-
-      public bool Equals(ConnectionUp other)
-      {
-        if (ReferenceEquals(null, other))
-        {
-          return false;
-        }
-        if (ReferenceEquals(this, other))
-        {
-          return true;
-        }
-        return Equals(Connection.Url, other.Connection.Url) &&
-               Equals(Connection.QueryString, other.Connection.QueryString);
-      }
-
-      public override bool Equals(object obj)
-      {
-        if (ReferenceEquals(null, obj))
-        {
-          return false;
-        }
-        if (ReferenceEquals(this, obj))
-        {
-          return true;
-        }
-        if (obj.GetType() != GetType())
-        {
-          return false;
-        }
-        return Equals((ConnectionUp) obj);
-      }
-
-      public override int GetHashCode()
-      {
-        return ((Connection?.Url.GetHashCode() ?? 0) * 397)
-               ^ (Connection?.QueryString?.GetHashCode() ?? 0);
+        await Task.Delay(reconnectTimeout, cancellationToken);
       }
     }
   }
+
+  void ConnectionEstablished()
+  {
+    _logger.LogWarning("SignalR: Connection established");
+
+    _state.OnNext(new ConnectionUp());
+  }
+
+  void ConnectionLost(Exception exception)
+  {
+    _logger.LogWarning(exception, "SignalR: Connection lost");
+
+    _state.OnNext(new ConnectionDown());
+  }
+
+  public IObservable<object> State
+    => _state.DistinctUntilChanged();
+
+  public ValueTask DisposeAsync()
+  {
+    _subscriptions?.Dispose();
+
+    _state.OnCompleted();
+
+    return Hub.DisposeAsync();
+  }
+
+  record ConnectionDown;
+
+  record ConnectionUp;
 }

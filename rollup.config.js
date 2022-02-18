@@ -13,10 +13,10 @@ export default {
     'css-element-queries',
     'fontfaceobserver',
   ],
-  input: 'source/Web/Scripts/index.ts',
+  input: 'source/Web/wwwroot/scripts/index.ts',
   output: [
     {
-      file: 'source/Web/Scripts/index.js',
+      file: 'source/Web/wwwroot/scripts/index.js',
       format: 'iife',
       globals: {
         xterm: 'window',
@@ -27,7 +27,7 @@ export default {
       },
     },
     {
-      file: 'source/Web/Scripts/index.min.js',
+      file: 'source/Web/wwwroot/scripts/index.min.js',
       format: 'iife',
       sourcemap: true,
       globals: {
@@ -48,6 +48,6 @@ export default {
       },
     }),
     typescript2(),
-    terser({ include: [/^.+\.min\.js$/] }),
+    terser(),
   ],
 };

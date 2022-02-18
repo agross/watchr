@@ -3,29 +3,63 @@
 require 'rake/funnel'
 
 desc 'Create packages'
-task package: :compile do
-  def zip(target)
-    version = configatron.build.version.assembly_informational_version
-    File.join('deploy', "#{configatron.project}-#{target}-#{version}.zip")
+task :package, [:push] do |_task, args| # rubocop:disable Metrics/BlockLength
+  def image_tags(dockerfile)
+    image = File.basename(File.dirname(dockerfile))
+    image = File.join('agross', "watchr-#{image.downcase}")
+    tag = 'latest'
+
+    [
+      "#{image}:#{tag}",
+      image,
+      tag
+    ]
   end
 
-  %w(Web WinForms Console).each do |target|
-    namespace :zip do
-      zip = Rake::Funnel::Tasks::Zip.new(target) do |t|
-        rm_f zip(target)
+  def login_to_docker_registry(user, password)
+    return unless user && password
 
-        t.source = FileList["build/bin/#{target}/**/*"]
-                   .exclude('**/*.log')
-                   .exclude('**/*.xml')
-        t.target = zip(target)
-      end
+    out, status = Open3.capture2e(*%W[
+                                    docker
+                                    login
+                                    --username #{user}
+                                    --password-stdin
+                                  ],
+                                  stdin_data: password)
 
-      task target do
-        Rake::Funnel::Integration::TeamCity::ServiceMessages
-          .publish_artifacts("#{zip(target)} => deploy")
-      end
+    puts out
+    raise "Error logging in to registry: #{status}" unless status.success?
+  end
 
-      Rake::Task[zip.name].invoke
-    end
+  login_to_docker_registry(ENV['REGISTRY_USER'], ENV['REGISTRY_PASSWORD'])
+
+  builder = 'watchr-builder'
+
+  sh(*%W[docker buildx create --name #{builder} --bootstrap]) \
+    unless system(*%W[docker buildx inspect #{builder}])
+
+  Dir['source/**/Dockerfile'].map do |dockerfile|
+    image_tag, _app, _version = image_tags(dockerfile)
+
+    build = %W[
+      docker
+      buildx
+      build
+      --builder #{builder}
+      --progress plain
+      --file #{dockerfile}
+      --tag #{image_tag}
+    ]
+
+    build += if args[:push]
+               # Push cross-platform images.
+               %w[--platform linux/amd64,linux/arm64 --push]
+             else
+               # Load image for the local architecture into the docker engine
+               # on this host. Does not support cross-platform images.
+               %w[--load]
+             end
+
+    sh(*build, '.')
   end
 end

@@ -38,10 +38,7 @@ module.exports = function (config) {
     files: [
       // Libraries normally loaded from CDN.
       'node_modules/jquery/dist/jquery.js',
-      'node_modules/signalr/jquery.signalR.js',
-
-      // Generated SignalR proxy (available after build).
-      'build/bin/Web/bin/Scripts/lib/server.js',
+      'node_modules/@microsoft/signalr/dist/browser/signalr.js',
 
       // Jasmine support library.
       'node_modules/jasmine-jquery/lib/jasmine-jquery.js',

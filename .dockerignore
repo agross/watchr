@@ -1,0 +1,17 @@
+**/*.user
+**/Dockerfile
+
+**/.*/
+!.config/
+
+**/obj/
+**/bin/
+
+source/**/*.js
+source/**/*.js.map
+
+build/
+lib/
+node_modules/
+packages/
+paket-files/

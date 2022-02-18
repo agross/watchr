@@ -1,12 +1,3 @@
-namespace Client.Messages
-{
-  public class SessionTerminated
-  {
-    public SessionTerminated(string sessionId)
-    {
-      SessionId = sessionId;
-    }
+namespace Client.Messages;
 
-    public string SessionId { get; set; }
-  }
-}
+public record SessionTerminated(string SessionId);
