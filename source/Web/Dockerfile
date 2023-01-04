@@ -1,4 +1,4 @@
-ARG DOTNET_VERSION=6.0-alpine
+ARG DOTNET_VERSION=7.0-alpine
 ARG NODE_VERSION=14-alpine
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_VERSION} AS build-net

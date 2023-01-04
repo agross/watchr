@@ -1,4 +1,4 @@
-ARG VERSION=6.0-alpine
+ARG VERSION=7.0-alpine
 
 FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${VERSION} AS build
 
