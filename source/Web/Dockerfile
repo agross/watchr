@@ -33,7 +33,7 @@ RUN case "$TARGETPLATFORM" in \
   mv -- "./build/bin/Web/$runtime/publish/" /publish && \
   rm -rf -- /publish/wwwroot/scripts
 
-FROM --platform=$BUILDPLATFORM node AS build-node
+FROM --platform=$BUILDPLATFORM node:${NODE_VERSION} AS build-node
 
 WORKDIR /build
 
