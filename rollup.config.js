@@ -1,7 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import typescript2 from 'rollup-plugin-typescript2';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
+import typescript from '@rollup/plugin-typescript';
 
 export default {
   // Stuff loaded from the CDN.
@@ -18,6 +18,7 @@ export default {
     {
       file: 'source/Web/wwwroot/scripts/index.js',
       format: 'iife',
+      sourcemap: true,
       globals: {
         xterm: 'window',
         'xterm-addon-fit': 'FitAddon',
@@ -37,17 +38,12 @@ export default {
         'css-element-queries': 'window',
         fontfaceobserver: 'FontFaceObserver',
       },
+      plugins: [terser({ sourceMap: true })],
     },
   ],
   plugins: [
+    typescript(),
+    commonjs({ extensions: ['.js', '.ts'] }),
     resolve({ browser: true }),
-    commonjs({
-      namedExports: {
-        // Needed for xterm compatibility with rollup.
-        xterm: ['Terminal'],
-      },
-    }),
-    typescript2(),
-    terser(),
   ],
 };

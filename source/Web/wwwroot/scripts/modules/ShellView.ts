@@ -54,7 +54,7 @@ export class ShellView {
         background: '#fff',
         cursor: '#000',
         cursorAccent: '#000',
-        selection: 'rgba(0, 52, 120, 0.25)',
+        selectionBackground: 'rgba(0, 52, 120, 0.25)',
         brightYellow: '#c4a000',
       },
     });
