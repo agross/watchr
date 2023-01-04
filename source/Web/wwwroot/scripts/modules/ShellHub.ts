@@ -14,7 +14,7 @@ interface ShellHubSettings extends ShellViewSettings {
 }
 
 export interface TextReceived extends Block {
-  sessionId?: string;
+  sessionId: string;
 }
 
 class AlwaysRetryPolicy implements IRetryPolicy {

@@ -3,8 +3,11 @@
     "target": "ES6",
     "lib": ["DOM", "ES6"],
     "module": "ES6",
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "sourceMap": true,
   },
-  "include": ["node_modules/xterm/typings/xterm.d.ts"],
-  "files": ["source/Web/wwwroot/scripts/index.ts"]
+  "include": [
+    "source/**/*",
+    "spec/**/*"
+  ],
 }
