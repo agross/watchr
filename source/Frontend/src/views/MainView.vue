@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { Subject } from 'rxjs'
+import { ReplaySubject } from 'rxjs'
 import ThemeButton from '@/components/ThemeButton.vue'
 import ConnectionIndicator from '@/components/ConnectionIndicator.vue'
 import WelcomeHero from '@/components/WelcomeHero.vue'
@@ -10,7 +10,7 @@ import type { TextReceived } from '@/model/TextReceived'
 
 const { on } = useSignalR()
 
-const subject = new Subject<TextReceived>()
+const subject = new ReplaySubject<TextReceived>(10, 5000)
 
 const sessions = reactive<string[]>([])
 
@@ -22,7 +22,6 @@ on('text', async (text: TextReceived) => {
     sessions.push(text.sessionId)
   }
 
-  // The first notification will arrive before xterm is set up.
   subject.next(text)
 })
 
