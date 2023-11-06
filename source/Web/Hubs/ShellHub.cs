@@ -6,7 +6,7 @@ namespace Web.Hubs;
 
 public class ShellHub : Hub
 {
-  const string DefaultGroupId = "8bf6b1c0-34c5-4921-a712-8c4a3564c8b8";
+  internal const string DefaultGroupId = "8bf6b1c0-34c5-4921-a712-8c4a3564c8b8";
 
   public void Broadcast(string groupId, TextReceived text)
   {

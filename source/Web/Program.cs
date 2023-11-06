@@ -2,20 +2,26 @@ using System.Net;
 
 using Microsoft.AspNetCore.HttpOverrides;
 
+using Web;
 using Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddCors(x =>
+if (builder.Environment.IsDevelopment())
 {
-  x.AddDefaultPolicy(policy => policy
-                               .SetIsOriginAllowed(_ => true)
-                               .AllowAnyMethod()
-                               .AllowAnyHeader()
-                               .AllowCredentials());
-});
+  builder.Services.AddCors(x =>
+  {
+    x.AddDefaultPolicy(policy => policy
+                                 .SetIsOriginAllowed(_ => true)
+                                 .AllowAnyMethod()
+                                 .AllowAnyHeader()
+                                 .AllowCredentials());
+  });
+
+  builder.Services.AddHostedService<Debugging>();
+}
 
 builder.Services
        .AddSignalR(o => o.EnableDetailedErrors = true)

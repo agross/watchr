@@ -10,11 +10,15 @@ export enum ConnectionState {
 const api = import.meta.env.VITE_API_URL
 const reconnectDelay = 5000
 
+class AlwaysRetryPolicy implements signalR.IRetryPolicy {
+  nextRetryDelayInMilliseconds(_retryContext: RetryContext): number {
+    return reconnectDelay
+  }
+}
+
 const builder = new signalR.HubConnectionBuilder()
   .withUrl(`${api}/shell`)
-  .withAutomaticReconnect({
-    nextRetryDelayInMilliseconds: (_context) => reconnectDelay
-  })
+  .withAutomaticReconnect(new AlwaysRetryPolicy())
   .configureLogging(signalR.LogLevel.Information)
   .build()
 
@@ -35,11 +39,13 @@ builder.onreconnected(() => {
 
 const connectionState = ref(ConnectionState.Disconnected)
 
-async function connect() {
+const connect = async () => {
   try {
     connectionState.value = ConnectionState.Connecting
 
-    await builder.start()
+    if (builder.state === signalR.HubConnectionState.Disconnected) {
+      await builder.start()
+    }
 
     console.info('SignalR connected')
     connectionState.value = ConnectionState.Connected
@@ -49,9 +55,13 @@ async function connect() {
   }
 }
 
+const on = (methodName: string, newMethod: (...args: any[]) => any) => {
+  builder.on(methodName, newMethod)
+}
+
 export function useSignalR() {
   return {
-    builder: builder,
+    on: on,
     connect: connect,
     connectionState: readonly(connectionState)
   }
