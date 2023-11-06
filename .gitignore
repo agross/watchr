@@ -4,7 +4,6 @@
 
 .paket/
 .vs/
-.vscode/
 bin/
 build/
 coverage/
