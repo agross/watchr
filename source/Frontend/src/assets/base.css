@@ -9,17 +9,20 @@
   --vt-c-black: #282828;
 }
 
-:root {
+:root, html.light-theme {
   --color-background: var(--vt-c-white);
   --color-heading: var(--gw-dark-blue);
-  --color-text: var(--vt-c-text-light-1);
+  --color-text: var(--gw-dark-gray);
+  --color-border: var(--gw-light-blue);
+  --color-accent: var(--gw-dark-blue);
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root, html.dark-theme {
     --color-background: var(--vt-c-black);
     --color-heading: var(--gw-light-blue);
     --color-text: var(--gw-light-gray);
+    --color-accent: var(--gw-light-blue);
   }
 }
 
