@@ -1,21 +1,9 @@
 <script setup lang="ts">
-import ThemeButton from './components/ThemeButton.vue'
-import WelcomeHero from './components/WelcomeHero.vue'
+import MainView  from '@/views/MainView.vue'
 </script>
 
 <template>
-  <header>
-    <ThemeButton />
-  </header>
-
-  <main>
-    <WelcomeHero />
-  </main>
+  <Suspense>
+    <MainView />
+  </Suspense>
 </template>
-
-<style scoped>
-header {
-  position: absolute;
-  right: 0;
-}
-</style>

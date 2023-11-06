@@ -8,6 +8,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddCors(x =>
+{
+  x.AddDefaultPolicy(policy => policy
+                               .SetIsOriginAllowed(_ => true)
+                               .AllowAnyMethod()
+                               .AllowAnyHeader()
+                               .AllowCredentials());
+});
+
 builder.Services
        .AddSignalR(o => o.EnableDetailedErrors = true)
        .AddHubOptions<ShellHub>(o => o.MaximumReceiveMessageSize = 512_000);
@@ -53,6 +62,7 @@ logger.LogInformation("Configuration:\n{Config}",
 if (builder.Environment.IsDevelopment())
 {
   app.UseDeveloperExceptionPage();
+  app.UseCors();
 }
 
 app.UseWebOptimizer();

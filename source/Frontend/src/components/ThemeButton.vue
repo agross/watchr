@@ -37,7 +37,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="theme-selector">
+  <div>
     <input @change="toggleTheme" id="checkbox" type="checkbox" />
     <label for="checkbox">
       <span>🌙</span>
@@ -54,10 +54,6 @@ onMounted(() => {
 </style>
 
 <style scoped>
-.theme-selector{
-  margin: 1rem;
-}
-
 input[type='checkbox'] {
   display: none;
 }
