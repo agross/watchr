@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSignalR } from '@/composables/signalr'
 
-const { builder, connect, connectionState } = useSignalR()
+const { connect, connectionState } = useSignalR()
 
 await connect()
 </script>

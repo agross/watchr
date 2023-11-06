@@ -1,6 +1,7 @@
-import { describe, it, expect, beforeEach, afterEach, vi, SpyInstance } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi, type SpyInstance } from 'vitest'
 
-import { BufferedTerminal, Block, WriteBufferedResult } from '../BufferedTerminal'
+import { BufferedTerminal, type WriteBufferedResult } from '../BufferedTerminal'
+import type { Block } from '../Block'
 
 describe(BufferedTerminal.name, () => {
   let terminal: BufferedTerminal

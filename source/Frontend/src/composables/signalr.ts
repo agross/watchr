@@ -11,7 +11,7 @@ const api = import.meta.env.VITE_API_URL
 const reconnectDelay = 5000
 
 class AlwaysRetryPolicy implements signalR.IRetryPolicy {
-  nextRetryDelayInMilliseconds(_retryContext: RetryContext): number {
+  nextRetryDelayInMilliseconds(_retryContext: signalR.RetryContext): number {
     return reconnectDelay
   }
 }
