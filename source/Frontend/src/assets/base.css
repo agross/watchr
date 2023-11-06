@@ -12,15 +12,17 @@
 html {
   --color-background: var(--vt-c-white);
   --color-heading: var(--gw-dark-blue);
-  --color-text: var(--gw-dark-gray);
+  --color-text: var(--vt-c-blacky);
   --color-accent: var(--gw-dark-blue);
+  --color-term-header: var(--gw-light-gray);
 }
 
  html.dark {
   --color-background: var(--vt-c-black);
   --color-heading: var(--gw-light-blue);
-  --color-text: var(--gw-light-gray);
+  --color-text: var(--vt-c-white);
   --color-accent: var(--gw-light-blue);
+  --color-term-header: var(--gw-dark-gray);
 }
 
 *,
@@ -33,6 +35,7 @@ html {
 
 body {
   min-height: 100vh;
+  margin: 1rem;
   color: var(--color-text);
   background: var(--color-background);
   transition:

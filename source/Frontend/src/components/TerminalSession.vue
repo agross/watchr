@@ -13,7 +13,6 @@ const props = defineProps<{
   textReceived: Observable<TextReceived>
 }>()
 
-
 const isDark = useDark({ disableTransition: false })
 
 const theme = computed<ITheme>(() => {
@@ -70,8 +69,35 @@ onMounted(() => {
 </script>
 
 <template>
-  <header>
-    {{ props.sessionId }}
-  </header>
-  <div ref="terminal"></div>
+  <section>
+    <header>
+      {{ props.sessionId }}
+    </header>
+    <div ref="terminal"></div>
+  </section>
 </template>
+
+<style>
+.terminal {
+  padding: 0.2rem;
+  height: 100%;
+  overflow: auto;
+}
+</style>
+
+<style scoped>
+section {
+  border: 1px solid var(--color-accent);
+  border-radius: 5px;
+
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+header {
+  text-align: center;
+  background-color: var(--color-term-header);
+}
+</style>

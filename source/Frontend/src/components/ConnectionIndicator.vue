@@ -15,8 +15,8 @@ span {
   display: block;
   border-radius: 50%;
 
-  height: calc(var(--element-size) * 0.4);
-  width: calc(var(--element-size) * 0.4);
+  height: calc(var(--element-size) * 0.2);
+  width: calc(var(--element-size) * 0.2);
 
   transition: background-color 0.5s ease;
 }

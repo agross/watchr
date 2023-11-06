@@ -38,30 +38,38 @@ on('terminate', (sessionId: string) => {
 
   <main>
     <WelcomeHero v-if="sessions.length === 0" />
-    <TerminalSession
-      v-for="sessionId in sessions"
-      :key="sessionId"
-      :sessionId="sessionId"
-      :textReceived="subject"
-    />
+    <section class="sessions">
+      <TerminalSession
+        v-for="sessionId in sessions"
+        :key="sessionId"
+        :sessionId="sessionId"
+        :textReceived="subject"
+      />
+    </section>
   </main>
 </template>
 
 <style scoped>
 header {
   position: absolute;
-  right: 0;
+  right: 1rem;
 
   display: flex;
+  gap: 1rem;
   align-items: center;
-
-  margin-top: 1rem;
 
   /* Float above xterm.js */
   z-index: 1000;
 }
 
-header > * {
-  margin-right: 1rem;
+.sessions {
+  display: flex;
+  gap: 1rem;
+}
+
+@media all and (max-width: 800px) {
+  .sessions {
+    flex-direction: column;
+  }
 }
 </style>

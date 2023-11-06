@@ -40,9 +40,12 @@ label {
 
   border: 1px solid var(--color-accent);
   border-radius: var(--element-size);
+  background-color: var(--color-background);
   cursor: pointer;
 
-  transition: border-color 0.5s ease;
+  transition:
+    background-color 0.5s ease,
+    border-color 0.5s ease;
 }
 
 .toggle {
