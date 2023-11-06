@@ -36,7 +36,7 @@ public class Debugging : BackgroundService
                       continue;
                     }
 
-                    var sessionId = Line.Match(line).Groups[1].Value;
+                    var sessionId = Line.Match(line!).Groups[1].Value;
                     var text = Line.Match(line).Groups[2].Value;
                     text += "\r\n";
 
