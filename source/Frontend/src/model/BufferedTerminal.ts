@@ -6,33 +6,33 @@ export interface WriteBufferedResult {
 }
 
 export class BufferedTerminal extends Terminal {
-  private _backlog: Block[] = []
-  private _nextOffset = 0
+  private backlog: Block[] = []
+  private nextOffset = 0
 
   public writeBuffered(text: Block): WriteBufferedResult {
-    if (text.startOffset >= this._nextOffset) {
+    if (text.startOffset >= this.nextOffset) {
       this.saveToBacklog(text)
     }
     this.applyBacklog()
 
     return {
-      buffering: this._backlog.length !== 0
+      buffering: this.backlog.length !== 0
     }
   }
 
   private saveToBacklog(block: Block) {
-    this._backlog.push(block)
+    this.backlog.push(block)
   }
 
   private applyBacklog() {
-    this._backlog = this._backlog
+    this.backlog = this.backlog
       .sort((a, b) => a.startOffset - b.startOffset)
       .filter((item) => !this.apply(item))
   }
 
   private apply(block: Block): boolean {
-    if (this._nextOffset === block.startOffset || this._nextOffset === 0) {
-      this._nextOffset = block.endOffset
+    if (this.nextOffset === block.startOffset || this.nextOffset === 0) {
+      this.nextOffset = block.endOffset
 
       this.write(block.text)
       return true
