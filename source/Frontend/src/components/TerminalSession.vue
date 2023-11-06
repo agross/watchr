@@ -1,17 +1,42 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 import { Observable } from 'rxjs'
 import { filter, tap } from 'rxjs/operators'
-import { useSubscription, useObservable } from '@vueuse/rxjs'
+import { useSubscription } from '@vueuse/rxjs'
 import type { TextReceived } from '@/model/TextReceived'
 import { BufferedTerminal } from '@/model/BufferedTerminal'
+import { useDark } from '@vueuse/core'
+import type { ITheme } from 'xterm'
 
 const props = defineProps<{
   sessionId: string
   textReceived: Observable<TextReceived>
 }>()
 
-const terminal = ref<HTMLDivElement | null>(null)
+
+const isDark = useDark({ disableTransition: false })
+
+const theme = computed<ITheme>(() => {
+  if (isDark.value) {
+    return {
+      foreground: '#fff',
+      background: '#303030',
+      cursor: '#fff',
+      cursorAccent: '#fff',
+      selection: 'rgba(0, 52, 120, 0.25)',
+      brightYellow: '#c4a000'
+    }
+  }
+
+  return {
+    foreground: '#000',
+    background: '#fff',
+    cursor: '#000',
+    cursorAccent: '#000',
+    selection: 'rgba(0, 52, 120, 0.25)',
+    brightYellow: '#c4a000'
+  }
+})
 
 const bufferedTerminal = new BufferedTerminal({
   scrollback: 20000,
@@ -20,14 +45,11 @@ const bufferedTerminal = new BufferedTerminal({
   fontFamily: 'Noto Sans Mono',
   fontSize: 13,
   disableStdin: true,
-  theme: {
-    foreground: '#000',
-    background: '#fff',
-    cursor: '#000',
-    cursorAccent: '#000',
-    selection: 'rgba(0, 52, 120, 0.25)',
-    brightYellow: '#c4a000'
-  }
+  theme: theme.value
+})
+
+watchEffect(() => {
+  bufferedTerminal.options.theme = theme.value
 })
 
 useSubscription(
@@ -40,12 +62,16 @@ useSubscription(
     .subscribe()
 )
 
+const terminal = ref<HTMLDivElement | null>(null)
+
 onMounted(() => {
   bufferedTerminal.open(terminal.value!)
 })
 </script>
 
 <template>
-  {{ props.sessionId }}
+  <header>
+    {{ props.sessionId }}
+  </header>
   <div ref="terminal"></div>
 </template>
