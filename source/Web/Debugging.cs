@@ -23,6 +23,8 @@ public class Debugging : BackgroundService
   protected override Task ExecuteAsync(CancellationToken cancellationToken)
     => Task.Run(async () =>
                 {
+                  var sessionOffsets = new Dictionary<string, int>();
+
                   while (!cancellationToken.IsCancellationRequested)
                   {
                     Console.WriteLine("Enter something to send: <Session> <Text>");
@@ -36,11 +38,20 @@ public class Debugging : BackgroundService
 
                     var sessionId = Line.Match(line).Groups[1].Value;
                     var text = Line.Match(line).Groups[2].Value;
+                    text += "\r\n";
+
+                    var startOffset = 0;
+                    if (sessionOffsets.TryGetValue(sessionId, out var offset))
+                    {
+                      startOffset = offset;
+                    }
+
+                    sessionOffsets[sessionId] = startOffset + text.Length;
 
                     await _hub.Clients.All.SendAsync("text",
                                                      new TextReceived(sessionId,
-                                                                      0,
-                                                                      text.Length,
+                                                                      startOffset,
+                                                                      sessionOffsets[sessionId],
                                                                       text),
                                                      cancellationToken);
                   }
