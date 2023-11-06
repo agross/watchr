@@ -10,7 +10,9 @@ export class BufferedTerminal extends Terminal {
   private _nextOffset = 0
 
   public writeBuffered(text: Block): WriteBufferedResult {
-    this.saveToBacklog(text)
+    if (text.startOffset >= this._nextOffset) {
+      this.saveToBacklog(text)
+    }
     this.applyBacklog()
 
     return {

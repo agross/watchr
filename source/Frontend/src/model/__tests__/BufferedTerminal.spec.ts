@@ -111,34 +111,51 @@ describe(BufferedTerminal.name, () => {
 
       let result: WriteBufferedResult
 
-      beforeEach(() => {
-        terminal.writeBuffered(first)
-        result = terminal.writeBuffered(early)
-      })
-
-      it('does not write early text', () => {
-        const text = [first].map((b) => [b.text])
-
-        expect(writeSpy.mock.calls).toEqual(text)
-      })
-
-      it('buffers block', () => {
-        expect(result.buffering).toBeTruthy()
-      })
-
-      describe('delay resolved', () => {
+      describe('late blocks arrive when we are past their end offset', () => {
         beforeEach(() => {
-          result = terminal.writeBuffered(late)
+          terminal.writeBuffered(first)
+          result = terminal.writeBuffered(first)
+        })
+
+        it('ignores late blocks', () => {
+          expect(writeSpy.mock.calls.length).toEqual(1)
         })
 
         it('does not buffer', () => {
           expect(result.buffering).toBeFalsy()
         })
+      })
 
-        it('writes backlog block text', () => {
-          const text = [first, late, early].map((b) => [b.text])
+      describe('first then delayed', () => {
+        beforeEach(() => {
+          terminal.writeBuffered(first)
+          result = terminal.writeBuffered(early)
+        })
+
+        it('does not write early text', () => {
+          const text = [first].map((b) => [b.text])
 
           expect(writeSpy.mock.calls).toEqual(text)
+        })
+
+        it('buffers block', () => {
+          expect(result.buffering).toBeTruthy()
+        })
+
+        describe('delay resolved', () => {
+          beforeEach(() => {
+            result = terminal.writeBuffered(late)
+          })
+
+          it('does not buffer', () => {
+            expect(result.buffering).toBeFalsy()
+          })
+
+          it('writes backlog block text', () => {
+            const text = [first, late, early].map((b) => [b.text])
+
+            expect(writeSpy.mock.calls).toEqual(text)
+          })
         })
       })
     })
