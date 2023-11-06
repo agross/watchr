@@ -1,48 +1,17 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
-import { useSettingsStore } from '@/stores/settings'
+import { useDark, useToggle } from '@vueuse/core'
 
-const settings = useSettingsStore()
-
-const userTheme = computed(() => settings.theme || mediaPreference())
-
-function setTheme(theme: string) {
-  settings.theme = theme
-  document.documentElement.className = theme
-}
-
-function toggleTheme() {
-  const activeTheme = userTheme.value
-
-  if (activeTheme === 'light-theme') {
-    setTheme('dark-theme')
-  } else {
-    setTheme('light-theme')
-  }
-}
-
-function mediaPreference() {
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
-
-  if (prefersDark) {
-    return 'dark-theme'
-  } else {
-    return 'light-theme'
-  }
-}
-
-onMounted(() => {
-  setTheme(userTheme.value)
-})
+const isDark = useDark({ disableTransition: false })
+const toggleDark = useToggle(isDark)
 </script>
 
 <template>
   <div>
-    <input @change="toggleTheme" id="checkbox" type="checkbox" />
+    <input @change="toggleDark()" id="checkbox" type="checkbox" />
     <label for="checkbox">
       <span>🌙</span>
       <span>☀️</span>
-      <div class="toggle" :class="{ checked: userTheme === 'dark-theme' }"></div>
+      <div class="toggle" :class="{ checked: isDark }"></div>
     </label>
   </div>
 </template>

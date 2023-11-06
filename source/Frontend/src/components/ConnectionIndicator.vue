@@ -34,7 +34,7 @@ span {
 }
 
 @media (prefers-color-scheme: dark) {
-  html.dark-theme .connected {
+  html.dark .connected {
     background-color: greenyellow;
   }
 }
