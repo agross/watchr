@@ -1,17 +1,9 @@
-# Set the default behavior, in case people don't have core.autocrlf set.
+# Line endings as per the OS.
 * text=auto
 
-# Files that will always have CRLF line endings on checkout.
-*.cmd text eol=crlf
-# Shell scripts requre LF.
+# Shell scripts need LF line endings.
 *.sh text eol=lf
 
-# Ruby.
-*.rb diff=ruby
-*.rake diff=ruby
-
-# Visual Studio.
-*.sln text eol=crlf merge=union
-*.csproj merge=union
+# Visual Studio and code.
+*.sln text merge=union
 *.cs diff=csharp
-
