@@ -5,8 +5,9 @@ import { filter, tap } from 'rxjs/operators'
 import { useSubscription } from '@vueuse/rxjs'
 import type { TextReceived } from '@/model/TextReceived'
 import { BufferedTerminal } from '@/model/BufferedTerminal'
-import { useDark } from '@vueuse/core'
+import { useDark, useResizeObserver } from '@vueuse/core'
 import type { ITheme } from 'xterm'
+import { FitAddon } from '@xterm/addon-fit'
 
 const props = defineProps<{
   sessionId: string
@@ -62,6 +63,13 @@ useSubscription(
 )
 
 const terminal = ref<HTMLDivElement | null>(null)
+
+const fitAddon = new FitAddon()
+bufferedTerminal.loadAddon(fitAddon)
+
+useResizeObserver(terminal, (_entries) => {
+  fitAddon.fit()
+})
 
 onMounted(() => {
   bufferedTerminal.open(terminal.value!)
