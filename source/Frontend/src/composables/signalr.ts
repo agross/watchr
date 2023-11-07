@@ -54,16 +54,14 @@ const connect = async () => {
     console.info('SignalR connected')
     connectionState.value = ConnectionState.Connected
 
-    if (params.group) {
-      try {
-        await builder.invoke('joinGroup', params.group)
-        console.log(`Joined group ${params.group}`)
-      } catch (error) {
-        console.error(`Could not join group ${params.group}: ${error}`)
+    try {
+      await builder.invoke('joinGroup', params.group)
+      console.log(`Joined group ${params.group}`)
+    } catch (error) {
+      console.error(`Could not join group ${params.group}: ${error}`)
 
-        await builder.stop()
-        throw error
-      }
+      await builder.stop()
+      throw error
     }
   } catch (err) {
     console.error(`SignalR connection failed: ${err}`)

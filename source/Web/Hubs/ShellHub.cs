@@ -18,13 +18,11 @@ public class ShellHub : Hub
     GroupForInstance(groupId).SendAsync("terminate", sessionId);
   }
 
-  public Task JoinGroup(string searchQuery)
+  public Task JoinGroup(string groupId)
   {
-    var groupId = DefaultGroupId;
-
-    if (!string.IsNullOrWhiteSpace(searchQuery))
+    if (string.IsNullOrWhiteSpace(groupId))
     {
-      groupId = searchQuery.Remove(0, 1);
+      groupId = DefaultGroupId;
     }
 
     return Groups.AddToGroupAsync(Context.ConnectionId, groupId);
