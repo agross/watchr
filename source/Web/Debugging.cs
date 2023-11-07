@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Text.RegularExpressions;
 
 using Client.Messages;
@@ -18,6 +19,7 @@ public partial class Debugging : BackgroundService
   private static partial Regex LineRegex();
 
   static readonly Regex Line = LineRegex();
+  readonly ConcurrentDictionary<string, Offsets> _sessionOffsets = new();
 
   public Debugging(IHubContext<ShellHub> hub)
   {
@@ -29,8 +31,6 @@ public partial class Debugging : BackgroundService
 
   async Task Menu(CancellationToken cancellationToken)
   {
-    var sessionOffsets = new Dictionary<string, Offsets>();
-
     while (!cancellationToken.IsCancellationRequested)
     {
       Console.WriteLine("""
@@ -40,6 +40,7 @@ public partial class Debugging : BackgroundService
                         3: a link
                         4: make session miss an update
                         5: make session catch up
+                        6: 2 sessions with 100 lines (session ID is ignored)
                         otherwise: send string
                         """);
       var line = Console.ReadLine();
@@ -54,21 +55,55 @@ public partial class Debugging : BackgroundService
 
       var sessionId = match.Groups[1].Value;
       var selection = match.Groups[2].Value;
-      var (text, offsetHandling) = selection switch
+
+      var action = selection switch
       {
-        "1" => ("hello\r\n", "normal"),
-        "2" => (new string('m', 100) + "\r\n", "normal"),
-        "3" => ("https://example.com/\r\n", "normal"),
-        "4" => ("early text\r\n", "early"),
-        "5" => (LateText, "late"),
-        _ => (selection + "\r\n", "normal"),
+        "1" => SendText("normal", sessionId, "hello\r\n", cancellationToken),
+        "2" => SendText("normal", sessionId, new string('m', 100) + "\r\n", cancellationToken),
+        "3" => SendText("normal", sessionId, "https://example.com/\r\n", cancellationToken),
+        "4" => SendText("early", sessionId, "early text\r\n", cancellationToken),
+        "5" => SendText("late", sessionId, LateText, cancellationToken),
+        "6" => TwoSessions(cancellationToken),
+        _ => SendText("normal", sessionId, selection + "\r\n", cancellationToken),
       };
 
+      await action();
+    }
+  }
+
+  Func<Task> TwoSessions(CancellationToken cancellationToken)
+  {
+    var rnd = new Random();
+
+    return async () => await Parallel
+      .ForEachAsync(new[] { "Session 1", "Session 2" },
+                    cancellationToken,
+                    async (sessionId, ct) =>
+                    {
+                      foreach (var i in Enumerable.Range(1, 100))
+                      {
+                        await Task.Delay(TimeSpan.FromMilliseconds(100) * rnd.Next(10), ct);
+
+                        await SendText("normal",
+                                       sessionId,
+                                       $"{sessionId}, iteration {i}\r\n",
+                                       ct)();
+                      }
+                    });
+  }
+
+  Func<Task> SendText(string offsetHandling,
+                      string sessionId,
+                      string text,
+                      CancellationToken cancellationToken)
+  {
+    return async () =>
+    {
       var (startOffset, endOffset, _) = offsetHandling switch
       {
-        "early" => MakeEarly(sessionOffsets, sessionId, text),
-        "late" => MakeLate(sessionOffsets, sessionId, text),
-        _ => AdvanceOffsetNormally(sessionOffsets, sessionId, text),
+        "early" => MakeEarly(_sessionOffsets, sessionId, text),
+        "late" => MakeLate(_sessionOffsets, sessionId, text),
+        _ => AdvanceOffsetNormally(_sessionOffsets, sessionId, text),
       };
 
       await _hub.Clients.All.SendAsync("text",
@@ -77,12 +112,12 @@ public partial class Debugging : BackgroundService
                                                         endOffset,
                                                         text),
                                        cancellationToken);
-    }
+    };
   }
 
   const string LateText = "late text\r\n";
 
-  static Offsets AdvanceOffsetNormally(Dictionary<string, Offsets> sessionOffsets,
+  static Offsets AdvanceOffsetNormally(ConcurrentDictionary<string, Offsets> sessionOffsets,
                                        string sessionId,
                                        string text)
   {
@@ -97,7 +132,7 @@ public partial class Debugging : BackgroundService
     return sessionOffsets[sessionId];
   }
 
-  static Offsets MakeEarly(Dictionary<string, Offsets> sessionOffsets,
+  static Offsets MakeEarly(ConcurrentDictionary<string, Offsets> sessionOffsets,
                            string sessionId,
                            string text)
   {
@@ -113,7 +148,7 @@ public partial class Debugging : BackgroundService
     return sessionOffsets[sessionId];
   }
 
-  static Offsets MakeLate(Dictionary<string, Offsets> sessionOffsets,
+  static Offsets MakeLate(ConcurrentDictionary<string, Offsets> sessionOffsets,
                           string sessionId,
                           string text)
   {
