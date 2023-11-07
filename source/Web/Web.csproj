@@ -14,12 +14,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="paket.references" />
-    <None Include="wwwroot\css\style.css" />
-    <None Include="wwwroot\scripts\.gitignore" />
-    <None Include="wwwroot\scripts\index.ts" />
-    <None Include="wwwroot\scripts\modules\BufferedTerminal.ts" />
-    <None Include="wwwroot\scripts\modules\ShellHub.ts" />
-    <None Include="wwwroot\scripts\modules\ShellView.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="appsettings.json">

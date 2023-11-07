@@ -14,6 +14,7 @@ jobs:
       run:
         working-directory: ./source/Frontend
 
+
     steps:
       - uses: actions/checkout@v4
 
@@ -22,12 +23,14 @@ jobs:
         run: |
           VERSION=$(cat .node-version)
           echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
+        working-directory: .
 
       - name: Use Node.js ${{ steps.nodejs-version.outputs.VERSION }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.nodejs-version.outputs.VERSION }}
           cache: npm
+          cache-dependency-path: ./source/Frontend
 
       - run: npm ci
       - run: npm run lint
