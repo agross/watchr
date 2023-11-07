@@ -40,7 +40,7 @@ public partial class Debugging : BackgroundService
                         3: a link
                         4: make session miss an update
                         5: make session catch up
-                        6: 2 sessions with 100 lines (session ID is ignored)
+                        6: post 100 lines to all sessions (session ID is ignored)
                         otherwise: send string
                         """);
       var line = Console.ReadLine();
@@ -63,7 +63,7 @@ public partial class Debugging : BackgroundService
         "3" => SendText("normal", sessionId, "https://example.com/\r\n", cancellationToken),
         "4" => SendText("early", sessionId, "early text\r\n", cancellationToken),
         "5" => SendText("late", sessionId, LateText, cancellationToken),
-        "6" => TwoSessions(cancellationToken),
+        "6" => Post100Blocks(cancellationToken),
         _ => SendText("normal", sessionId, selection + "\r\n", cancellationToken),
       };
 
@@ -71,12 +71,12 @@ public partial class Debugging : BackgroundService
     }
   }
 
-  Func<Task> TwoSessions(CancellationToken cancellationToken)
+  Func<Task> Post100Blocks(CancellationToken cancellationToken)
   {
     var rnd = new Random();
 
     return async () => await Parallel
-      .ForEachAsync(new[] { "Session 1", "Session 2" },
+      .ForEachAsync(_sessionOffsets.Keys,
                     cancellationToken,
                     async (sessionId, ct) =>
                     {
@@ -86,7 +86,7 @@ public partial class Debugging : BackgroundService
 
                         await SendText("normal",
                                        sessionId,
-                                       $"{sessionId}, iteration {i}\r\n",
+                                       $"Session {sessionId}, iteration {i}\r\n",
                                        ct)();
                       }
                     });
