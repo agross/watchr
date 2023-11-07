@@ -22,20 +22,14 @@ span {
 }
 
 .connected {
-  background-color: green;
+  background-color: var(--color-ok);
 }
 
 .connecting {
-  background-color: orange;
+  background-color: var(--color-warning);
 }
 
 .disconnected {
-  background-color: red;
-}
-
-@media (prefers-color-scheme: dark) {
-  html.dark .connected {
-    background-color: greenyellow;
-  }
+  background-color: var(--color-error);
 }
 </style>

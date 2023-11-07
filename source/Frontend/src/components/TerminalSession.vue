@@ -55,12 +55,14 @@ watchEffect(() => {
   bufferedTerminal.options.theme = theme.value
 })
 
+const buffering = ref<boolean>(false)
+
 useSubscription(
   props.textReceived
     .pipe(
       filter((x) => x.sessionId === props.sessionId),
       tap((x) => console.log(`Received: ${JSON.stringify(x)}`)),
-      tap((x) => bufferedTerminal.writeBuffered(x))
+      tap((x) => (buffering.value = bufferedTerminal.writeBuffered(x).buffering))
     )
     .subscribe()
 )
@@ -74,7 +76,7 @@ useResizeObserver(terminal, (_entries) => {
   fitAddon.fit()
 })
 
-bufferedTerminal.loadAddon(new WebLinksAddon());
+bufferedTerminal.loadAddon(new WebLinksAddon())
 
 onMounted(() => {
   bufferedTerminal.open(terminal.value!)
@@ -85,7 +87,8 @@ onMounted(() => {
 <template>
   <section>
     <header>
-      {{ props.sessionId }}
+      <span class=status :class="{ buffering: buffering }"></span>
+      <span>{{ props.sessionId }}</span>
     </header>
     <div class="term" ref="terminal"></div>
   </section>
@@ -94,7 +97,7 @@ onMounted(() => {
 <style>
 /* Handle theme change. */
 .term * {
-  transition: background-color .5s;
+  transition: background-color 0.5s;
 }
 </style>
 
@@ -110,15 +113,34 @@ section {
 }
 
 header {
-  text-align: center;
   background-color: var(--color-term-header);
 
-  transition: background-color .5s;
+  transition: background-color 0.5s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+header .status {
+  display: block;
+  border-radius: 50%;
+
+  height: 0.3rem;
+  width: 0.3rem;
+
+  background-color: var(--color-ok);
+  transition: background-color 0.5s ease;
+}
+
+header .status.buffering {
+  background-color: var(--color-warning);
 }
 
 .term {
   background: var(--color-background);
-  transition: background-color .5s;
+  transition: background-color 0.5s;
 
   padding: 0.2rem;
   height: 100%;

@@ -15,6 +15,10 @@ html {
   --color-text: var(--vt-c-blacky);
   --color-accent: var(--gw-dark-blue);
   --color-term-header: var(--gw-light-gray);
+
+  --color-ok: green;
+  --color-warning: orange;
+  --color-error: red;
 }
 
  html.dark {
@@ -23,6 +27,8 @@ html {
   --color-text: var(--vt-c-white);
   --color-accent: var(--gw-light-blue);
   --color-term-header: var(--gw-dark-gray);
+
+  --color-ok: greenyellow;
 }
 
 *,
