@@ -142,7 +142,7 @@ public class Connection : IAsyncDisposable
 
     _state.OnCompleted();
 
-    return Hub.DisposeAsync();
+    return Hub?.DisposeAsync() ?? ValueTask.CompletedTask;
   }
 
   record ConnectionDown;
