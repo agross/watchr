@@ -76,6 +76,7 @@ bufferedTerminal.loadAddon(new WebLinksAddon());
 
 onMounted(() => {
   bufferedTerminal.open(terminal.value!)
+  fitAddon.fit()
 })
 </script>
 
