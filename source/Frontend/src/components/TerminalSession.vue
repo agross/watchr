@@ -21,10 +21,11 @@ const theme = computed<ITheme>(() => {
   if (isDark.value) {
     return {
       foreground: '#fff',
-      background: '#303030',
+      background: '#282828',
       cursor: '#fff',
       cursorAccent: '#fff',
-      selection: 'rgba(0, 52, 120, 0.25)',
+      selectionForeground: '#fff',
+      selectionBackground: '#0073cf',
       brightYellow: '#c4a000'
     }
   }
@@ -34,7 +35,8 @@ const theme = computed<ITheme>(() => {
     background: '#fff',
     cursor: '#000',
     cursorAccent: '#000',
-    selection: 'rgba(0, 52, 120, 0.25)',
+    selectionForeground: '#fff',
+    selectionBackground: '#003478',
     brightYellow: '#c4a000'
   }
 })
@@ -90,10 +92,9 @@ onMounted(() => {
 </template>
 
 <style>
-.terminal {
-  padding: 0.2rem;
-  height: 100%;
-  overflow: auto;
+/* Handle theme change. */
+.term * {
+  transition: background-color .5s;
 }
 </style>
 
@@ -111,9 +112,14 @@ section {
 header {
   text-align: center;
   background-color: var(--color-term-header);
+
+  transition: background-color .5s;
 }
 
 .term {
+  background: var(--color-background);
+  transition: background-color .5s;
+
   padding: 0.2rem;
   height: 100%;
   overflow: auto;
