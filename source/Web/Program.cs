@@ -7,8 +7,6 @@ using Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
-
 if (builder.Environment.IsDevelopment())
 {
   builder.Services.AddCors(x =>
@@ -26,13 +24,6 @@ if (builder.Environment.IsDevelopment())
 builder.Services
        .AddSignalR(o => o.EnableDetailedErrors = true)
        .AddHubOptions<ShellHub>(o => o.MaximumReceiveMessageSize = 512_000);
-
-builder.Services.AddWebOptimizer(x =>
-{
-  x.AddCssBundle("/css/bundle.css", "css/style.css")
-   .Concatenate()
-   .FingerprintUrls();
-});
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpLogging(logging =>
@@ -70,8 +61,15 @@ if (builder.Environment.IsDevelopment())
   app.UseDeveloperExceptionPage();
   app.UseCors();
 }
+else
+{
+  // Serve pre-compiled Vue app.
+  app.UseDefaultFiles();
+  app.UseStaticFiles();
 
-app.UseWebOptimizer();
+  app.UseRouting();
+  app.MapFallbackToFile("index.html");
+}
 
 // Must run first.
 var forwardedHeadersOptions = new ForwardedHeadersOptions
@@ -93,12 +91,6 @@ app.UseForwardedHeaders(forwardedHeadersOptions);
 app.UseHealthChecks("/health");
 app.UseHttpLogging();
 
-app.UseStaticFiles();
-
-app.UseRouting();
 app.MapHub<ShellHub>("/shell");
-app.MapControllers();
-app.MapControllerRoute("default",
-                       "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

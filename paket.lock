@@ -1,9 +1,6 @@
 RESTRICTION: == net7.0
 NUGET
   remote: https://api.nuget.org/v3/index.json
-    LigerShark.WebOptimizer.Core (3.0.372)
-      NUglify (>= 1.16.1)
-      System.Text.Json (>= 5.0.2)
     Microsoft.AspNetCore.Authentication.Abstractions (2.2)
       Microsoft.AspNetCore.Http.Abstractions (>= 2.2)
       Microsoft.Extensions.Logging.Abstractions (>= 2.2)
@@ -227,7 +224,6 @@ NUGET
       System.Buffers (>= 4.5)
     Minimod.RxMessageBroker (0.0.1) - content: once
     Newtonsoft.Json (13.0.1)
-    NUglify (1.17.10)
     Serilog (2.10)
     Serilog.Exceptions (8.4)
       Serilog (>= 2.8)

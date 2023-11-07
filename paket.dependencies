@@ -2,7 +2,6 @@ source https://api.nuget.org/v3/index.json
 
 framework: auto-detect
 
-nuget LigerShark.WebOptimizer.Core
 nuget Microsoft.AspNetCore.SignalR
 nuget Microsoft.AspNetCore.SignalR.Client
 nuget Microsoft.Extensions.Hosting
