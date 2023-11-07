@@ -29,6 +29,7 @@ html {
   --color-term-header: var(--gw-dark-gray);
 
   --color-ok: greenyellow;
+  --color-error: orangered;
 }
 
 *,

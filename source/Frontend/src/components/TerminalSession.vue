@@ -9,6 +9,7 @@ import { useDark, useResizeObserver } from '@vueuse/core'
 import type { ITheme } from 'xterm'
 import { FitAddon } from '@xterm/addon-fit'
 import { WebLinksAddon } from '@xterm/addon-web-links'
+import { ConnectionState, useSignalR } from '@/composables/signalr'
 
 const props = defineProps<{
   sessionId: string
@@ -55,6 +56,9 @@ watchEffect(() => {
   bufferedTerminal.options.theme = theme.value
 })
 
+const { connectionState } = useSignalR()
+const disconnected = computed<boolean>(() => connectionState.value !== ConnectionState.Connected)
+
 const buffering = ref<boolean>(false)
 
 useSubscription(
@@ -87,7 +91,7 @@ onMounted(() => {
 <template>
   <section>
     <header>
-      <span class=status :class="{ buffering: buffering }"></span>
+      <span class="status" :class="{ buffering: buffering, disconnected: disconnected }"></span>
       <span>{{ props.sessionId }}</span>
     </header>
     <div class="term" ref="terminal"></div>
@@ -136,6 +140,10 @@ header .status {
 
 header .status.buffering {
   background-color: var(--color-warning);
+}
+
+header .status.disconnected {
+  background-color: var(--color-error);
 }
 
 .term {
