@@ -8,6 +8,7 @@ import { BufferedTerminal } from '@/model/BufferedTerminal'
 import { useDark, useResizeObserver } from '@vueuse/core'
 import type { ITheme } from 'xterm'
 import { FitAddon } from '@xterm/addon-fit'
+import { WebLinksAddon } from '@xterm/addon-web-links'
 
 const props = defineProps<{
   sessionId: string
@@ -70,6 +71,8 @@ bufferedTerminal.loadAddon(fitAddon)
 useResizeObserver(terminal, (_entries) => {
   fitAddon.fit()
 })
+
+bufferedTerminal.loadAddon(new WebLinksAddon());
 
 onMounted(() => {
   bufferedTerminal.open(terminal.value!)
