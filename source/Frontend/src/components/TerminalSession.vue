@@ -82,10 +82,7 @@ useResizeObserver(terminal, (_entries) => {
 
 bufferedTerminal.loadAddon(new WebLinksAddon())
 
-onMounted(() => {
-  bufferedTerminal.open(terminal.value!)
-  fitAddon.fit()
-})
+onMounted(() => bufferedTerminal.open(terminal.value!))
 </script>
 
 <template>
