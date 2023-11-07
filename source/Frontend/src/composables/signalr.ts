@@ -1,5 +1,6 @@
 import { readonly, ref } from 'vue'
 import * as signalR from '@microsoft/signalr'
+import { useUrlSearchParams } from '@vueuse/core'
 
 export enum ConnectionState {
   Connecting = 'connecting',
@@ -39,8 +40,11 @@ builder.onreconnected(() => {
 
 const connectionState = ref(ConnectionState.Disconnected)
 
+const params = useUrlSearchParams('history')
+
 const connect = async () => {
   try {
+    console.info('SignalR connecting')
     connectionState.value = ConnectionState.Connecting
 
     if (builder.state === signalR.HubConnectionState.Disconnected) {
@@ -49,6 +53,18 @@ const connect = async () => {
 
     console.info('SignalR connected')
     connectionState.value = ConnectionState.Connected
+
+    if (params.group) {
+      try {
+        await builder.invoke('joinGroup', params.group)
+        console.log(`Joined group ${params.group}`)
+      } catch (error) {
+        console.error(`Could not join group ${params.group}: ${error}`)
+
+        await builder.stop()
+        throw error
+      }
+    }
   } catch (err) {
     console.error(`SignalR connection failed: ${err}`)
     setTimeout(connect, reconnectDelay)
