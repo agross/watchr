@@ -85,7 +85,7 @@ onMounted(() => {
     <header>
       {{ props.sessionId }}
     </header>
-    <div ref="terminal"></div>
+    <div class="term" ref="terminal"></div>
   </section>
 </template>
 
@@ -111,5 +111,11 @@ section {
 header {
   text-align: center;
   background-color: var(--color-term-header);
+}
+
+.term {
+  padding: 0.2rem;
+  height: 100%;
+  overflow: auto;
 }
 </style>

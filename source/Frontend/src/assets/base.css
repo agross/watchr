@@ -34,8 +34,6 @@ html {
 }
 
 body {
-  min-height: 100vh;
-  margin: 1rem;
   color: var(--color-text);
   background: var(--color-background);
   transition:
@@ -47,6 +45,10 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+html, body, #app, main {
+  height: 100%;
 }
 
 h1 {

@@ -50,6 +50,7 @@ on('terminate', (sessionId: string) => {
 <style scoped>
 header {
   position: absolute;
+  top: 1rem;
   right: 1rem;
 
   display: flex;
@@ -62,7 +63,11 @@ header {
 
 .sessions {
   display: flex;
+  /* Space between. */
   gap: 1rem;
+  /* Space around. */
+  padding: 1rem;
+  height: 100%;
 }
 
 @media all and (max-width: 800px) {
