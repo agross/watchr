@@ -15,8 +15,6 @@ const subject = new ReplaySubject<TextReceived>(10, 5000)
 const sessions = reactive<string[]>([])
 
 on('text', async (text: TextReceived) => {
-  console.log(`Text: ${JSON.stringify(text)}`)
-
   const existing = sessions.find((x) => x === text.sessionId)
   if (!existing) {
     sessions.push(text.sessionId)

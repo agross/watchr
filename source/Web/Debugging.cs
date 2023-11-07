@@ -8,12 +8,16 @@ using Web.Hubs;
 
 namespace Web;
 
-public class Debugging : BackgroundService
+public partial class Debugging : BackgroundService
 {
+  record Offsets(int Start, int End, int HoleStartsAt = 0);
+
   readonly IHubContext<ShellHub> _hub;
 
-  static readonly Regex Line = new(@"^(\w+)\s+(.*)",
-                                   RegexOptions.Compiled | RegexOptions.CultureInvariant);
+  [GeneratedRegex("^(\\w+)\\s+(.*)", RegexOptions.Compiled | RegexOptions.CultureInvariant)]
+  private static partial Regex LineRegex();
+
+  static readonly Regex Line = LineRegex();
 
   public Debugging(IHubContext<ShellHub> hub)
   {
@@ -21,40 +25,104 @@ public class Debugging : BackgroundService
   }
 
   protected override Task ExecuteAsync(CancellationToken cancellationToken)
-    => Task.Run(async () =>
-                {
-                  var sessionOffsets = new Dictionary<string, int>();
+    => Task.Run(() => Menu(cancellationToken), cancellationToken);
 
-                  while (!cancellationToken.IsCancellationRequested)
-                  {
-                    Console.WriteLine("Enter something to send: <Session> <Text>");
-                    var line = Console.ReadLine();
+  async Task Menu(CancellationToken cancellationToken)
+  {
+    var sessionOffsets = new Dictionary<string, Offsets>();
 
-                    if (!Line.IsMatch(line ?? ""))
-                    {
-                      Console.WriteLine("Huh?");
-                      continue;
-                    }
+    while (!cancellationToken.IsCancellationRequested)
+    {
+      Console.WriteLine("""
+                        Enter something to send: <Session ID> <Selection>
+                        1: "hello"
+                        2: a very long string
+                        3: a link
+                        4: make session miss an update
+                        5: make session catch up
+                        otherwise: send string
+                        """);
+      var line = Console.ReadLine();
 
-                    var sessionId = Line.Match(line!).Groups[1].Value;
-                    var text = Line.Match(line).Groups[2].Value;
-                    text += "\r\n";
+      var match = Line.Match(line ?? "");
+      if (!match.Success)
+      {
+        Console.WriteLine("Huh?");
 
-                    var startOffset = 0;
-                    if (sessionOffsets.TryGetValue(sessionId, out var offset))
-                    {
-                      startOffset = offset;
-                    }
+        continue;
+      }
 
-                    sessionOffsets[sessionId] = startOffset + text.Length;
+      var sessionId = match.Groups[1].Value;
+      var selection = match.Groups[2].Value;
+      var (text, offsetHandling) = selection switch
+      {
+        "1" => ("hello\r\n", "normal"),
+        "2" => (new string('m', 100) + "\r\n", "normal"),
+        "3" => ("https://example.com/\r\n", "normal"),
+        "4" => ("early text\r\n", "early"),
+        "5" => (LateText, "late"),
+        _ => (selection + "\r\n", "normal"),
+      };
 
-                    await _hub.Clients.All.SendAsync("text",
-                                                     new TextReceived(sessionId,
-                                                                      startOffset,
-                                                                      sessionOffsets[sessionId],
-                                                                      text),
-                                                     cancellationToken);
-                  }
-                },
-                cancellationToken);
+      var (startOffset, endOffset, _) = offsetHandling switch
+      {
+        "early" => MakeEarly(sessionOffsets, sessionId, text),
+        "late" => MakeLate(sessionOffsets, sessionId, text),
+        _ => AdvanceOffsetNormally(sessionOffsets, sessionId, text),
+      };
+
+      await _hub.Clients.All.SendAsync("text",
+                                       new TextReceived(sessionId,
+                                                        startOffset,
+                                                        endOffset,
+                                                        text),
+                                       cancellationToken);
+    }
+  }
+
+  const string LateText = "late text\r\n";
+
+  static Offsets AdvanceOffsetNormally(Dictionary<string, Offsets> sessionOffsets,
+                                       string sessionId,
+                                       string text)
+  {
+    if (!sessionOffsets.TryGetValue(sessionId, out var offset))
+    {
+      offset = new Offsets(0, 0);
+    }
+
+    sessionOffsets[sessionId] = new Offsets(offset.End,
+                                            offset.End + text.Length);
+
+    return sessionOffsets[sessionId];
+  }
+
+  static Offsets MakeEarly(Dictionary<string, Offsets> sessionOffsets,
+                           string sessionId,
+                           string text)
+  {
+    if (!sessionOffsets.TryGetValue(sessionId, out var offset))
+    {
+      offset = new Offsets(0, 0);
+    }
+
+    sessionOffsets[sessionId] = new Offsets(offset.End + LateText.Length,
+                                            offset.End + LateText.Length + text.Length,
+                                            offset.End);
+
+    return sessionOffsets[sessionId];
+  }
+
+  static Offsets MakeLate(Dictionary<string, Offsets> sessionOffsets,
+                          string sessionId,
+                          string text)
+  {
+    if (!sessionOffsets.TryGetValue(sessionId, out var offset))
+    {
+      offset = new Offsets(0, 0);
+    }
+
+    return new Offsets(offset.HoleStartsAt,
+                       offset.HoleStartsAt + text.Length);
+  }
 }
