@@ -5,8 +5,6 @@
 .paket/
 .vs/
 bin/
-build/
-coverage/
 node_modules/
 obj/
 packages/

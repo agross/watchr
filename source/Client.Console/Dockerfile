@@ -23,13 +23,13 @@ RUN case "$TARGETPLATFORM" in \
       *) printf 'Unsupported TARGETPLATFORM %s\n' "$TARGETPLATFORM"; exit 1; \
     esac && \
     \
-    dotnet publish --nologo \
-                   --runtime $runtime \
-                   --self-contained \
-                   --configuration ${CONFIGURATION} \
-                   source/Client.Console/Client.Console.csproj && \
-  \
-  mv -- "/build/build/bin/Client.Console/$runtime/publish/" /publish
+    dotnet publish \
+           --nologo \
+           --runtime "$runtime" \
+           --self-contained \
+           --configuration "$CONFIGURATION" \
+           --output /publish \
+           source/Client.Console/Client.Console.csproj
 
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime-deps:${VERSION}
 
