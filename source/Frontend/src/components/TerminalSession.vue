@@ -6,9 +6,10 @@ import { useSubscription } from '@vueuse/rxjs'
 import type { TextReceived } from '@/model/TextReceived'
 import { BufferedTerminal } from '@/model/BufferedTerminal'
 import { useDark, useResizeObserver } from '@vueuse/core'
-import type { ITheme } from 'xterm'
+import type { ITheme, Terminal } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { WebLinksAddon } from 'xterm-addon-web-links'
+import FontFaceObserver from 'fontfaceobserver'
 import { ConnectionState, useSignalR } from '@/composables/signalr'
 
 const props = defineProps<{
@@ -56,6 +57,28 @@ watchEffect(() => {
   bufferedTerminal.options.theme = theme.value
 })
 
+async function loadWebFont(terminal: Terminal) {
+  const fontFamily = terminal.options.fontFamily
+
+  if (!fontFamily) {
+    return
+  }
+
+  console.info(`Loading font ${fontFamily}`)
+  const regular = new FontFaceObserver(fontFamily).load()
+  const bold = new FontFaceObserver(fontFamily, {
+    weight: 'bold'
+  }).load()
+
+  try {
+    await Promise.all([regular, bold])
+    console.info(`Loading font ${fontFamily} succeeded`)
+  } catch {
+    console.error(`Loading ${fontFamily} failed, falling back to monospace font`)
+    terminal.options.fontFamily = 'monospace'
+  }
+}
+
 const { connectionState } = useSignalR()
 const disconnected = computed<boolean>(() => connectionState.value !== ConnectionState.Connected)
 
@@ -82,7 +105,10 @@ useResizeObserver(terminal, (_entries) => {
 
 bufferedTerminal.loadAddon(new WebLinksAddon())
 
-onMounted(() => bufferedTerminal.open(terminal.value!))
+onMounted(async () => {
+  await loadWebFont(bufferedTerminal)
+  bufferedTerminal.open(terminal.value!)
+})
 </script>
 
 <template>
