@@ -7,8 +7,8 @@ import type { TextReceived } from '@/model/TextReceived'
 import { BufferedTerminal } from '@/model/BufferedTerminal'
 import { useDark, useResizeObserver } from '@vueuse/core'
 import type { ITheme } from 'xterm'
-import { FitAddon } from '@xterm/addon-fit'
-import { WebLinksAddon } from '@xterm/addon-web-links'
+import { FitAddon } from 'xterm-addon-fit'
+import { WebLinksAddon } from 'xterm-addon-web-links'
 import { ConnectionState, useSignalR } from '@/composables/signalr'
 
 const props = defineProps<{
