@@ -17,6 +17,10 @@ const props = defineProps<{
   textReceived: Observable<TextReceived>
 }>()
 
+const emit = defineEmits<{
+  close: []
+}>()
+
 const isDark = useDark({ disableTransition: false })
 
 const theme = computed<ITheme>(() => {
@@ -114,8 +118,14 @@ onMounted(async () => {
 <template>
   <section>
     <header>
-      <span class="status" :class="{ buffering: buffering, disconnected: disconnected }"></span>
-      <span>{{ props.sessionId }}</span>
+      <div class="icons">
+        <i class="pi pi-times" @click="emit('close')"></i>
+      </div>
+
+      <div class="title">
+        <span class="status" :class="{ buffering: buffering, disconnected: disconnected }"></span>
+        <span>{{ props.sessionId }}</span>
+      </div>
     </header>
     <div class="term" ref="terminal"></div>
   </section>
@@ -141,12 +151,26 @@ section {
 
 header {
   background-color: var(--color-term-header);
-
   transition: background-color 0.5s;
 
+  justify-content: center;
+  position: relative;
+}
+
+header i {
+  cursor: pointer;
+}
+
+header .icons {
+  position: absolute;
+  left: 0.3rem;
+}
+
+header,
+.icons,
+.title {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 0.3rem;
 }
 

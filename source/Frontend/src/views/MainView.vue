@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
+import { ref } from 'vue'
 import { ReplaySubject } from 'rxjs'
 import ThemeButton from '@/components/ThemeButton.vue'
 import ConnectionIndicator from '@/components/ConnectionIndicator.vue'
@@ -12,12 +12,12 @@ const { on } = useSignalR()
 
 const subject = new ReplaySubject<TextReceived>(10, 5000)
 
-const sessions = reactive<string[]>([])
+const sessions = ref<string[]>([])
 
 on('text', async (text: TextReceived) => {
-  const existing = sessions.find((x) => x === text.sessionId)
+  const existing = sessions.value.find((x) => x === text.sessionId)
   if (!existing) {
-    sessions.push(text.sessionId)
+    sessions.value.push(text.sessionId)
   }
 
   subject.next(text)
@@ -42,6 +42,7 @@ on('terminate', (sessionId: string) => {
         :key="sessionId"
         :sessionId="sessionId"
         :textReceived="subject"
+        @close="sessions = sessions.filter(x => x !== sessionId)"
       />
     </section>
   </main>
