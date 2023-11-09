@@ -9,8 +9,8 @@ const toggleDark = useToggle(isDark)
   <div>
     <input @change="toggleDark()" id="checkbox" type="checkbox" />
     <label for="checkbox">
-      <span>🌙</span>
-      <span>☀️</span>
+      <span><i class="pi pi-moon"></i></span>
+      <span><i class="pi pi-sun"></i></span>
       <div class="toggle" :class="{ checked: isDark }"></div>
     </label>
   </div>
@@ -23,6 +23,10 @@ const toggleDark = useToggle(isDark)
 </style>
 
 <style scoped>
+.pi {
+  color: var(--color-accent);
+}
+
 input[type='checkbox'] {
   display: none;
 }
