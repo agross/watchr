@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useDark, useToggle } from '@vueuse/core'
 
 const isDark = useDark({ disableTransition: false })
 const toggleDark = useToggle(isDark)
+
+onMounted(() => {
+  document.body.style.transition = 'color 0.5s, background-color 0.5s'
+})
 </script>
 
 <template>
