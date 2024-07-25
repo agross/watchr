@@ -1,6 +1,6 @@
-ARG VERSION=7.0-alpine
+ARG DOTNET_SDK_VERSION
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${VERSION} AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}-alpine AS build
 
 WORKDIR /build
 
@@ -31,7 +31,7 @@ RUN case "$TARGETPLATFORM" in \
            --output /publish \
            source/Client.Console/Client.Console.csproj
 
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime-deps:${VERSION}
+FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime-deps:${DOTNET_SDK_VERSION}-alpine
 
 WORKDIR /app
 

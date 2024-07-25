@@ -8,7 +8,7 @@ Running the server locally:
 $ docker container \
          run \
          --rm \
-         --publish 8888:80 \
+         --publish 8888:8080 \
          ghcr.io/agross/watchr-web
 ```
 

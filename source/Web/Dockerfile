@@ -54,11 +54,11 @@ RUN case "$TARGETPLATFORM" in \
 
 FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:${DOTNET_SDK_VERSION}-alpine
 
-EXPOSE 80
+EXPOSE 8080
 
 HEALTHCHECK --start-period=15s \
             --interval=5s \
-            CMD [ "wget", "-O", "/dev/null", "--header", "X-Health-Check: 1", "http://localhost/health" ]
+            CMD [ "wget", "-O", "/dev/null", "--header", "X-Health-Check: 1", "http://localhost:8080/health" ]
 
 # https://github.com/dotnet/SqlClient/issues/220
 RUN apk add --no-cache icu-data-full icu-libs tzdata
