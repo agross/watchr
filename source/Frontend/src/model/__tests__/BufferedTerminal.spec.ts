@@ -1,11 +1,11 @@
-import { describe, it, expect, beforeEach, afterEach, vi, type SpyInstance } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi, type MockInstance } from 'vitest'
 
 import { BufferedTerminal, type WriteBufferedResult } from '../BufferedTerminal'
 import type { Block } from '../Block'
 
 describe(BufferedTerminal.name, () => {
   let terminal: BufferedTerminal
-  let writeSpy: SpyInstance<[data: string | Uint8Array, callback?: () => void], void>
+  let writeSpy: MockInstance<(data: string | Uint8Array, callback?: () => void) => void>
 
   beforeEach(() => {
     terminal = new BufferedTerminal()
