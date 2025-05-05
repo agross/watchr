@@ -52,7 +52,7 @@ RUN case "$TARGETPLATFORM" in \
            --output /publish \
            source/Web/Web.csproj
 
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/aspnet:${DOTNET_SDK_VERSION}-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_SDK_VERSION}-alpine
 
 EXPOSE 8080
 

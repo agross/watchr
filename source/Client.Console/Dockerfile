@@ -31,7 +31,7 @@ RUN case "$TARGETPLATFORM" in \
            --output /publish \
            source/Client.Console/Client.Console.csproj
 
-FROM --platform=$TARGETPLATFORM mcr.microsoft.com/dotnet/runtime-deps:${DOTNET_SDK_VERSION}-alpine
+FROM mcr.microsoft.com/dotnet/runtime-deps:${DOTNET_SDK_VERSION}-alpine
 
 WORKDIR /app
 
