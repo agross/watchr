@@ -52,17 +52,13 @@ RUN case "$TARGETPLATFORM" in \
            --output /publish \
            source/Web/Web.csproj
 
-FROM mcr.microsoft.com/dotnet/aspnet:${DOTNET_SDK_VERSION}-alpine
+FROM mcr.microsoft.com/dotnet/runtime-deps:${DOTNET_SDK_VERSION}-alpine-extra
 
 EXPOSE 8080
 
 HEALTHCHECK --start-period=15s \
             --interval=5s \
             CMD [ "wget", "-O", "/dev/null", "--header", "X-Health-Check: 1", "http://localhost:8080/health" ]
-
-# https://github.com/dotnet/SqlClient/issues/220
-RUN apk add --no-cache icu-data-full icu-libs tzdata
-ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 
 WORKDIR /app
 
@@ -72,4 +68,4 @@ COPY --from=vue /app/dist wwwroot/
 ENV DOTNET_ENVIRONMENT=Production
 ENV Logging__Console__FormatterName=simple
 
-ENTRYPOINT ["dotnet", "Web.dll"]
+ENTRYPOINT ["./Web"]
