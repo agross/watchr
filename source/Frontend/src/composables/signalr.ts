@@ -12,7 +12,7 @@ const api = import.meta.env.VITE_API_URL
 const reconnectDelay = 5000
 
 class AlwaysRetryPolicy implements signalR.IRetryPolicy {
-  nextRetryDelayInMilliseconds(_retryContext: signalR.RetryContext): number {
+  nextRetryDelayInMilliseconds(): number {
     return reconnectDelay
   }
 }
@@ -69,6 +69,7 @@ const connect = async () => {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const on = (methodName: string, newMethod: (...args: any[]) => any) => {
   builder.on(methodName, newMethod)
 }
