@@ -110,6 +110,7 @@ bufferedTerminal.loadAddon(new WebLinksAddon())
 onMounted(async () => {
   await loadWebFont(bufferedTerminal)
   bufferedTerminal.open(terminal.value!)
+  fitAddon.fit()
 })
 </script>
 
