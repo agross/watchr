@@ -6,9 +6,9 @@ import { useSubscription } from '@vueuse/rxjs'
 import type { TextReceived } from '@/model/TextReceived'
 import { BufferedTerminal } from '@/model/BufferedTerminal'
 import { useDark, useResizeObserver } from '@vueuse/core'
-import type { ITheme, Terminal } from 'xterm'
-import { FitAddon } from 'xterm-addon-fit'
-import { WebLinksAddon } from 'xterm-addon-web-links'
+import type { ITheme, Terminal } from '@xterm/xterm'
+import { FitAddon } from '@xterm/addon-fit'
+import { WebLinksAddon } from '@xterm/addon-web-links'
 import FontFaceObserver from 'fontfaceobserver'
 import { ConnectionState, useSignalR } from '@/composables/signalr'
 
@@ -103,9 +103,7 @@ const terminal = ref<HTMLDivElement | null>(null)
 const fitAddon = new FitAddon()
 bufferedTerminal.loadAddon(fitAddon)
 
-useResizeObserver(terminal, (_entries) => {
-  fitAddon.fit()
-})
+useResizeObserver(terminal, () => fitAddon.fit())
 
 bufferedTerminal.loadAddon(new WebLinksAddon())
 

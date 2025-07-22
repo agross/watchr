@@ -1,4 +1,4 @@
-import { Terminal } from 'xterm'
+import { Terminal } from '@xterm/xterm'
 import type { Block } from './Block'
 
 export interface WriteBufferedResult {
