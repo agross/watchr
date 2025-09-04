@@ -23,7 +23,7 @@ jobs:
         working-directory: .
 
       - name: Use Node.js ${{ steps.nodejs-version.outputs.VERSION }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ steps.nodejs-version.outputs.VERSION }}
           cache: npm
