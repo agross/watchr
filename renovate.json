@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":disableDigestUpdates",
+    ":disableRateLimiting",
+    ":enableVulnerabilityAlerts",
+    ":rebaseStalePrs",
+    ":semanticCommitsDisabled"
+  ],
+  "labels": ["dependencies"],
+  "packageRules": [
+    {
+      "description": "Schedule NuGet updates to Friday before 8 AM",
+      "matchManagers": ["nuget"],
+      "schedule": ["* 0-8 * * 5"]
+    }
+  ]
+}
