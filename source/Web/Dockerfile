@@ -26,12 +26,8 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION
 WORKDIR /build
 
 # Restore NuGet packages.
-COPY *.sln* Directory.Packages.props ./
-COPY */*/*.*proj ./
-RUN dotnet sln list | \
-    tail -n +3 | \
-    xargs -I {} sh -c \
-    'target="{}"; dir="${target%/*}"; file="${target##*/}"; mkdir -p -- "$dir"; mv -- "$file" "$target"'
+COPY *.sln* Directory.*.props ./
+COPY --parents **/*.*proj ./
 RUN dotnet restore
 
 # Copy code and build.
