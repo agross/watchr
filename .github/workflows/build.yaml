@@ -11,7 +11,6 @@ jobs:
       run:
         working-directory: ./source/Frontend
 
-
     steps:
       - uses: actions/checkout@v6
 
@@ -78,6 +77,7 @@ jobs:
           tags: |
             type=ref,event=branch
             # Set latest tag for the default branch.
+            type=raw,value=${{ github.run_number }},enable={{ is_default_branch }}
             type=raw,value=latest,enable={{ is_default_branch }}
           labels: |
             org.opencontainers.image.title=${{ matrix.title }}
