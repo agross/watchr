@@ -5,7 +5,7 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION
 WORKDIR /build
 
 # Restore NuGet packages.
-COPY *.sln Directory.Packages.props ./
+COPY *.sln* Directory.Packages.props ./
 COPY */*/*.*proj ./
 RUN dotnet sln list | \
     tail -n +3 | \

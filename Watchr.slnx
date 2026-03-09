@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="source/Client.Console/Client.Console.csproj" />
+  <Project Path="source/Client/Client.csproj" />
+  <Project Path="source/Web/Web.csproj" />
+</Solution>
