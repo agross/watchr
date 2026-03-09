@@ -1,0 +1,19 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
+    <PackageVersion Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.7" />
+    <PackageVersion Include="Minimod.RxMessageBroker" Version="0.0.1" />
+    <PackageVersion Include="Serilog.Exceptions" Version="8.4.0" />
+    <PackageVersion Include="Serilog.Expressions" Version="5.0.0" />
+    <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Settings.Configuration" Version="9.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="6.0.0" />
+    <PackageVersion Include="System.Reactive" Version="6.0.1" />
+  </ItemGroup>
+</Project>

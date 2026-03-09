@@ -4,13 +4,14 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION
 
 WORKDIR /build
 
-# Install dotnet tools.
-COPY .config/ ./.config/
-RUN dotnet tool restore
-
-# Run paket restore.
-COPY paket.* ./
-RUN dotnet paket restore
+# Restore NuGet packages.
+COPY *.sln Directory.Packages.props ./
+COPY */*/*.*proj ./
+RUN dotnet sln list | \
+    tail -n +3 | \
+    xargs -I {} sh -c \
+    'target="{}"; dir="${target%/*}"; file="${target##*/}"; mkdir -p -- "$dir"; mv -- "$file" "$target"'
+RUN dotnet restore
 
 # Copy code and build.
 COPY . ./

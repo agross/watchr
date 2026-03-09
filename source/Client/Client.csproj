@@ -8,7 +8,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
-
   </ItemGroup>
-  <Import Project="..\..\.paket\Paket.Restore.targets" />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="Minimod.RxMessageBroker" />
+    <PackageReference Include="System.Reactive" />
+  </ItemGroup>
 </Project>

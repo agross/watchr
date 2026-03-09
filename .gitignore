@@ -2,10 +2,7 @@
 *.user
 *.suo
 
-.paket/
 .vs/
 bin/
 node_modules/
 obj/
-packages/
-paket-files/

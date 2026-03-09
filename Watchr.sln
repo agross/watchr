@@ -2,12 +2,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "paket", "paket", "{C4A227F0-DB7D-42A4-8A40-E34010C7E71C}"
-	ProjectSection(SolutionItems) = preProject
-		paket.dependencies = paket.dependencies
-		paket.lock = paket.lock
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "source\Web\Web.csproj", "{AFF0D104-7149-49D7-91D8-7E40F1C7A56B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Client", "source\Client\Client.csproj", "{16A5FFE6-07DB-40C1-8877-60E6A8BBD952}"

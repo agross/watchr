@@ -10,9 +10,6 @@
     <Compile Include="..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="paket.references" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -23,5 +20,4 @@
   <ItemGroup>
     <Folder Include="wwwroot" />
   </ItemGroup>
-  <Import Project="..\..\.paket\Paket.Restore.targets" />
 </Project>
