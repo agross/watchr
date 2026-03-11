@@ -1,7 +1,6 @@
-*.bak
 *.user
-*.suo
 
+.idea/
 .vs/
 bin/
 node_modules/
