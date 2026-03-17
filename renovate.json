@@ -6,7 +6,8 @@
     ":disableRateLimiting",
     ":enableVulnerabilityAlerts",
     ":rebaseStalePrs",
-    ":semanticCommitsDisabled"
+    ":semanticCommitsDisabled",
+    "security:minimumReleaseAgeNpm"
   ],
   "labels": ["dependencies"],
   "packageRules": [
