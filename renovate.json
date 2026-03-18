@@ -15,6 +15,12 @@
       "description": "Schedule NuGet updates to Friday before 8 AM",
       "matchManagers": ["nuget"],
       "schedule": ["* 0-8 * * 5"]
+    },
+    {
+      "description": "Group Docker-related GitHub Actions",
+      "groupName": "Docker Actions",
+      "matchManagers": ["github-actions"],
+      "matchPackageNames": ["docker/*"]
     }
   ]
 }
