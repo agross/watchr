@@ -1,7 +1,4 @@
-ARG NODE_VERSION
-ARG DOTNET_SDK_VERSION
-
-FROM --platform=$BUILDPLATFORM node:${NODE_VERSION:?Required} AS vue
+FROM --platform=$BUILDPLATFORM node:24.14.0 AS vue
 
 WORKDIR /app
 
@@ -21,7 +18,7 @@ COPY source/Frontend ./
 
 RUN npm run build
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:${DOTNET_SDK_VERSION}-alpine AS dotnet
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS dotnet
 
 WORKDIR /build
 
@@ -49,7 +46,7 @@ RUN case "$TARGETPLATFORM" in \
            --output /publish \
            source/Web/Web.csproj
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:${DOTNET_SDK_VERSION}-alpine-extra
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-alpine-extra
 
 EXPOSE 8080
 

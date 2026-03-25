@@ -86,22 +86,6 @@ jobs:
           labels: |
             org.opencontainers.image.title=${{ matrix.title }}
 
-      - name: Get Node.js version
-        id: nodejs-version
-        run: |
-          VERSION=$(cat .node-version)
-          echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - name: Get .NET SDK version
-        id: dotnet-sdk-version
-        run: |
-          version="$(jq --raw-output \
-                        --exit-status \
-                        .sdk.version \
-                        global.json)"
-
-          printf 'VERSION=%s' "${version%.*}" >> "$GITHUB_OUTPUT"
-
       - name: Build and push
         uses: docker/build-push-action@v7
         with:
@@ -111,8 +95,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: |
-            NODE_VERSION=${{ steps.nodejs-version.outputs.VERSION }}
-            DOTNET_SDK_VERSION=${{ steps.dotnet-sdk-version.outputs.VERSION }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
