@@ -12,7 +12,7 @@ RUN apt update && \
                 libjpeg-dev \
                 libgif-dev \
                 librsvg2-dev && \
-                npm install
+    npm ci
 
 COPY source/Frontend ./
 
