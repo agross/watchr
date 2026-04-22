@@ -9,6 +9,8 @@
     ':semanticCommitsDisabled',
     'security:minimumReleaseAgeNpm',
     ':maintainLockFilesWeekly',
+    ':automergeBranch',
+    ':automergeMinor',
   ],
   labels: [
     'dependencies',
