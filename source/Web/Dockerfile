@@ -4,7 +4,12 @@ WORKDIR /app
 
 COPY source/Frontend/package*.json ./
 
-RUN apt update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    \
+    --mount=type=cache,target=/root/.npm \
+    \
+    apt update && \
     apt install --yes \
                 build-essential \
                 libcairo2-dev \
@@ -22,17 +27,12 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS dotne
 
 WORKDIR /build
 
-# Restore NuGet packages.
-COPY *.sln* Directory.*.props ./
-COPY --parents **/*.*proj ./
-RUN dotnet restore
-
-# Copy code and build.
-COPY . ./
-
 ARG CONFIGURATION=Release
 ARG TARGETPLATFORM
-RUN case "$TARGETPLATFORM" in \
+RUN --mount=type=bind,target=.,rw \
+    --mount=type=cache,target=/root/.nuget/packages,rw,sharing=locked \
+    \
+    case "$TARGETPLATFORM" in \
       linux/arm64) runtime=linux-musl-arm64 ;; \
       linux/amd64) runtime=linux-musl-x64 ;; \
       *) printf 'Unsupported TARGETPLATFORM %s\n' "$TARGETPLATFORM"; exit 1; \

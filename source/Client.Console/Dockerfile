@@ -2,17 +2,12 @@ FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
 
 WORKDIR /build
 
-# Restore NuGet packages.
-COPY *.sln* Directory.*.props ./
-COPY --parents **/*.*proj ./
-RUN dotnet restore
-
-# Copy code and build.
-COPY . ./
-
-ARG TARGETPLATFORM
 ARG CONFIGURATION=Release
-RUN case "$TARGETPLATFORM" in \
+ARG TARGETPLATFORM
+RUN --mount=type=bind,target=.,rw \
+    --mount=type=cache,target=/root/.nuget/packages,rw,sharing=locked \
+    \
+    case "$TARGETPLATFORM" in \
       linux/arm64) runtime=linux-musl-arm64 ;; \
       linux/amd64) runtime=linux-musl-x64 ;; \
       *) printf 'Unsupported TARGETPLATFORM %s\n' "$TARGETPLATFORM"; exit 1; \
