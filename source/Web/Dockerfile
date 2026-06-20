@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:24.16.0 AS vue
+FROM --platform=$BUILDPLATFORM node:24.17.0 AS vue
 
 WORKDIR /app
 
