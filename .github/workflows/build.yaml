@@ -16,7 +16,7 @@ jobs:
         working-directory: ./source/Frontend
 
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - name: Get Node.js version
         id: nodejs-version
@@ -55,7 +55,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v7.0.0
+      - uses: actions/checkout@v7.0.1
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
