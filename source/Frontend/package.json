@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "build-only": "vite build",
-    "type-check": "node scripts/vue-tsc6.mjs --build",
+    "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",
     "format": "prettier --write src/"
   },
@@ -29,8 +29,8 @@
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
+    "@types/jsdom": "^28.0.3",
     "@types/node": "^25.5.0",
-    "@typescript/native": "npm:typescript@7.0.2",
     "@vitejs/plugin-vue": "^6.0.5",
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.7.0",
@@ -41,10 +41,13 @@
     "jsdom": "^29.0.1",
     "npm-run-all2": "^9.0.0",
     "prettier": "^3.8.1",
-    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "typescript": "npm:typescript-native-bridge@6.0.3-bridge.6.tsgo.7.0.2",
     "vite": "^8.0.3",
     "vite-plugin-vue-devtools": "^8.1.1",
     "vitest": "^4.1.2",
     "vue-tsc": "^3.2.6"
+  },
+  "overrides": {
+    "typescript": "$typescript"
   }
 }

@@ -10,12 +10,14 @@ This template should help get you started developing with Vue 3 in Vite.
 
 TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-## TypeScript 6 + 7 side by side
+## Native TypeScript bridge
 
-TypeScript 7 provides the native `tsc` compiler. TypeScript 6 remains installed
-for tooling that needs the programmatic JavaScript API. See
-[the side-by-side setup](./docs/typescript-7-side-by-side.md) for details and
-the removal plan.
+The `typescript` dependency uses
+[`typescript-native-bridge`](https://github.com/johnsoncodehk/typescript-native-bridge),
+which keeps the TypeScript 6 API required by vue-tsc, Volar, and ESLint while
+running type checking on the native TypeScript 7 engine. See
+[`docs/typescript-native-bridge.md`](./docs/typescript-native-bridge.md) for
+setup, verification, and rollback details.
 
 If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
