@@ -23,7 +23,7 @@ COPY source/Frontend ./
 
 RUN npm run build
 
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS dotnet
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:11.0-alpine AS dotnet
 
 WORKDIR /build
 
@@ -46,7 +46,7 @@ RUN --mount=type=bind,target=.,rw \
            --output /publish \
            source/Web/Web.csproj
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-alpine-extra
+FROM mcr.microsoft.com/dotnet/runtime-deps:11.0-alpine-extra
 
 EXPOSE 8080
 
