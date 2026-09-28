@@ -1,7 +1,5 @@
 using System.Reactive.Linq;
-
 using Client.Web;
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,8 +10,7 @@ public class SignalRConnectionService : IHostedService
   readonly ILogger<SignalRConnectionService> _logger;
   readonly Connection _connection;
 
-  public SignalRConnectionService(ILogger<SignalRConnectionService> logger,
-                 Connection connection)
+  public SignalRConnectionService(ILogger<SignalRConnectionService> logger, Connection connection)
   {
     _logger = logger;
     _connection = connection;

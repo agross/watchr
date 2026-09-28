@@ -1,8 +1,6 @@
 using System.Reactive.Linq;
-
 using Client.ShellLogs;
 using Client.Web;
-
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -16,10 +14,12 @@ public class FileListenerService : IHostedService
   readonly Publisher _publisher;
   IDisposable _subscription;
 
-  public FileListenerService(ILogger<FileListenerService> logger,
-                             Listener listener,
-                             Subscriber subscriber,
-                             Publisher publisher)
+  public FileListenerService(
+    ILogger<FileListenerService> logger,
+    Listener listener,
+    Subscriber subscriber,
+    Publisher publisher
+  )
   {
     _logger = logger;
     _listener = listener;
@@ -33,9 +33,7 @@ public class FileListenerService : IHostedService
 
     _publisher.Start();
 
-    _subscription = _listener.StartListening()
-                             .Do(x => _subscriber.FileChanged(x))
-                             .Subscribe();
+    _subscription = _listener.StartListening().Do(x => _subscriber.FileChanged(x)).Subscribe();
 
     return Task.CompletedTask;
   }

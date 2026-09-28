@@ -1,10 +1,7 @@
 using System.Net;
-
 using Microsoft.AspNetCore.HttpOverrides;
-
 using Web;
 using Web.Hubs;
-
 using IPNetwork = Microsoft.AspNetCore.HttpOverrides.IPNetwork;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,50 +10,46 @@ if (builder.Environment.IsDevelopment())
 {
   builder.Services.AddCors(x =>
   {
-    x.AddDefaultPolicy(policy => policy
-                                 .SetIsOriginAllowed(_ => true)
-                                 .AllowAnyMethod()
-                                 .AllowAnyHeader()
-                                 .AllowCredentials());
+    x.AddDefaultPolicy(policy =>
+      policy.SetIsOriginAllowed(_ => true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
+    );
   });
 
   builder.Services.AddHostedService<Debugging>();
 }
 
-builder.Services
-       .AddSignalR(o => o.EnableDetailedErrors = true)
-       .AddHubOptions<ShellHub>(o => o.MaximumReceiveMessageSize = 512_000);
+builder
+  .Services.AddSignalR(o => o.EnableDetailedErrors = true)
+  .AddHubOptions<ShellHub>(o => o.MaximumReceiveMessageSize = 512_000);
 
 builder.Services.AddHealthChecks();
 builder.Services.AddHttpLogging(logging =>
 {
   new List<string>
-    {
-      "X-Forwarded-For",
-      "X-Forwarded-Host",
-      "X-Forwarded-Port",
-      "X-Forwarded-Prefix",
-      "X-Forwarded-Proto",
-      "X-Forwarded-Server",
-      "X-Real-IP",
-    }
-    .ForEach(x => logging.RequestHeaders.Add(x));
+  {
+    "X-Forwarded-For",
+    "X-Forwarded-Host",
+    "X-Forwarded-Port",
+    "X-Forwarded-Prefix",
+    "X-Forwarded-Proto",
+    "X-Forwarded-Server",
+    "X-Real-IP",
+  }.ForEach(x => logging.RequestHeaders.Add(x));
 });
 
-builder
-  .Host
-  .UseDefaultServiceProvider((_, options) =>
+builder.Host.UseDefaultServiceProvider(
+  (_, options) =>
   {
     options.ValidateScopes = true;
     options.ValidateOnBuild = true;
-  });
+  }
+);
 
 var app = builder.Build();
 
 var config = app.Services.GetRequiredService<IConfiguration>();
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
-logger.LogInformation("Configuration:\n{Config}",
-                      ((IConfigurationRoot) config).GetDebugView());
+logger.LogInformation("Configuration:\n{Config}", ((IConfigurationRoot)config).GetDebugView());
 
 if (builder.Environment.IsDevelopment())
 {

@@ -1,7 +1,6 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
 
@@ -24,48 +23,57 @@ public class Connection : IAsyncDisposable
     Url = options.Url;
   }
 
-  public async Task Start(TimeSpan reconnectTimeout,
-                          CancellationToken cancellationToken)
+  public async Task Start(TimeSpan reconnectTimeout, CancellationToken cancellationToken)
   {
     Hub = new HubConnectionBuilder()
-          .WithUrl(Url)
-          .WithAutomaticReconnect(new AlwaysRetryPolicy(reconnectTimeout))
-          .Build();
+      .WithUrl(Url)
+      .WithAutomaticReconnect(new AlwaysRetryPolicy(reconnectTimeout))
+      .Build();
 
-    _subscriptions = new CompositeDisposable(Observable
-                                             .FromEvent<Func<string, Task>, string>(action => str =>
-                                                                                    {
-                                                                                      action(str);
+    _subscriptions = new CompositeDisposable(
+      Observable
+        .FromEvent<Func<string, Task>, string>(
+          action =>
+            str =>
+            {
+              action(str);
 
-                                                                                      return Task.CompletedTask;
-                                                                                    },
-                                                                                    f => Hub.Reconnected += f,
-                                                                                    f => Hub.Reconnected -= f)
-                                             .Do(_ => ConnectionEstablished())
-                                             .Subscribe(),
-                                             Observable
-                                               .FromEvent<Func<Exception, Task>, Exception>(action => ex =>
-                                                                                            {
-                                                                                              action(ex);
+              return Task.CompletedTask;
+            },
+          f => Hub.Reconnected += f,
+          f => Hub.Reconnected -= f
+        )
+        .Do(_ => ConnectionEstablished())
+        .Subscribe(),
+      Observable
+        .FromEvent<Func<Exception, Task>, Exception>(
+          action =>
+            ex =>
+            {
+              action(ex);
 
-                                                                                              return Task.CompletedTask;
-                                                                                            },
-                                                                                            f => Hub.Reconnecting += f,
-                                                                                            f => Hub.Reconnecting -= f)
-                                               .Do(ConnectionLost)
-                                               .Subscribe(),
-                                             Observable
-                                               .FromEvent<Func<Exception, Task>, Exception>(action => ex =>
-                                                                                            {
-                                                                                              action(ex);
+              return Task.CompletedTask;
+            },
+          f => Hub.Reconnecting += f,
+          f => Hub.Reconnecting -= f
+        )
+        .Do(ConnectionLost)
+        .Subscribe(),
+      Observable
+        .FromEvent<Func<Exception, Task>, Exception>(
+          action =>
+            ex =>
+            {
+              action(ex);
 
-                                                                                              return Task.CompletedTask;
-                                                                                            },
-                                                                                            f => Hub.Closed += f,
-                                                                                            f => Hub.Closed -= f)
-                                               .Do(ConnectionLost)
-                                               .Subscribe()
-                                            );
+              return Task.CompletedTask;
+            },
+          f => Hub.Closed += f,
+          f => Hub.Closed -= f
+        )
+        .Do(ConnectionLost)
+        .Subscribe()
+    );
 
     await Connect(reconnectTimeout, cancellationToken);
   }
@@ -79,8 +87,7 @@ public class Connection : IAsyncDisposable
       _reconnectTimeout = reconnectTimeout;
     }
 
-    public TimeSpan? NextRetryDelay(RetryContext retryContext)
-      => _reconnectTimeout;
+    public TimeSpan? NextRetryDelay(RetryContext retryContext) => _reconnectTimeout;
   }
 
   public async Task Stop(CancellationToken cancellationToken)
@@ -133,8 +140,7 @@ public class Connection : IAsyncDisposable
     _state.OnNext(new ConnectionDown());
   }
 
-  public IObservable<object> State
-    => _state.DistinctUntilChanged();
+  public IObservable<object> State => _state.DistinctUntilChanged();
 
   public ValueTask DisposeAsync()
   {

@@ -1,7 +1,6 @@
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-
 using Microsoft.Extensions.Logging;
 
 namespace Client.ShellLogs;
@@ -21,67 +20,82 @@ public class Listener
   {
     _logger.LogInformation("Watching {Path}", _watchOptions.Glob);
 
-    return Observable.Create<string>(subject =>
-                     {
-                       var disp = new CompositeDisposable();
+    return Observable
+      .Create<string>(subject =>
+      {
+        var disp = new CompositeDisposable();
 
-                       var watcher = CreateFileSystemWatcher(_watchOptions);
-                       disp.Add(watcher);
+        var watcher = CreateFileSystemWatcher(_watchOptions);
+        disp.Add(watcher);
 
-                       var sources =
-                         new[]
-                         {
-                           // Watching iTerm2 log files does not work without it. Regular echo foo > some.log works, though.
-                           ForceRefresh(_watchOptions, TimeSpan.FromSeconds(3)),
-                           Observable.FromEventPattern
-                             <FileSystemEventHandler, FileSystemEventArgs>(x => watcher.Changed += x,
-                                                                           x => watcher.Changed -= x),
-                           Observable.FromEventPattern
-                             <FileSystemEventHandler, FileSystemEventArgs>(x => watcher.Created += x,
-                                                                           x => watcher.Created -= x),
-                           Observable.FromEventPattern
-                             <FileSystemEventHandler, FileSystemEventArgs>(x => watcher.Deleted += x,
-                                                                           x => watcher.Deleted -= x),
-                           Observable.FromEventPattern<ErrorEventArgs>(watcher, "Error")
-                                     .SelectMany(e => Observable.Throw<EventPattern<FileSystemEventArgs>>(e.EventArgs
-                                                                                                           .GetException())),
-                         };
+        var sources = new[]
+        {
+          // Watching iTerm2 log files does not work without it. Regular echo foo > some.log works, though.
+          ForceRefresh(_watchOptions, TimeSpan.FromSeconds(3)),
+          Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+            x => watcher.Changed += x,
+            x => watcher.Changed -= x
+          ),
+          Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+            x => watcher.Created += x,
+            x => watcher.Created -= x
+          ),
+          Observable.FromEventPattern<FileSystemEventHandler, FileSystemEventArgs>(
+            x => watcher.Deleted += x,
+            x => watcher.Deleted -= x
+          ),
+          Observable
+            .FromEventPattern<ErrorEventArgs>(watcher, "Error")
+            .SelectMany(e =>
+              Observable.Throw<EventPattern<FileSystemEventArgs>>(e.EventArgs.GetException())
+            ),
+        };
 
-                       var subscription = sources
-                                          .Merge()
-                                          .Select(x => x.EventArgs.FullPath)
-                                          .Do(x => _logger.LogDebug("File changed: {File}", x))
-                                          .Synchronize(subject)
-                                          .Subscribe(subject);
+        var subscription = sources
+          .Merge()
+          .Select(x => x.EventArgs.FullPath)
+          .Do(x => _logger.LogDebug("File changed: {File}", x))
+          .Synchronize(subject)
+          .Subscribe(subject);
 
-                       disp.Add(subscription);
+        disp.Add(subscription);
 
-                       watcher.EnableRaisingEvents = true;
+        watcher.EnableRaisingEvents = true;
 
-                       return disp;
-                     })
-                     .Publish()
-                     .RefCount();
+        return disp;
+      })
+      .Publish()
+      .RefCount();
   }
 
-  IObservable<EventPattern<FileSystemEventArgs>> ForceRefresh(WatchOptions watchOptions, TimeSpan tick)
+  IObservable<EventPattern<FileSystemEventArgs>> ForceRefresh(
+    WatchOptions watchOptions,
+    TimeSpan tick
+  )
   {
-    return Observable.Timer(TimeSpan.Zero, tick)
-                     .SelectMany(_ => Directory.GetFiles(watchOptions.Directory, watchOptions.Pattern)
-                                               .ToArray()
-                                               .Select(f => new FileSystemEventArgs(WatcherChangeTypes.Changed,
-                                                                                    Path.GetDirectoryName(f),
-                                                                                    Path.GetFileName(f))))
-                     .Select(e => new EventPattern<FileSystemEventArgs>(this, e));
+    return Observable
+      .Timer(TimeSpan.Zero, tick)
+      .SelectMany(_ =>
+        Directory
+          .GetFiles(watchOptions.Directory, watchOptions.Pattern)
+          .ToArray()
+          .Select(f => new FileSystemEventArgs(
+            WatcherChangeTypes.Changed,
+            Path.GetDirectoryName(f),
+            Path.GetFileName(f)
+          ))
+      )
+      .Select(e => new EventPattern<FileSystemEventArgs>(this, e));
   }
 
-  static FileSystemWatcher CreateFileSystemWatcher(WatchOptions watchOptions)
-    => new(watchOptions.Directory, watchOptions.Pattern)
+  static FileSystemWatcher CreateFileSystemWatcher(WatchOptions watchOptions) =>
+    new(watchOptions.Directory, watchOptions.Pattern)
     {
       IncludeSubdirectories = false,
-      NotifyFilter = NotifyFilters.CreationTime |
-                     NotifyFilters.LastWrite |
-                     NotifyFilters.FileName |
-                     NotifyFilters.Size,
+      NotifyFilter =
+        NotifyFilters.CreationTime
+        | NotifyFilters.LastWrite
+        | NotifyFilters.FileName
+        | NotifyFilters.Size,
     };
 }

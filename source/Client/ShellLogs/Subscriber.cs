@@ -1,10 +1,7 @@
 using System.Collections.Concurrent;
 using System.Text;
-
 using Client.Messages;
-
 using Microsoft.Extensions.Logging;
-
 using Minimod.RxMessageBroker;
 
 namespace Client.ShellLogs;
@@ -30,8 +27,7 @@ public class Subscriber
       Offset = 0;
     }
 
-    public static Context For(string path)
-      => new(Path.GetFileNameWithoutExtension(path));
+    public static Context For(string path) => new(Path.GetFileNameWithoutExtension(path));
   }
 
   public void FileChanged(string path)
@@ -48,22 +44,21 @@ public class Subscriber
       return;
     }
 
-    context = _paths.GetOrAdd(path,
-                              _ =>
-                              {
-                                var newContext = Context.For(path);
-                                _logger.LogDebug("Session {SessionId}: Started",
-                                                 newContext.SessionId);
+    context = _paths.GetOrAdd(
+      path,
+      _ =>
+      {
+        var newContext = Context.For(path);
+        _logger.LogDebug("Session {SessionId}: Started", newContext.SessionId);
 
-                                return newContext;
-                              });
+        return newContext;
+      }
+    );
 
-    using var reader = new StreamReader(new FileStream(path,
-                                                       FileMode.Open,
-                                                       FileAccess.Read,
-                                                       FileShare.ReadWrite |
-                                                       FileShare.Delete),
-                                        Encoding.UTF8);
+    using var reader = new StreamReader(
+      new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete),
+      Encoding.UTF8
+    );
     if (reader.BaseStream.Length == context.Offset)
     {
       return;
@@ -75,15 +70,19 @@ public class Subscriber
     int charsRead;
     while ((charsRead = reader.ReadBlock(buffer, 0, buffer.Length)) > 0)
     {
-      var text = new TextReceived(context.SessionId,
-                                  context.Offset,
-                                  reader.BaseStream.Position,
-                                  new string(buffer.Take(charsRead).ToArray()));
+      var text = new TextReceived(
+        context.SessionId,
+        context.Offset,
+        reader.BaseStream.Position,
+        new string(buffer.Take(charsRead).ToArray())
+      );
 
-      _logger.LogDebug("Session {SessionId}: Text received, offset {Offset} to {Position}",
-                       context.SessionId,
-                       context.Offset,
-                       reader.BaseStream.Position);
+      _logger.LogDebug(
+        "Session {SessionId}: Text received, offset {Offset} to {Position}",
+        context.SessionId,
+        context.Offset,
+        reader.BaseStream.Position
+      );
       RxMessageBrokerMinimod.Default.Send(text);
 
       context.Offset = reader.BaseStream.Position;

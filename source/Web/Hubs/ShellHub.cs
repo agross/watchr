@@ -1,5 +1,4 @@
 using Client.Messages;
-
 using Microsoft.AspNetCore.SignalR;
 
 namespace Web.Hubs;

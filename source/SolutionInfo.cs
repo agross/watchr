@@ -2,4 +2,4 @@ using System.Reflection;
 
 [assembly: AssemblyCompany("GROSSWEBER")]
 [assembly: AssemblyProduct("Watchr")]
-[assembly: AssemblyCopyright("Copyright © GROSSWEBER")]
+[assembly: AssemblyCopyright("Copyright ï¿½ GROSSWEBER")]
