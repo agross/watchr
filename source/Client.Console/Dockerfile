@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
+FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:11.0-alpine AS build
 
 WORKDIR /build
 
@@ -21,7 +21,7 @@ RUN --mount=type=bind,target=.,rw \
            --output /publish \
            source/Client.Console/Client.Console.csproj
 
-FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-alpine
+FROM mcr.microsoft.com/dotnet/runtime-deps:11.0-alpine
 
 WORKDIR /app
 
